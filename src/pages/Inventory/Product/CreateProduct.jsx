@@ -37,7 +37,7 @@ function CreateProduct() {
     <div style={{ marginTop: 10 }}>
       <div className='d-flex justify-content-between'>
         <div>
-          <h4 style={{ color: '#092c4c' }}>Create Product</h4>
+          <h4 style={{ color: '#092c4c' }}>Create Product Wafadar</h4>
           <h6 style={{ fontWeight: 400, color: '#092c4c' }}>Create new product details</h6>
         </div>
         <Button>Back to Product</Button>
