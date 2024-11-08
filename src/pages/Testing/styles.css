@@ -1,0 +1,13 @@
+.nav-link {
+    border-bottom: 2px solid transparent; /* Default bottom border */
+    transition: border-color 0.3s; /* Smooth transition for the border color */
+  }
+  
+  .nav-link.active {
+    border-bottom: 2px solid blue; /* Bottom border for the active tab */
+  }
+  
+  .nav-link:not(.active):hover {
+    border-bottom: 2px solid lightgray; /* Optional hover effect for non-active tabs */
+  }
+  
