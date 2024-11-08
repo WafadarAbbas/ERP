@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useFormik } from 'formik';
-import Button from '../../../Compo/Buton'; // Adjust the import as per your file structure
+import Button from '../../../Compo/Buton'; 
 
 function CreateProduct() {
   // Formik setup
@@ -10,16 +10,16 @@ function CreateProduct() {
       slug: '',
       store: '',
       warehouse: '',
-      sku: '',// Added SKU field to Formik initial values
-      category: '',      // Added category field to Formik initial values
-      subcategory: '',   // Added subcategory field to Formik initial values
+      sku: '',
+      category: '',     
+      subcategory: '',   
       subsubcategory: '',
       age: '',
       number: ''
 
     },
     onSubmit: values => {
-      console.log(values); // Handle the form submission logic
+      console.log(values);  
     }
   });
 
@@ -30,15 +30,15 @@ function CreateProduct() {
   const handleImageChange = (event) => {
     const file = event.target.files[0];
     if (file) {
-      setImagePreview(URL.createObjectURL(file)); // Set the preview image
+      setImagePreview(URL.createObjectURL(file)); 
     }
   };
   return (
     <div style={{ marginTop: 10 }}>
       <div className='d-flex justify-content-between'>
         <div>
-          <h4 style={{ color: '#092c4c' }}>Create Product Wafa</h4>
-          <h6 style={{ fontWeight: 400, color: '#092c4c' }}>Create new product details</h6>
+          <h4 style={{ color: '#092c4c' }}>Create Product</h4>
+          <h6 style={{ fontWeight: 400, color: '#092c4c' }}>Create Product Details</h6>
         </div>
         <Button>Back to Product</Button>
       </div>
