@@ -1,26 +1,37 @@
-import React, { useState, useEffect } from 'react';
+
+import React from 'react';
+ 
 
 function Testing() {
-  const [count, setCount] = useState(0);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCount((prevCount) => {
-        if (prevCount < 60) {
-          return prevCount + 1; // Increase by 1 every interval
-        } else {
-          clearInterval(interval);
-          return prevCount;
-        }
-      });
-    }, 5); 
-
-    return () => clearInterval(interval); // Cleanup the interval on unmount
-  }, []);
+ 
 
   return (
-    <div style={{ marginTop: 10 }}>
-      <h1>{count}</h1>
+    <div style={{ padding: '20px' }}>
+      <h2>Notistack Notification Example with Bootstrap Buttons</h2>
+      <button
+        className="btn btn-success me-2"
+    
+      >
+        Show Success Message
+      </button>
+      <button
+        className="btn btn-danger me-2"
+     
+      >
+        Show Error Message
+      </button>
+      <button
+        className="btn btn-warning me-2"
+        
+      >
+        Show Warning Message
+      </button>
+      <button
+        className="btn btn-info"
+       
+      >
+        Show Info e
+      </button>
     </div>
   );
 }

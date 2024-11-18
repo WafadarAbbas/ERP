@@ -1,106 +1,106 @@
 import React, { useRef, useState, useEffect, useCallback } from 'react';
-import Swal from 'sweetalert2';
-import { useTestPanel } from '../../Compo/TestPanelContext';
-import { TestPanel, TestPanelHeader, TestPanelBody, TestPanelFooter } from '../../Compo/TestPanel';
-import Footer from '../../Compo/Footer';
-import CreateUser from './createUser';
-import ApiCall from '../../Apicall/ApiCall';
-import { useNavigate } from 'react-router-dom';
-import _ from 'lodash';  
-import 'bootstrap-icons/font/bootstrap-icons.css';  
-import EditUser from './EditUser';
+// import Swal from 'sweetalert2';
+// import { useTestPanel } from '../../Compo/TestPanelContext';
+// import { TestPanel, TestPanelHeader, TestPanelBody, TestPanelFooter } from '../../Compo/TestPanel';
+// import Footer from '../../Compo/Footer';
+// import CreateUser from './createUser';
+// import ApiCall from '../../Apicall/ApiCall';
+// import { useNavigate } from 'react-router-dom';
+// import _ from 'lodash';  
+// import 'bootstrap-icons/font/bootstrap-icons.css';  
+// import EditUser from './EditUser';
  
 const Users = () => {
-    const navigate = useNavigate();
-    const createRef = useRef(null);
-    const refClose = useRef(null);
-    const editRef = useRef(null);  
-    const editClose = useRef(null); 
-    const { MaxResultCount } = useTestPanel();
-    const [skipCount, setSkipCount] = useState(0);
-    const [users, setUsers] = useState([]);
-    const [totalCount, setTotalCount] = useState(0);
-    const [keyword, setKeyword] = useState('');   
-    const [selectedUserId, setSelectedUserId] = useState(null);
-    const debouncedKeyword = useRef(_.debounce((value) => setKeyword(value), 300)).current;  // Debounced function
+    // const navigate = useNavigate();
+    // const createRef = useRef(null);
+    // const refClose = useRef(null);
+    // const editRef = useRef(null);  
+    // const editClose = useRef(null); 
+    // const { MaxResultCount } = useTestPanel();
+    // const [skipCount, setSkipCount] = useState(0);
+    // const [users, setUsers] = useState([]);
+    // const [totalCount, setTotalCount] = useState(0);
+    // const [keyword, setKeyword] = useState('');   
+    // const [selectedUserId, setSelectedUserId] = useState(null);
+    // const debouncedKeyword = useRef(_.debounce((value) => setKeyword(value), 300)).current;  // Debounced function
     
-    const fetchUsers = async () => {
-        const response = await ApiCall({
-            url: `https://localhost:44311/api/services/app/User/GetAll?skipCount=${skipCount}&maxResultCount=${MaxResultCount}&Keyword=${keyword}`,
-            method: 'GET',
-        });
+    // const fetchUsers = async () => {
+    //     const response = await ApiCall({
+    //         url: `https://localhost:44311/api/services/app/User/GetAll?skipCount=${skipCount}&maxResultCount=${MaxResultCount}&Keyword=${keyword}`,
+    //         method: 'GET',
+    //     });
 
-        if (response?.data?.result) {
-            setUsers(response.data.result.items);
-            setTotalCount(response.data.result.totalCount);
-        } else {
-            Swal.fire('Error', 'Failed to fetch users', 'error');
-        }
-    };
+    //     if (response?.data?.result) {
+    //         setUsers(response.data.result.items);
+    //         setTotalCount(response.data.result.totalCount);
+    //     } else {
+    //         Swal.fire('Error', 'Failed to fetch users', 'error');
+    //     }
+    // };
 
-    useEffect(() => {
-        fetchUsers(keyword); 
-    }, [skipCount, MaxResultCount, keyword]);
+    // useEffect(() => {
+    //     fetchUsers(keyword); 
+    // }, [skipCount, MaxResultCount, keyword]);
 
-    const handlePrevious = () => {
-        if (skipCount > 0) {
-            setSkipCount(skipCount - MaxResultCount);
-        }
-    };
+    // const handlePrevious = () => {
+    //     if (skipCount > 0) {
+    //         setSkipCount(skipCount - MaxResultCount);
+    //     }
+    // };
 
-    const handleNext = () => {
-        if (skipCount + MaxResultCount < totalCount) {
-            setSkipCount(skipCount + MaxResultCount);
-        }
-    };
+    // const handleNext = () => {
+    //     if (skipCount + MaxResultCount < totalCount) {
+    //         setSkipCount(skipCount + MaxResultCount);
+    //     }
+    // };
 
-    const handleClick = () => {
-        refClose.current.click();
-    };
+    // const handleClick = () => {
+    //     refClose.current.click();
+    // };
 
-    const handleEdit = (userId) => {
-        setSelectedUserId(userId);  
-        editRef.current.click();  
-    };
+    // const handleEdit = (userId) => {
+    //     setSelectedUserId(userId);  
+    //     editRef.current.click();  
+    // };
 
-    const handleDelete = async (userId) => {
-        const result = await Swal.fire({
-            title: 'Are you sure?',
-            text: 'This action cannot be undone!',
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#d33',
-            cancelButtonColor: '#3085d6',
-            confirmButtonText: 'Yes, delete it!'
-        });
+    // const handleDelete = async (userId) => {
+    //     const result = await Swal.fire({
+    //         title: 'Are you sure?',
+    //         text: 'This action cannot be undone!',
+    //         icon: 'warning',
+    //         showCancelButton: true,
+    //         confirmButtonColor: '#d33',
+    //         cancelButtonColor: '#3085d6',
+    //         confirmButtonText: 'Yes, delete it!'
+    //     });
     
-        if (result.isConfirmed) {
-            try {
-                const response = await ApiCall({
-                    url: `https://localhost:44311/api/services/app/User/Delete?Id=${userId}`,
-                    method: 'DELETE',
-                });
+    //     if (result.isConfirmed) {
+    //         try {
+    //             const response = await ApiCall({
+    //                 url: `https://localhost:44311/api/services/app/User/Delete?Id=${userId}`,
+    //                 method: 'DELETE',
+    //             });
     
               
-                console.log('Delete response:', response);
+    //             console.log('Delete response:', response);
     
                  
-                if (response?.data?.success || response?.status === 200) {
-                    Swal.fire('Deleted');
-                    fetchUsers();  
-                } else {
-                    Swal.fire('Error', 'Failed to delete user', 'error');
-                }
-            } catch (error) {
-                console.error('Error during delete:', error);
-                Swal.fire('Error', 'An error occurred while deleting the user', 'error');
-            }
-        }
-    };
+    //             if (response?.data?.success || response?.status === 200) {
+    //                 Swal.fire('Deleted');
+    //                 fetchUsers();  
+    //             } else {
+    //                 Swal.fire('Error', 'Failed to delete user', 'error');
+    //             }
+    //         } catch (error) {
+    //             console.error('Error during delete:', error);
+    //             Swal.fire('Error', 'An error occurred while deleting the user', 'error');
+    //         }
+    //     }
+    // };
  
-    const fetch = () => {
-    fetchUsers();
-    };
+    // const fetch = () => {
+    // fetchUsers();
+    // };
 
 
     return (
@@ -109,7 +109,7 @@ const Users = () => {
                 <h1 className="mb-0">Users</h1>
             </div>
 
-            <div className="bg-white p-3 rounded-3 border">
+            {/* <div className="bg-white p-3 rounded-3 border">
                 <div className="row mb-3">
                     <div className="col-md-8">
                         <button
@@ -204,10 +204,10 @@ const Users = () => {
                         </div>
                     </TestPanelFooter>
                 </TestPanel>
-            </div>
-            <CreateUser open={createRef} close={refClose} onclick={ fetch}  />
+            </div> */}
+            {/* <CreateUser open={createRef} close={refClose} onclick={ fetch}  />
             <EditUser userId={selectedUserId} open={editRef} close={editClose} />
-            <Footer />
+            <Footer /> */}
         </div>
     );
 };

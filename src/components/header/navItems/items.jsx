@@ -11,9 +11,9 @@ function Items() {
         <FormControl
           type="search"
           placeholder="Search "
-          className="me-5 ms-3"
+          className="me-5"
           aria-label="Search"
-          style={{ width: '500px',height:40, backgroundColor: '#fafafa', borderRadius: '10px', }}
+          style={{ width: '500px',height:40, backgroundColor: '#fafafa', borderRadius: '10px', marginLeft:'70px'}}
         />
 
       </Form>

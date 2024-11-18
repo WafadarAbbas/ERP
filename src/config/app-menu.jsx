@@ -8,6 +8,8 @@ const Menu = [
   { path: '/Testing', icon: 'fa fa-key', title: 'Testing',
     children: [
       { path: '/Testing/Testing', title: 'Testing' },
+      { path: '/Testing/Testing2', title: 'Testing2' },
+      { path: '/Testing/Layout', title: 'Layout' },
     ]
   },
   

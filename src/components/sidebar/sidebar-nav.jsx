@@ -6,6 +6,8 @@ import menus from './../../config/app-menu.jsx';
 import StockMenu from '../../config/app-stockmenu.jsx';
 import SaleMenu from '../../config/app-salesmenu.jsx';
 import Invetory from '../../config/app-inventorymenu.jsx';
+import detailsmenu from '../../config/app-detailsmenu.jsx';
+
 
 
 
@@ -18,7 +20,7 @@ function NavItem({ menu, ...props }: LinkProps) {
   
   let iconStyle = { fontSize: '14px' };   
  
-  let titleStyle = { fontSize: '13px' };   
+  let titleStyle = { fontSize: '16px' };   
   let itemStyle = { marginBottom: '3px',marginTop:'5px' };
 
 	let icon = menu.icon && <div className="menu-icon" style={iconStyle} ><i className={menu.icon}></i></div>;
@@ -26,14 +28,14 @@ function NavItem({ menu, ...props }: LinkProps) {
 	let caret = (menu.children && !menu.badge) && (
 		<div className="menu-caret" style={{
 		  fontSize: 10, 
-		  border: '1px  ',   // Adds a light border color
+		  border: '1px  ',   // Adds a light bor
 		  borderRadius: '50%',        // Makes it fully rounded
 		  width: '17px',              // Sets fixed width to ensure circle shape
 		  height: '17px',             // Sets fixed height to match width
 		  display: 'flex',            // Center-align caret within circle
 		  alignItems: 'center',
 		  justifyContent: 'center',
-		  backgroundColor: 'rgba(255, 159, 67, 0.2)',
+		  backgr: 'rgba(255, 159, 67, 0.2)',
 		}}>
  
 		</div>
@@ -177,20 +179,26 @@ function SidebarNav() {
         <NavItem key={i} menu={menu} />
       ))}
       
-      <hr style={{ borderColor: '#ddd', borderWidth: '1px', borderStyle: 'solid' }} />
+      <hr style={{ bo: '#ddd', borderWidth: '1px', borderStyle: 'solid' }} />
 
 	  <h6 style={{ fontFamily: 'Nunito, sans-serif', fontWeight: 500, fontSize: '1rem' }}>Inventory</h6>
       {Invetory.map((invetory, i) => (
         <NavItem key={i} menu={invetory} />
       ))}
-	    <hr style={{ borderColor: '#ddd', borderWidth: '1px', borderStyle: 'solid' }} />
+	    <hr style={{ bo: '#ddd', borderWidth: '1px', borderStyle: 'solid' }} />
       
-      <h6 style={{ fontFamily: 'Nunito, sans-serif', fontWeight: 500, fontSize: '1rem' }}>Stocks</h6>
+      <h6 style={{ fontFamily: 'Nunito, sans-serif', fontWeight: 500, fontSize: '1rem' }}>Product Details</h6>
+      {detailsmenu.map((detailsmenu, i) => (
+        <NavItem key={i} menu={detailsmenu} />
+      ))}
+	  <hr style={{ bo: '#ddd', borderWidth: '1px', borderStyle: 'solid' }} />
+
+<h6 style={{ fontFamily: 'Nunito, sans-serif', fontWeight: 500, fontSize: '1rem' }}>Stocks</h6>
       {StockMenu.map((stockMenu, i) => (
         <NavItem key={i} menu={stockMenu} />
       ))}
 
-<hr style={{ borderColor: '#ddd', borderWidth: '1px', borderStyle: 'solid' }} />
+<hr style={{ bo: '#ddd', borderWidth: '1px', borderStyle: 'solid' }} />
 
 <h6 style={{ fontFamily: 'Nunito, sans-serif', fontWeight: 500, fontSize: '1rem' }}>Sales </h6>
       {SaleMenu.map((saleMenu, i) => (

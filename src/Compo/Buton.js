@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
 
-const Button = ({ children, onClick }) => {
+const Buton = ({ children, onClick }) => {
   const [isHovered, setIsHovered] = useState(false);
 
   const handleMouseEnter = () => {
@@ -24,7 +24,7 @@ const Button = ({ children, onClick }) => {
         borderRadius: '10px',
         cursor: 'pointer',
         fontSize: '17px',
-        height: '40px',   
+        height: '50px',   
         transition: 'background-color 0.3s ease', // Smooth transition
       }}
     >
@@ -33,6 +33,6 @@ const Button = ({ children, onClick }) => {
   );
 };
 
-export default Button;
+export default Buton;
 
 

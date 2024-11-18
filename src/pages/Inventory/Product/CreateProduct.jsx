@@ -11,17 +11,27 @@ function CreateProduct() {
       store: '',
       warehouse: '',
       sku: '',
-      category: '',     
-      subcategory: '',   
+      category: '',
+      subcategory: '',
       subsubcategory: '',
-      age: '',
-      number: ''
-
+      warranties: false,           // Checkbox for warranties
+      manufacturers: false,       // Checkbox for manufacturers
+      expiry: false,              // Checkbox for expiry
+      quantity: '',               // Quantity input field
+      price: '',                  // Price input field
+      taxType: '',                // Tax Type dropdown
+      discountType: '',           // Discount Type dropdown
+      discountValue: '',          // Discount Value input field
+      quantityAlert: '',          // Quantity Alert input field
+      productImage: null,         // Product Image file input
+      manufacturedDate: '',       // Manufactured Date input field
+      expiryOn: '',               // Expiry On input field
     },
     onSubmit: values => {
-      console.log(values);  
-    }
+      console.log(values);  // Log form values when submitted
+    },
   });
+  
 
 
 
@@ -30,9 +40,14 @@ function CreateProduct() {
   const handleImageChange = (event) => {
     const file = event.target.files[0];
     if (file) {
-      setImagePreview(URL.createObjectURL(file)); 
+      // Update Formik's state with the selected image
+      formik.setFieldValue('productImage', file);
+  
+      // Set the preview image
+      setImagePreview(URL.createObjectURL(file));
     }
   };
+  
   return (
     <div style={{ marginTop: 10 }}>
       <div className='d-flex justify-content-between'>
@@ -315,7 +330,7 @@ function CreateProduct() {
               </div>
             </div>
 
-            {/* Pricing & Stock Accordion */}
+            
             <div className="accordion-item">
               <h2 className="accordion-header" id="panelsStayOpen-headingTwo">
                 <button
@@ -437,35 +452,36 @@ function CreateProduct() {
                   </div>
 
                   <div className="row mt-3">
-                    {/* Image Upload Field */}
-                    <div className="col-md-4 mb-3">
-                      <label htmlFor="productImage" style={{ fontWeight: '500', fontSize: 16, marginBottom: 4 }}>Product Image</label>
+ 
+  <div className="col-md-4 mb-3">
+    <label htmlFor="productImage" style={{ fontWeight: '500', fontSize: 16, marginBottom: 4 }}>Product Image</label>
 
-                      <input
-                        type="file"
-                        id="productImage"
-                        name="productImage"
-                        className="form-control"
-                        onChange={handleImageChange}
-                        style={{ padding: '.6rem .95rem' }}
-                      />
+    <input
+      type="file"
+      id="productImage"
+      name="productImage"
+      className="form-control"
+      onChange={handleImageChange}
+      style={{ padding: '.6rem .95rem' }}
+    />
 
-                      {/* Image Preview */}
-                      {imagePreview ? (
-                        <div className="mt-2">
-                          <img
-                            src={imagePreview}
-                            alt="Preview"
-                            style={{ maxWidth: '20%', height: 'auto', borderRadius: '8px' }}
-                          />
-                        </div>
-                      ) : (
-                        <div className="mt-2" style={{ color: 'gray' }}>
-                          <small>Choose an image file (JPG, PNG, etc.)</small>
-                        </div>
-                      )}
-                    </div>
-                  </div>
+    {/* Image Preview */}
+    {imagePreview ? (
+      <div className="mt-2">
+        <img
+          src={imagePreview}
+          alt="Preview"
+          style={{ maxWidth: '20%', height: 'auto', borderRadius: '8px' }}
+        />
+      </div>
+    ) : (
+      <div className="mt-2" style={{ color: 'gray' }}>
+        <small>Choose an image file (JPG, PNG, etc.)</small>
+      </div>
+    )}
+  </div>
+</div>
+
 
 
                 </div>
@@ -475,45 +491,148 @@ function CreateProduct() {
 
 
             <div className="accordion-item">
-              <h2 className="accordion-header" id="panelsStayOpen-headingThree">
-                <button
-                  className="accordion-button collapsed"
-                  type="button"
-                  data-bs-toggle="collapse"
-                  data-bs-target="#panelsStayOpen-collapseThree"
-                  aria-expanded="false"
-                  aria-controls="panelsStayOpen-collapseThree"
-                  style={{ backgroundColor: 'white', fontSize: 17, }}
-                >
-                  Custom Feilds
-                </button>
-              </h2>
-              <div
-                id="panelsStayOpen-collapseThree"
-                className="accordion-collapse collapse"
-                aria-labelledby="panelsStayOpen-headingThree"
-                style={{ backgroundColor: 'white' }}
-              >
-                <div className="accordion-body">
-                  {/* Number Field */}
-                  <div className="mb-3">
-                    <label htmlFor="number" style={{ fontWeight: '500', fontSize: 16 }}>
-                      Number
-                    </label>
-                    <input
-                      type="text"
-                      id="number"
-                      name="number"
-                      className="form-control"
-                      placeholder="Enter number"
-                      onChange={formik.handleChange}
-                      value={formik.values.number}
-                      style={{ padding: '.6rem .95rem' }}
-                    />
-                  </div>
-                </div>
-              </div>
-            </div>
+  <h2 className="accordion-header" id="panelsStayOpen-headingThree">
+    <button
+      className="accordion-button collapsed"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#panelsStayOpen-collapseThree"
+      aria-expanded="false"
+      aria-controls="panelsStayOpen-collapseThree"
+      style={{ backgroundColor: 'white', fontSize: 17 }}
+    >
+      Custom Fields
+    </button>
+  </h2>
+  <div
+    id="panelsStayOpen-collapseThree"
+    className="accordion-collapse collapse"
+    aria-labelledby="panelsStayOpen-headingThree"
+    style={{ backgroundColor: 'white' }}
+  >
+    <div className="accordion-body">
+      {/* Checkbox Fields */}
+      <div className="row  mt-4">
+        <div className="col-md-4">
+          <input
+            type="checkbox"
+            id="warranties"
+            name="warranties"
+            onChange={(e) => formik.setFieldValue('warranties', e.target.checked)}  // Custom onChange
+            checked={formik.values.warranties}  // Bind to Formik state
+            style={{ marginRight: 6 }}
+          />
+          <label htmlFor="warranties" style={{ fontWeight: '500', fontSize: 16 }}>
+            Warranties
+          </label>
+        </div>
+
+        <div className="col-md-4">
+          <input
+            type="checkbox"
+            id="manufacturers"
+            name="manufacturers"
+            onChange={(e) => formik.setFieldValue('manufacturers', e.target.checked)}  // Custom onChange
+            checked={formik.values.manufacturers}  // Bind to Formik state
+            style={{ marginRight: 6 }}
+          />
+          <label htmlFor="manufacturers" style={{ fontWeight: '500', fontSize: 16 }}>
+            Manufacturers
+          </label>
+        </div>
+
+        <div className="col-md-4" >
+          <input
+            type="checkbox"
+            id="expiry"
+            name="expiry"
+            onChange={(e) => formik.setFieldValue('expiry', e.target.checked)}  // Custom onChange
+            checked={formik.values.expiry}  // Bind to Formik state
+            style={{ marginRight: 6 }}
+          />
+          <label htmlFor="expiry" style={{ fontWeight: '500', fontSize: 16 }}>
+            Expiry
+          </label>
+        </div>
+        <div className="row mt-3">
+        <div className="col-md-4">
+          <label htmlFor="discountType" style={{ fontWeight: '500', fontSize: 16 }}>
+            Discount Type
+          </label>
+          <select
+            id="discountType"
+            name="discountType"
+            className="form-control"
+            onChange={formik.handleChange}
+            value={formik.values.discountType}
+            style={{ padding: '.6rem .95rem' }}
+          >
+            <option value="">Select Discount Type</option>
+            <option value="percentage">Percentage</option>
+            <option value="fixed">Fixed Amount</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <div className="row mt-4">
+      
+        <div className="col-md-4 mb-3">
+          <label htmlFor="quantityAlert" style={{ fontWeight: '500', fontSize: 16 }}>
+            Quantity Alert
+          </label>
+          <input
+            type="number"
+            id="quantityAlert"
+            name="quantityAlert"
+            className="form-control"
+            placeholder="Enter quantity alert"
+            onChange={formik.handleChange}
+            value={formik.values.quantityAlert}
+            style={{ padding: '.6rem .95rem' }}
+          />
+        </div>
+
+        {/* Manufactured Date Field */}
+        <div className="col-md-4 mb-3">
+          <label htmlFor="manufacturedDate" style={{ fontWeight: '500', fontSize: 16 }}>
+            Manufactured Date
+          </label>
+          <input
+            type="date"
+            id="manufacturedDate"
+            name="manufacturedDate"
+            className="form-control"
+            onChange={formik.handleChange}
+            value={formik.values.manufacturedDate}
+            style={{ padding: '.6rem .95rem' }}
+          />
+        </div>
+
+        {/* Expiry On Field */}
+        <div className="col-md-4 mb-3">
+          <label htmlFor="expiryOn" style={{ fontWeight: '500', fontSize: 16 }}>
+            Expiry On
+          </label>
+          <input
+            type="date"
+            id="expiryOn"
+            name="expiryOn"
+            className="form-control"
+            onChange={formik.handleChange}
+            value={formik.values.expiryOn}
+            style={{ padding: '.6rem .95rem' }}
+          />
+        </div>
+      </div>
+   
+  </div>
+  
+</div>
+
+
+
+</div>
 
             {/* Submit Button */}
             <div className="d-flex justify-content-end mt-4">

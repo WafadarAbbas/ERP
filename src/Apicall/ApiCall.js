@@ -1,10 +1,7 @@
 import axios from "axios";
-import { getToken } from '../Compo/utilis/getToken';
-const ApiCall = async ({ url, method, data }) => {
-  const secretKey = process.env.REACT_APP_SECRET_KEY;
 
-  
-  const token = await getToken();
+const ApiCall = async ({ url, method, data }) => {
+
 
   console.log("api calling", url, method, data);
 
@@ -15,13 +12,14 @@ const ApiCall = async ({ url, method, data }) => {
       data: data,
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`, 
+        
       },
+ 
     });
 
     console.log("api response", response);
 
-    if (response?.status === 200) {
+    if (response?.status === 200 || response?.status === 204) {
       return response;
     }
   } catch (error) {

@@ -1,6 +1,7 @@
 {
   "name": "color-admin",
   "version": "5.3.3",
+ 
   "private": true,
   "dependencies": {
     "@babel/plugin-transform-private-property-in-object": "^7.24.1",

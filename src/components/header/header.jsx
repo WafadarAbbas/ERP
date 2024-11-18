@@ -25,15 +25,15 @@ function Header() {
 
 						)}
 
-
-						<Link to="/" className="navbar-brand " style={{ color: 'black', fontSize: '18px', fontWeight: 500, textDecoration: 'none' }} >
+ 
+						<Link to="/" className="navbar-brand " style={{ color: 'black', fontSize: '18px', fontWeight: 500, textDecoration: 'none',width: '200px' }} >
 							<img
 								src={logo}
 								alt="ERP"
 								style={{ width: '160px', height: '100px' ,  marginRight: '3px',  marginLeft: '5px' }}
 							/>
 						</Link>
-
+					 
 					 
 
 				 

@@ -8,10 +8,8 @@ import SidebarRight from './components/sidebar-right/sidebar-right.jsx';
 import TopMenu from './components/top-menu/top-menu.jsx';
 import Content from './components/content/content.jsx';
 import ThemePanel from './components/theme-panel/theme-panel.jsx';
-import { Panel } from './Compo/panel.js';
-import { TestPanelProvider } from './Compo/TestPanelContext.js';
 
-
+ 
 
 
 
@@ -303,8 +301,8 @@ function App() {
 				handleSetAppTheme,
 			}}
 		>
- <Panel>
-	<TestPanelProvider>
+
+ 
 			<div
 				className={
 					'app ' +
@@ -332,9 +330,7 @@ function App() {
 				{!appContentNone && <Content />}
 				<ThemePanel />
 			</div>
-			
- </TestPanelProvider>
- </Panel>
+
 
 		</AppSettings.Provider>
 	);

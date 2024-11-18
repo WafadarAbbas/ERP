@@ -11,12 +11,13 @@ const AuthApiCall = async ({ url, method, data }) => {
       data: data,
       headers: {
         "Content-Type": "application/json",
+  
       }
     });
 
     // console.log("auth api response", response.status, response);
 
-    if (response.status === 200) {
+    if (response.status === 200 ||response.status === 204) {
       
       return response;  
     }

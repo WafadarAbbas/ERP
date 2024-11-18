@@ -16,6 +16,15 @@ import Product from '../pages/Inventory/Product/Product.jsx';
 import ManageStocks from '../pages/Stocks/ManageStocks.jsx';
 import Invoice from '../pages/Sales/invoice/invoice.jsx';
 import CreateProduct from '../pages/Inventory/Product/CreateProduct.jsx';
+import Layout from '../pages/Layout/Layout.jsx';
+import ExpireProducts from '../pages/Inventory/Product/ExpireProducts.jsx';
+import Testing2 from '../pages/Testing/Testing2.jsx';
+import Category from '../pages/Inventory/Category/Category.jsx';
+import SubCategory from '../pages/Inventory/SubCategory/SubCategory.jsx';
+import ProductBrand from '../pages/Inventory/Brand/ProductBrand.jsx';
+import Color from '../pages/Product Details/Color/Color.jsx';
+
+
 
 
 const AppRoute = [
@@ -54,8 +63,11 @@ const AppRoute = [
 				element: <Outlet/>,
 				children: [
 					{ path: 'Testing', element: <Testing /> },
+					{ path: 'Testing2', element: <Testing2 /> },
+					{ path: 'Layout', element: <Layout /> },
 				]
 			},
+			 
 
 			{
 				path: 'Product',
@@ -63,10 +75,38 @@ const AppRoute = [
 			},
 
 			{
+				path: 'Category',
+				element: <Category/>,
+			},
+			{
+				path: 'SubCategory',
+				element: <SubCategory/>,
+			},
+			{
+				path: 'ProductBrand',
+				element: <ProductBrand/>,
+			},
+
+
+
+			{
 				path: 'CreateProduct',
 				element: <CreateProduct/>,
 			},
 
+			{
+				path: 'ExpireProducts',
+				element: <ExpireProducts/>,
+			},
+
+
+
+			// Product Details
+
+			{
+				path: 'Color',
+				element: <Color/>,
+			},
 
 
 			{
