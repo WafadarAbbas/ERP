@@ -7,11 +7,11 @@ const Invetory = [
     },
     { path: '/ExpireProducts', icon: 'fa fa-cube', title: 'Expire product',
     },
-    { path: '/Category', icon: 'fa fa-cube', title: 'Category',
+    { path: '/Category', icon: 'fa-solid fa-list', title: 'Category',
     },
-    { path: '/SubCategory', icon: 'fa fa-cube', title: 'Sub Category',
+    { path: '/SubCategory', icon: 'fa-solid fa-layer-group', title: 'Sub Category',
     },
-    { path: '/ProductBrand', icon: 'fa fa-cube', title: 'Product Brand',
+    { path: '/ProductBrand', icon: 'fa-solid fa-globe', title: 'Product Brand',
     },
 
   

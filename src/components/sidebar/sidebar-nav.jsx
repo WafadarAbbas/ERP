@@ -174,33 +174,33 @@ function SidebarNav() {
   
 	return (
 <div className="menu" style={{ padding: 15, marginTop: 10 }}>
-      <h6 style={{ fontFamily: 'Nunito, sans-serif', fontWeight: 500, fontSize: '1rem' }}>Main</h6>
+      <h6  style={{ fontFamily: 'Nunito, sans-serif', fontWeight: 500, fontSize: '1.1rem' }}>Main</h6>
       {menus.map((menu, i) => (
         <NavItem key={i} menu={menu} />
       ))}
       
       <hr style={{ bo: '#ddd', borderWidth: '1px', borderStyle: 'solid' }} />
 
-	  <h6 style={{ fontFamily: 'Nunito, sans-serif', fontWeight: 500, fontSize: '1rem' }}>Inventory</h6>
+	  <h6 style={{ fontFamily: 'Nunito, sans-serif', fontWeight: 500,  fontSize: '1.1rem' }}>Inventory</h6>
       {Invetory.map((invetory, i) => (
         <NavItem key={i} menu={invetory} />
       ))}
 	    <hr style={{ bo: '#ddd', borderWidth: '1px', borderStyle: 'solid' }} />
       
-      <h6 style={{ fontFamily: 'Nunito, sans-serif', fontWeight: 500, fontSize: '1rem' }}>Product Details</h6>
+      <h6 style={{ fontFamily: 'Nunito, sans-serif', fontWeight: 500, fontSize: '1.1rem' }}>Product Details</h6>
       {detailsmenu.map((detailsmenu, i) => (
         <NavItem key={i} menu={detailsmenu} />
       ))}
 	  <hr style={{ bo: '#ddd', borderWidth: '1px', borderStyle: 'solid' }} />
 
-<h6 style={{ fontFamily: 'Nunito, sans-serif', fontWeight: 500, fontSize: '1rem' }}>Stocks</h6>
+<h6 style={{ fontFamily: 'Nunito, sans-serif', fontWeight: 500,  fontSize: '1.1rem'}}>Stocks</h6>
       {StockMenu.map((stockMenu, i) => (
         <NavItem key={i} menu={stockMenu} />
       ))}
 
 <hr style={{ bo: '#ddd', borderWidth: '1px', borderStyle: 'solid' }} />
 
-<h6 style={{ fontFamily: 'Nunito, sans-serif', fontWeight: 500, fontSize: '1rem' }}>Sales </h6>
+<h6 style={{ fontFamily: 'Nunito, sans-serif', fontWeight: 500,  fontSize: '1.1rem' }}>Sales </h6>
       {SaleMenu.map((saleMenu, i) => (
         <NavItem key={i} menu={saleMenu} />
       ))}

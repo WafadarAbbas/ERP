@@ -23,6 +23,10 @@ import Category from '../pages/Inventory/Category/Category.jsx';
 import SubCategory from '../pages/Inventory/SubCategory/SubCategory.jsx';
 import ProductBrand from '../pages/Inventory/Brand/ProductBrand.jsx';
 import Color from '../pages/Product Details/Color/Color.jsx';
+import Grade from '../pages/Product Details/Grade/Grade.jsx';
+import Gander from '../pages/Product Details/Gender/Gander.jsx';
+import Manufacturer from '../pages/Product Details/Manufacturer/Manufacturer.jsx';
+import ProductSize from '../pages/Product Details/Size/ProductSize.jsx';
 
 
 
@@ -60,44 +64,45 @@ const AppRoute = [
 
 			{
 				path: 'Testing',
-				element: <Outlet/>,
+				element: <Outlet />,
 				children: [
 					{ path: 'Testing', element: <Testing /> },
 					{ path: 'Testing2', element: <Testing2 /> },
 					{ path: 'Layout', element: <Layout /> },
 				]
 			},
-			 
 
+
+			// Product Inventory
 			{
 				path: 'Product',
-				element: <Product/>,
+				element: <Product />,
 			},
 
 			{
 				path: 'Category',
-				element: <Category/>,
+				element: <Category />,
 			},
 			{
 				path: 'SubCategory',
-				element: <SubCategory/>,
+				element: <SubCategory />,
 			},
 			{
 				path: 'ProductBrand',
-				element: <ProductBrand/>,
+				element: <ProductBrand />,
 			},
-
-
 
 			{
 				path: 'CreateProduct',
-				element: <CreateProduct/>,
+				element: <CreateProduct />,
 			},
 
 			{
 				path: 'ExpireProducts',
-				element: <ExpireProducts/>,
+				element: <ExpireProducts />,
 			},
+
+			// End Here
 
 
 
@@ -105,19 +110,40 @@ const AppRoute = [
 
 			{
 				path: 'Color',
-				element: <Color/>,
+				element: <Color />,
 			},
 
+			{
+				path: 'Grade',
+				element: <Grade />,
+			},
+			{
+				path: 'Gander',
+				element: <Gander />,
+			},
+			{
+				path: 'Manufacturer',
+				element: <Manufacturer/>,
+			},
+			{
+				path: 'Size',
+				element: <ProductSize/>,
+			},
+
+
+
+
+			// End here
 
 			{
 				path: 'ManageStocks',
-				element: <ManageStocks/>,
+				element: <ManageStocks />,
 			},
- 
+
 
 			{
 				path: 'invoice',
-				element: <Invoice/>,
+				element: <Invoice />,
 			},
 
 
