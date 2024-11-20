@@ -5,6 +5,7 @@ import CreateSubCategory from './CreateSubCategory';
 import ApiCall from '../../../Apicall/ApiCall';
 import EditSubCategory from './EditSubCategory';
 import Swal from 'sweetalert2';
+import Footer from '../../../Compo/Footer';
 
 function SubCategory() {
   const createRef = useRef(null);
@@ -19,34 +20,43 @@ function SubCategory() {
   const [selectedSubCategoryId, setSelectedSubCategoryId] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 6;
+  const [searchTerm, setSearchTerm] = useState('');
 
-  const fetchSubCategory = async () => {
+  // Fetch subcategories with an optional query
+  const fetchSubCategory = async (query = '') => {
     try {
+      const url = query
+        ? `http://localhost:5022/api/v1/ProductSubCategory/GetProductSubCategoryByName?name=${query}&organizationId=1&companyId=1`
+        : 'http://localhost:5022/api/v1/ProductSubCategory/GetAllAppModal/list?organizationId=1&companyId=1';
+
       const response = await ApiCall({
-        url: 'http://localhost:5022/api/v1/ProductSubCategory/GetAllAppModal/list?organizationId=1&companyId=1',
+        url,
         method: 'GET',
       });
 
       if (response && response.data) {
         setCategories(response.data);
       } else {
-        throw new Error('Failed to load categories.');
+        throw new Error('Failed to load subcategories.');
       }
     } catch (error) {
       setError(error.message || 'An error occurred while fetching data');
     }
   };
 
+  // Use effect hook to load subcategories initially
   useEffect(() => {
     fetchSubCategory();
   }, []);
 
+  // Handle sorting of columns
   const handleSort = (column) => {
     const newSortOrder = sortOrder === 'asc' ? 'desc' : 'asc';
     setSortColumn(column);
     setSortOrder(newSortOrder);
   };
 
+  // Handle delete action
   const handleDelete = async (SubCategoryId) => {
     const result = await Swal.fire({
       title: 'Are you sure?',
@@ -55,19 +65,19 @@ function SubCategory() {
       showCancelButton: true,
       confirmButtonColor: '#d33',
       cancelButtonColor: '#3085d6',
-      confirmButtonText: 'Yes, delete it!'
+      confirmButtonText: 'Yes, delete it!',
     });
-  
+
     if (result.isConfirmed) {
       try {
         const response = await ApiCall({
           url: `http://localhost:5022/api/v1/ProductSubCategory/DeleteProductSubCategory/${SubCategoryId}?organizationId=1&companyId=1`,
           method: 'DELETE',
         });
-  
+
         if (response?.status === 200 || response?.status === 204) {
           Swal.fire('Deleted', 'The SubCategory has been deleted.', 'success');
-          setCategories(categories.filter(SubCategory => SubCategory.id !== SubCategoryId));
+          setCategories(categories.filter((SubCategory) => SubCategory.id !== SubCategoryId));
         } else {
           Swal.fire('Error', 'Failed to delete SubCategory', 'error');
         }
@@ -78,15 +88,25 @@ function SubCategory() {
     }
   };
 
+  // Handle edit action
   const handleEdit = (SubCategoryId) => {
     setSelectedSubCategoryId(SubCategoryId);
-    createEditRef.current.click();  
+    createEditRef.current.click();
   };
 
+  // Handle search input change
+  const handleSearch = (e) => {
+    const query = e.target.value;
+    setSearchTerm(query);
+    fetchSubCategory(query); // Fetch subcategories based on the search query
+  };
+
+  // Pagination handling
   const handlePageChange = (newPage) => {
     setCurrentPage(newPage);
   };
 
+  // Sort the categories based on the selected column and order
   const sortedCategories = [...categories].sort((a, b) => {
     if (sortOrder === 'asc') {
       return a[sortColumn] > b[sortColumn] ? 1 : -1;
@@ -103,23 +123,57 @@ function SubCategory() {
 
   return (
     <div style={{ marginTop: 10 }}>
-      <div className='d-flex justify-content-between row'>
-        <div className='d-flex flex-column col-sm-7'>
+      <div className="d-flex justify-content-between row">
+        <div className="d-flex flex-column col-sm-7">
           <h3>SubCategory List</h3>
           <h5 style={{ fontWeight: 400 }}>Manage your Categories</h5>
         </div>
-        <div className='col-sm-5' style={{ display: 'flex', gap: '10px', alignItems: 'center', justifyContent: 'flex-end' }}>
-          <i className="fa fa-print text-primary fs-2 me-2 p-2 bg-white border border-grey rounded-3 cursor-pointer" onClick={() => alert('Print button clicked!')} ></i>
-          <i className="fa-solid fa-file-pdf text-danger fs-2 me-2 p-2 bg-white border border-grey rounded-3 cursor-pointer " onClick={() => alert('PDF button clicked!')} ></i>
-          <i className="fa fa-file-excel-o fs-2 me-2 p-2 bg-white border border-grey rounded-3 cursor-pointer" onClick={() => alert('Excel button clicked!')} style={{ color: 'green' }}></i>
+        <div
+          className="col-sm-5"
+          style={{ display: 'flex', gap: '10px', alignItems: 'center', justifyContent: 'flex-end' }}
+        >
+          <i
+            className="fa fa-print text-primary fs-2 me-2 p-2 bg-white border border-grey rounded-3 cursor-pointer"
+            onClick={() => alert('Print button clicked!')}
+          ></i>
+          <i
+            className="fa-solid fa-file-pdf text-danger fs-2 me-2 p-2 bg-white border border-grey rounded-3 cursor-pointer"
+            onClick={() => alert('PDF button clicked!')}
+          ></i>
+          <i
+            className="fa fa-file-excel-o fs-2 me-2 p-2 bg-white border border-grey rounded-3 cursor-pointer"
+            onClick={() => alert('Excel button clicked!')}
+            style={{ color: 'green' }}
+          ></i>
           <Buton onClick={() => createRef.current.click()}>Add SubCategory</Buton>
         </div>
       </div>
 
-      <div className="p-4 mt-4" style={{ backgroundColor: 'white', borderRadius: 5, border: '1px solid #d9d9d9' }}>
+      <div
+        className="p-4 mt-4"
+        style={{ backgroundColor: 'white', borderRadius: 5, border: '1px solid #d9d9d9' }}
+      >
         <div className="d-flex justify-content-between align-items-center">
-          <input type="text" placeholder="Search..." className="form-control" style={{ maxWidth: '300px' }} />
-          <button className="btn" style={{ backgroundColor: '#ff9f43', color: 'white', padding: '8px 10px', borderRadius: '8px', border: 'none', display: 'flex', alignItems: 'center' }}>
+          <input
+            type="text"
+            value={searchTerm}
+            onChange={handleSearch}
+            placeholder="Search..."
+            className="form-control"
+            style={{ maxWidth: '300px' }}
+          />
+          <button
+            className="btn"
+            style={{
+              backgroundColor: '#ff9f43',
+              color: 'white',
+              padding: '8px 10px',
+              borderRadius: '8px',
+              border: 'none',
+              display: 'flex',
+              alignItems: 'center',
+            }}
+          >
             <FaFilter size={16} />
           </button>
         </div>
@@ -196,6 +250,7 @@ function SubCategory() {
         </div>
       </div>
 
+      <Footer/>
       <CreateSubCategory open={createRef} close={refClose} onclick={fetchSubCategory} />
       <EditSubCategory open={createEditRef} close={refEditClose} selectedSubCategoryId={selectedSubCategoryId} onclick={fetchSubCategory} />
     </div>

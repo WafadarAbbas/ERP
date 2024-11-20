@@ -3,6 +3,7 @@ import Buton from '../../../Compo/Buton';
 import { FaFilter, FaEdit, FaEye, FaArrowUp, FaArrowDown } from 'react-icons/fa';
 import './css/IconStyles.css';
 import ViewModal from './ViewModal';
+import Footer from '../../../Compo/Footer';
 
 function Product() {
   const createRef = useRef(null);
@@ -132,6 +133,7 @@ function Product() {
           </table>
         </div>
       </div>
+      <Footer/>
       <ViewModal open={createRef} close={refClose}/>
     </div>
   );

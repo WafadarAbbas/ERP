@@ -5,6 +5,7 @@ import CreateProductBrand from './CreateProductBrand';
 import ApiCall from '../../../Apicall/ApiCall';
 import EditProductBrand from './EditProductBrand';
 import Swal from 'sweetalert2';
+import Footer from '../../../Compo/Footer';
 
 function ProductBrand() {
   const createRef = useRef(null);
@@ -12,25 +13,39 @@ function ProductBrand() {
   const createEditRef = useRef(null);
   const refEditClose = useRef(null);
 
-  const [Brand, setBrand] = useState([]);
+  const [brands, setBrands] = useState([]); // Renamed for clarity
   const [sortColumn, setSortColumn] = useState('productBrandName');
   const [sortOrder, setSortOrder] = useState('asc');
-  const [error, setError] = useState(null);
+  const [error, setError] = useState(null);  
   const [selectedProductBrandId, setSelectedProductBrandId] = useState(null);
+  const [searchQuery, setSearchQuery] = useState(''); // Added state for search query
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 6;
 
-  const fetchProductBrand = async () => {
+  const totalPages = Math.ceil(brands.length / itemsPerPage);
+
+  const handlePageChange = (newPage) => {
+    if (newPage >= 1 && newPage <= totalPages) {
+      setCurrentPage(newPage);
+    }
+  };
+
+  // Updated to include search query as a parameter
+  const fetchProductBrands = async (query = '') => {
     try {
+      const url = query
+        ? `http://localhost:5022/api/v1/ProductBrand/GetProductBrandByName?name=${query}&organizationId=1&companyId=1`
+        : 'http://localhost:5022/api/v1/ProductBrand/GetAllAppModal/list?organizationId=1&companyId=1';
+
       const response = await ApiCall({
-        url: 'http://localhost:5022/api/v1/ProductBrand/GetAllAppModal/list?organizationId=1&companyId=1',
+        url,
         method: 'GET',
       });
 
       if (response && response.data) {
-        setBrand(response.data);
+        setBrands(response.data);
       } else {
-        throw new Error('Failed to load Brand.');
+        throw new Error('Failed to load brands.');
       }
     } catch (error) {
       setError(error.message || 'An error occurred while fetching data');
@@ -38,8 +53,12 @@ function ProductBrand() {
   };
 
   useEffect(() => {
-    fetchProductBrand();
+    fetchProductBrands();
   }, []);
+
+  const fetch = () => {
+    fetchProductBrands(searchQuery); // Re-fetch brands when the search query changes
+  };
 
   const handleSort = (column) => {
     const newSortOrder = sortOrder === 'asc' ? 'desc' : 'asc';
@@ -57,17 +76,17 @@ function ProductBrand() {
       cancelButtonColor: '#3085d6',
       confirmButtonText: 'Yes, delete it!'
     });
-  
+
     if (result.isConfirmed) {
       try {
         const response = await ApiCall({
-          url: `http://localhost:5022/api/v1/ProductProductBrand/DeleteProductProductBrand/${ProductBrandId}?organizationId=1&companyId=1`,
+          url: `http://localhost:5022/api/v1/ProductBrand/DeleteProductBrand/${ProductBrandId}?organizationId=1&companyId=1`,
           method: 'DELETE',
         });
-  
+
         if (response?.status === 200 || response?.status === 204) {
           Swal.fire('Deleted', 'The ProductBrand has been deleted.', 'success');
-          setBrand(Brand.filter(ProductBrand => ProductBrand.id !== ProductBrandId));
+          setBrands(brands.filter(brand => brand.id !== ProductBrandId));
         } else {
           Swal.fire('Error', 'Failed to delete ProductBrand', 'error');
         }
@@ -83,11 +102,7 @@ function ProductBrand() {
     createEditRef.current.click();  
   };
 
-  const handlePageChange = (newPage) => {
-    setCurrentPage(newPage);
-  };
-
-  const sortedBrand = [...Brand].sort((a, b) => {
+  const sortedBrands = [...brands].sort((a, b) => {
     if (sortOrder === 'asc') {
       return a[sortColumn] > b[sortColumn] ? 1 : -1;
     } else {
@@ -95,30 +110,42 @@ function ProductBrand() {
     }
   });
 
-  const totalPages = Math.ceil(sortedBrand.length / itemsPerPage);
-  const paginatedBrand = sortedBrand.slice(
+  const paginatedBrands = sortedBrands.slice(
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage
   );
+
+  const handleSearch = (event) => {
+    const query = event.target.value;
+    setSearchQuery(query);
+    fetchProductBrands(query); // Fetch brands with search query
+  };
 
   return (
     <div style={{ marginTop: 10 }}>
       <div className='d-flex justify-content-between row'>
         <div className='d-flex flex-column col-sm-7'>
-          <h3>ProductBrand List</h3>
-          <h5 style={{ fontWeight: 400 }}>Manage your Brand</h5>
+          <h3>Product Brand List</h3>
+          <h5 style={{ fontWeight: 400 }}>Manage your Brands</h5>
         </div>
         <div className='col-sm-5' style={{ display: 'flex', gap: '10px', alignItems: 'center', justifyContent: 'flex-end' }}>
           <i className="fa fa-print text-primary fs-2 me-2 p-2 bg-white border border-grey rounded-3 cursor-pointer" onClick={() => alert('Print button clicked!')} ></i>
           <i className="fa-solid fa-file-pdf text-danger fs-2 me-2 p-2 bg-white border border-grey rounded-3 cursor-pointer " onClick={() => alert('PDF button clicked!')} ></i>
           <i className="fa fa-file-excel-o fs-2 me-2 p-2 bg-white border border-grey rounded-3 cursor-pointer" onClick={() => alert('Excel button clicked!')} style={{ color: 'green' }}></i>
-          <Buton onClick={() => createRef.current.click()}>Add   Brand</Buton>
+          <Buton onClick={() => createRef.current.click()}>Add Brand</Buton>
         </div>
       </div>
 
       <div className="p-4 mt-4" style={{ backgroundColor: 'white', borderRadius: 5, border: '1px solid #d9d9d9' }}>
         <div className="d-flex justify-content-between align-items-center">
-          <input type="text" placeholder="Search..." className="form-control" style={{ maxWidth: '300px' }} />
+          <input
+            type="text"
+            placeholder="Search..."
+            className="form-control"
+            value={searchQuery}
+            onChange={handleSearch}
+            style={{ maxWidth: '300px' }}
+          />
           <button className="btn" style={{ backgroundColor: '#ff9f43', color: 'white', padding: '8px 10px', borderRadius: '8px', border: 'none', display: 'flex', alignItems: 'center' }}>
             <FaFilter size={16} />
           </button>
@@ -142,20 +169,19 @@ function ProductBrand() {
                       </button>
                     </div>
                   </th>
-                  
-                  <th scope="col" style={{ fontSize: 16, textAlign: 'center' }}>Actions</th>
+                  <th scope="col" style={{ fontSize: 16 , textAlign: 'center' }}>Actions</th>
                 </tr>
               </thead>
               <tbody>
-                {paginatedBrand.map((ProductBrand) => (
-                  <tr key={ProductBrand.id}>
-                    <td style={{ fontSize: 16 }}>{ProductBrand.productBrandName}</td>
+                {paginatedBrands.map((brand) => (
+                  <tr key={brand.id}>
+                    <td style={{ fontSize: 16 }}>{brand.productBrandName}</td>
                     <td style={{ fontSize: 16, textAlign: 'center' }}>
                       <div className="d-flex gap-2 justify-content-center">
-                        <button className="btn" onClick={() => handleDelete(ProductBrand.id)} style={{ border: '1px solid #ddd', padding: '6px 8px', borderRadius: '8px', display: 'flex', alignItems: 'center' }}>
+                        <button className="btn" onClick={() => handleDelete(brand.id)} style={{ border: '1px solid #ddd', padding: '6px 8px', borderRadius: '8px', display: 'flex', alignItems: 'center' }}>
                           <FaTrash size={16} title="Delete" color='red' />
                         </button>
-                        <button className="btn" onClick={() => handleEdit(ProductBrand.id)} style={{ border: '1px solid #ddd', padding: '6px 8px', borderRadius: '8px', display: 'flex', alignItems: 'center' }}>
+                        <button className="btn" onClick={() => handleEdit(brand.id)} style={{ border: '1px solid #ddd', padding: '6px 8px', borderRadius: '8px', display: 'flex', alignItems: 'center' }}>
                           <FaEdit size={16} title="Edit" color='#ff9f43' />
                         </button>
                       </div>
@@ -169,7 +195,7 @@ function ProductBrand() {
 
         <div className="d-flex justify-content-center mt-3">
           <button
-            className="btn "
+            className="btn"
             style={{ backgroundColor: "#ff9f43", color: "white" }}
             onClick={() => handlePageChange(currentPage - 1)}
             disabled={currentPage === 1}
@@ -178,7 +204,7 @@ function ProductBrand() {
           </button>
           <span className="mx-3 align-self-center">Page {currentPage} of {totalPages}</span>
           <button
-            className="btn "
+            className="btn"
             style={{ backgroundColor: "#ff9f43", color: "white" }}
             onClick={() => handlePageChange(currentPage + 1)}
             disabled={currentPage === totalPages}
@@ -188,11 +214,11 @@ function ProductBrand() {
         </div>
       </div>
 
-      <CreateProductBrand open={createRef} close={refClose} onclick={fetchProductBrand} />
-      <EditProductBrand open={createEditRef} close={refEditClose} selectedProductBrandId={selectedProductBrandId} onclick={fetchProductBrand} />
+      <Footer />
+      <CreateProductBrand open={createRef} close={refClose} onclick={fetch} />
+      <EditProductBrand open={createEditRef} close={refEditClose} selectedProductBrandId={selectedProductBrandId} onclick={fetch} />
     </div>
   );
 }
 
 export default ProductBrand;
-

@@ -27,6 +27,8 @@ import Grade from '../pages/Product Details/Grade/Grade.jsx';
 import Gander from '../pages/Product Details/Gender/Gander.jsx';
 import Manufacturer from '../pages/Product Details/Manufacturer/Manufacturer.jsx';
 import ProductSize from '../pages/Product Details/Size/ProductSize.jsx';
+import ProductType from '../pages/Product Details/Type/ProductType.jsx';
+import ProductBatch from '../pages/Product Details/Batch/ProductBatch.jsx';
 
 
 
@@ -128,6 +130,14 @@ const AppRoute = [
 			{
 				path: 'Size',
 				element: <ProductSize/>,
+			},
+			{
+				path: 'Type',
+				element: <ProductType/>,
+			},
+			{
+				path: 'Batch',
+				element: <ProductBatch/>,
 			},
 
 
