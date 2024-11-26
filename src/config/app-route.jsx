@@ -17,7 +17,7 @@ import ManageStocks from '../pages/Stocks/ManageStocks.jsx';
 import Invoice from '../pages/Sales/invoice/invoice.jsx';
 import CreateProduct from '../pages/Inventory/Product/CreateProduct.jsx';
 import Layout from '../pages/Layout/Layout.jsx';
-import ExpireProducts from '../pages/Inventory/Product/ExpireProducts.jsx';
+// import ExpireProducts from '../pages/Inventory/Product/ExpireProducts.jsx';
 import Testing2 from '../pages/Testing/Testing2.jsx';
 import Category from '../pages/Inventory/Category/Category.jsx';
 import SubCategory from '../pages/Inventory/SubCategory/SubCategory.jsx';
@@ -29,6 +29,12 @@ import Manufacturer from '../pages/Product Details/Manufacturer/Manufacturer.jsx
 import ProductSize from '../pages/Product Details/Size/ProductSize.jsx';
 import ProductType from '../pages/Product Details/Type/ProductType.jsx';
 import ProductBatch from '../pages/Product Details/Batch/ProductBatch.jsx';
+import ProductOpening from '../pages/Product Details/Opening/ProductOpening.jsx';
+import ProductPrice from '../pages/Product Details/Price/ProductPrice.jsx';
+import HSCode from '../pages/Product Details/Hs Code/HSCode.jsx';
+import MeasuringUnits from '../pages/Product Details/Measuring Unit/MeasuringUnits.jsx';
+import VariantDetail from '../pages/Inventory/Variant Detail/VariantDetail.jsx';
+import ProductVariantMain from '../pages/Inventory/Product Variant/ProductVariantMain.jsx';
 
 
 
@@ -100,9 +106,17 @@ const AppRoute = [
 			},
 
 			{
-				path: 'ExpireProducts',
-				element: <ExpireProducts />,
+				path: 'VariantDetail',
+				element: <VariantDetail/>,
 			},
+			{
+				path: 'ProductVariantMain',
+				element: <ProductVariantMain/>,
+			},
+			// {
+			// 	path: 'ExpireProducts',
+			// 	element: <ExpireProducts />,
+			// },
 
 			// End Here
 
@@ -139,7 +153,22 @@ const AppRoute = [
 				path: 'Batch',
 				element: <ProductBatch/>,
 			},
-
+			{
+				path: 'Opening',
+				element: <ProductOpening/>,
+			},
+			{
+				path: 'Price',
+				element: <ProductPrice/>,
+			},
+			{
+				path: 'HSCode',
+				element: <HSCode/>,
+			},
+			{
+				path: 'MeasuringUnits',
+				element: <MeasuringUnits/>,
+			},
 
 
 

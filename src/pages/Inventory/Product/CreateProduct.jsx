@@ -1,658 +1,491 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useFormik } from 'formik';
-import Button from '../../../Compo/Buton'; 
+import * as Yup from 'yup'; // For validation
+import ApiCall from '../../../Apicall/ApiCall';
+import Swal from 'sweetalert2';
+import Footer from '../../../Compo/Footer';
+
 
 function CreateProduct() {
-  // Formik setup
+  // Formik initialization with useFormik
   const formik = useFormik({
     initialValues: {
       productName: '',
-      slug: '',
-      store: '',
-      warehouse: '',
-      sku: '',
-      category: '',
-      subcategory: '',
-      subsubcategory: '',
-      warranties: false,           // Checkbox for warranties
-      manufacturers: false,       // Checkbox for manufacturers
-      expiry: false,              // Checkbox for expiry
-      quantity: '',               // Quantity input field
-      price: '',                  // Price input field
-      taxType: '',                // Tax Type dropdown
-      discountType: '',           // Discount Type dropdown
-      discountValue: '',          // Discount Value input field
-      quantityAlert: '',          // Quantity Alert input field
-      productImage: null,         // Product Image file input
-      manufacturedDate: '',       // Manufactured Date input field
-      expiryOn: '',               // Expiry On input field
+      productCode: '',
+      productVendorCode: '',
+      productTechnicalDetails: '',
+      productCreationDate: '',
+      productStatus: false,  
+      isRawMaterial: false,  
+      isSingleBranch: false,  
+      productMinimumQuantity: 0,
+      brandId: '',  
+      categoryId: '', 
+      colorId: '',  
+    
     },
-    onSubmit: values => {
-      console.log(values);  // Log form values when submitted
+    
+    // Updated validationSchema
+    validationSchema: Yup.object({
+      // productName: Yup.string().required('Product name is required'),
+      // productCode: Yup.string().required('Product code is required'),
+      // productVendorCode: Yup.string().required('Vendor code is required'),
+      // productTechnicalDetails: Yup.string().required('Technical details are required'),
+      // productCreationDate: Yup.string().required('Creation date is required'),
+      // productStatus: Yup.boolean().required('Product status is required'),
+      // productMinimumQuantity: Yup.number()
+      //   .min(0, 'Minimum quantity cannot be negative')
+      //   .required('Minimum quantity is required'),
+      // isRawMaterial: Yup.boolean().required('Raw material status is required'),
+      // isSingleBranch: Yup.boolean().required('Branch status is required'), // New validation
+    }),
+    onSubmit: async (values, { resetForm }) => {
+ console.log(values);
+ 
     },
   });
-  
+
+  const [brands, setBrands] = useState([]);  
+  const [categories, setCategories] = useState([]);  
+  const [colors, setColors] = useState([]);
+  const [genders, setGenders] = useState([]);  
+  const [grades, setGrades] = useState([]);  
+  const [sizes, setSizes] = useState([]);  
+  const [subCategories, setSubCategories] = useState([]);
+  const [productTypes, setProductTypes] = useState([]); 
+
+  useEffect(() => {
+    const fetchBrands = async () => {
+      try {
+        const response = await ApiCall({
+          url: 'http://localhost:5022/api/v1/ProductBrand/GetProductBrandBoxItems/combobox?organizationId=1&companyId=1',
+          method: 'GET',
+        });
+        setBrands(response.data);  
+      } catch (error) {
+        console.error('Error fetching brands:', error);
+      }
+    };
+
+    const fetchCategories = async () => {
+      try {
+        const response = await ApiCall({
+          url: 'http://localhost:5022/api/v1/ProductCategory/GetProductCategoryBoxItems/combobox?organizationId=1&companyId=1',
+          method: 'GET',
+        });
+        setCategories(response.data);  
+      } catch (error) {
+        console.error('Error fetching categories:', error);
+      }
+    };
 
 
+    const fetchColors = async () => {
+      try {
+        const response = await ApiCall({
+          url: 'http://localhost:5022/api/v1/ProductColor/GetProductColorBoxItems/combobox?organizationId=1&companyId=1',
+          method: 'GET',
+        });
+        setColors(response.data);  
+      } catch (error) {
+        console.error('Error fetching colors:', error);
+      }
+    };
 
-  const [imagePreview, setImagePreview] = useState(null);
+    
+    const fetchGenders = async () => {
+      try {
+        const response = await ApiCall({
+          url: 'http://localhost:5022/api/v1/ProductGander/GetProductGanderBoxItems/combobox?organizationId=1&companyId=1',
+          method: 'GET',
+        });
+        setGenders(response.data);  
+      } catch (error) {
+        console.error('Error fetching genders:', error);
+      }
+    };
 
-  const handleImageChange = (event) => {
-    const file = event.target.files[0];
-    if (file) {
-      // Update Formik's state with the selected image
-      formik.setFieldValue('productImage', file);
-  
-      // Set the preview image
-      setImagePreview(URL.createObjectURL(file));
-    }
-  };
-  
+    const fetchGrades = async () => {
+      try {
+        const response = await ApiCall({
+          url: 'http://localhost:5022/api/v1/ProductGrade/GetProductGradeBoxItems/combobox?organizationId=1&companyId=1',
+          method: 'GET',
+        });
+        setGrades(response.data); 
+      } catch (error) {
+        console.error('Error fetching grades:', error);
+      }
+    };
+
+    const fetchSizes = async () => {
+      try {
+        const response = await ApiCall({
+          url: 'http://localhost:5022/api/v1/ProductSize/GetProductSizeBoxItems/combobox?organizationId=1&companyId=1',
+          method: 'GET',
+        });
+        setSizes(response.data);  
+      } catch (error) {
+        console.error('Error fetching sizes:', error);
+      }
+    };
+
+    const fetchSubCategories = async () => {
+      try {
+        const response = await ApiCall({
+          url: 'http://localhost:5022/api/v1/ProductSubCategory/GetProductSubCategoryBoxItems/combobox?organizationId=1&companyId=1',
+          method: 'GET',
+        });
+        setSubCategories(response.data); // Assuming the response contains an array of subcategories
+      } catch (error) {
+        console.error('Error fetching subcategories:', error);
+      }
+    };
+    const fetchProductTypes = async () => {
+      try {
+        const response = await ApiCall({
+          url: 'http://localhost:5022/api/v1/ProductType/GetProductTypeBoxItems/combobox?organizationId=1&companyId=1',
+          method: 'GET',
+        });
+        setProductTypes(response.data); // Assuming the response contains an array of product types
+      } catch (error) {
+        console.error('Error fetching product types:', error);
+      }
+    };
+
+
+    fetchProductTypes();
+    fetchSubCategories();
+    fetchBrands();
+    fetchCategories();
+    fetchColors();
+    fetchGenders();
+    fetchGrades();
+    fetchSizes();
+  }, []);
+
+
   return (
     <div style={{ marginTop: 10 }}>
-      <div className='d-flex justify-content-between'>
-        <div>
-          <h4 style={{ color: '#092c4c' }}>Create Product</h4>
-          <h6 style={{ fontWeight: 400, color: '#092c4c' }}>Create Product Details</h6>
-        </div>
-        <Button>Back to Product</Button>
-      </div>
-
-      <div className="p-4 mt-4" style={{ backgroundColor: 'white', borderRadius: 5, border: '1px solid #d9d9d9' }}>
-        <form onSubmit={formik.handleSubmit}>
-          <div className="accordion" id="accordionPanelsStayOpenExample">
-
-            <div className="accordion-item">
-              <h2 className="accordion-header" id="panelsStayOpen-headingOne">
-                <button
-                  className="accordion-button"
-                  type="button"
-                  data-bs-toggle="collapse"
-                  data-bs-target="#panelsStayOpen-collapseOne"
-                  aria-expanded="true"
-                  aria-controls="panelsStayOpen-collapseOne"
-                  style={{ backgroundColor: 'white', fontSize: 17, }}
-                >
-                  Product Information
-                </button>
-              </h2>
-              <div
-                id="panelsStayOpen-collapseOne"
-                className="accordion-collapse collapse show"
-                aria-labelledby="panelsStayOpen-headingOne"
-                style={{ backgroundColor: 'white' }}
-              >
-                <div className="accordion-body">
-                  <div className="row">
-                    <div className="col-md-4 mb-3">
-                      <label htmlFor="productName" style={{ fontWeight: '500', fontSize: 16, marginBottom: 4 }}>Product Name</label>
-                      <input
-                        type="text"
-                        id="productName"
-                        name="productName"
-                        className="form-control"
-                        placeholder="Enter product name"
-                        onChange={formik.handleChange}
-                        value={formik.values.productName}
-                        style={{ padding: '.6rem .95rem' }}
-                      />
-                    </div>
-
-                    <div className="col-md-4 mb-3">
-                      <label htmlFor="slug" style={{ fontWeight: '500', fontSize: 16, marginBottom: 4 }}>Slug</label>
-                      <input
-                        type="text"
-                        id="slug"
-                        name="slug"
-                        className="form-control"
-                        placeholder="Enter slug"
-                        onChange={formik.handleChange}
-                        value={formik.values.slug}
-                        style={{ padding: '.6rem .95rem' }}
-                      />
-                    </div>
-
-                    <div className="col-md-4 mb-3">
-                      <label htmlFor="sku" style={{ fontWeight: '500', fontSize: 16, marginBottom: 4 }}>SKU (Stock Keeping Unit)</label>
-                      <input
-                        type="text"
-                        id="sku"
-                        name="sku"
-                        className="form-control"
-                        placeholder="Enter SKU"
-                        onChange={formik.handleChange}
-                        value={formik.values.sku}
-                        style={{ padding: '.6rem .95rem' }}
-                      />
-                    </div>
-
-                    <div className="col-md-4 mb-3">
-                      <label htmlFor="store" style={{ fontWeight: '500', fontSize: 16, marginBottom: 4 }}>Store</label>
-                      <select
-                        id="store"
-                        name="store"
-                        className="form-control"
-                        onChange={formik.handleChange}
-                        value={formik.values.store}
-                        style={{ padding: '.6rem .95rem', color: 'grey' }}
-                      >
-                        <option value="">Select Store</option>
-                        <option value="store1">Store 1</option>
-                        <option value="store2">Store 2</option>
-                        <option value="store3">Store 3</option>
-                      </select>
-                    </div>
-
-
-                    <div className="col-md-4 mb-3">
-                      <label htmlFor="warehouse" style={{ fontWeight: '500', fontSize: 16, marginBottom: 4 }}>Warehouse</label>
-                      <select
-                        id="warehouse"
-                        name="warehouse"
-                        className="form-control"
-                        onChange={formik.handleChange}
-                        value={formik.values.warehouse}
-                        style={{ padding: '.6rem .95rem', color: 'grey' }}
-                      >
-                        <option value="">Select Warehouse</option>
-                        <option value="warehouse1">Warehouse 1</option>
-                        <option value="warehouse2">Warehouse 2</option>
-                        <option value="warehouse3">Warehouse 3</option>
-                      </select>
-                    </div>
-
-                    <div className="row">
-                      <div className="col-md-4 mb-3">
-                        <label htmlFor="category" style={{ fontWeight: '500', fontSize: 16, marginBottom: 4 }}>Category</label>
-                        <select
-                          id="category"
-                          name="category"
-                          className="form-control"
-                          onChange={formik.handleChange}
-                          value={formik.values.category}
-                          style={{ padding: '.6rem .95rem', color: 'grey' }}
-                        >
-                          <option value="">Select Category</option>
-                          <option value="electronics">Electronics</option>
-                          <option value="furniture">Furniture</option>
-                          <option value="clothing">Clothing</option>
-                        </select>
-                      </div>
-
-                      <div className="col-md-4 mb-3">
-                        <label htmlFor="subcategory" style={{ fontWeight: '500', fontSize: 16, marginBottom: 4 }}>Subcategory</label>
-                        <select
-                          id="subcategory"
-                          name="subcategory"
-                          className="form-control"
-                          onChange={formik.handleChange}
-                          value={formik.values.subcategory}
-                          style={{ padding: '.6rem .95rem', color: 'grey' }}
-                        >
-                          <option value="">Select Subcategory</option>
-                          <option value="smartphones">Smartphones</option>
-                          <option value="sofas">Sofas</option>
-                          <option value="t-shirts">T-shirts</option>
-                        </select>
-                      </div>
-
-                      <div className="col-md-4 mb-3">
-                        <label htmlFor="subsubcategory" style={{ fontWeight: '500', fontSize: 16, marginBottom: 4 }}>Subsubcategory</label>
-                        <select
-                          id="subsubcategory"
-                          name="subsubcategory"
-                          className="form-control"
-                          onChange={formik.handleChange}
-                          value={formik.values.subsubcategory}
-                          style={{ padding: '.6rem .95rem', color: 'grey' }}
-                        >
-                          <option value="">Select Subsubcategory</option>
-                          <option value="android">Android</option>
-                          <option value="sectionals">Sectionals</option>
-                          <option value="graphic-tees">Graphic Tees</option>
-                        </select>
-                      </div>
-                    </div>
-
-
-
-                    <div className="row">
-                      {/* Brand Field */}
-                      <div className="col-md-4 mb-3">
-                        <label htmlFor="brand" style={{ fontWeight: '500', fontSize: 16, marginBottom: 4 }}>Brand</label>
-                        <select
-                          id="brand"
-                          name="brand"
-                          className="form-control"
-                          onChange={formik.handleChange}
-                          value={formik.values.brand}
-                          style={{ padding: '.6rem .95rem', color: 'grey' }}
-                        >
-                          <option value="">Select Brand</option>
-                          <option value="brand1">Brand 1</option>
-                          <option value="brand2">Brand 2</option>
-                          <option value="brand3">Brand 3</option>
-                        </select>
-                      </div>
-
-                      {/* Unit Field */}
-                      <div className="col-md-4 mb-3">
-                        <label htmlFor="unit" style={{ fontWeight: '500', fontSize: 16, marginBottom: 4 }}>Unit</label>
-                        <select
-                          id="unit"
-                          name="unit"
-                          className="form-control"
-                          onChange={formik.handleChange}
-                          value={formik.values.unit}
-                          style={{ padding: '.6rem .95rem', color: 'grey' }}
-                        >
-                          <option value="">Select Unit</option>
-                          <option value="kg">Kg</option>
-                          <option value="g">g</option>
-                          <option value="l">L</option>
-                          <option value="m">m</option>
-                        </select>
-                      </div>
-
-                      {/* Selling Type Field */}
-                      <div className="col-md-4 mb-3">
-                        <label htmlFor="sellingType" style={{ fontWeight: '500', fontSize: 16, marginBottom: 4 }}>Selling Type</label>
-                        <select
-                          id="sellingType"
-                          name="sellingType"
-                          className="form-control"
-                          onChange={formik.handleChange}
-                          value={formik.values.sellingType}
-                          style={{ padding: '.6rem .95rem', color: 'grey' }}
-                        >
-                          <option value="">Select Selling Type</option>
-                          <option value="wholesale">Wholesale</option>
-                          <option value="retail">Retail</option>
-                          <option value="both">Both</option>
-                        </select>
-                      </div>
-                    </div>
-
-                    <div className="row">
-                      {/* Barcode Symbology Field */}
-                      <div className="col-md-6 mb-3">
-                        <label htmlFor="barcodeSymbology" style={{ fontWeight: '500', fontSize: 16, marginBottom: 4 }}>Barcode Symbology</label>
-                        <select
-                          id="barcodeSymbology"
-                          name="barcodeSymbology"
-                          className="form-control"
-                          onChange={formik.handleChange}
-                          value={formik.values.barcodeSymbology}
-                          style={{ padding: '.6rem .95rem', color: 'grey' }}
-                        >
-                          <option value="">Select Barcode Symbology</option>
-                          <option value="ean13">EAN-13</option>
-                          <option value="upca">UPC-A</option>
-                          <option value="code128">Code 128</option>
-                          <option value="qr">QR Code</option>
-                        </select>
-                      </div>
-
-                      {/* Item Code Field */}
-                      <div className="col-md-6 mb-3">
-                        <label htmlFor="itemCode" style={{ fontWeight: '500', fontSize: 16, marginBottom: 4 }}>Item Code</label>
-                        <input
-                          type="text"
-                          id="itemCode"
-                          name="itemCode"
-                          className="form-control"
-                          placeholder="Enter Item Code"
-                          onChange={formik.handleChange}
-                          value={formik.values.itemCode}
-                          style={{ padding: '.6rem .95rem' }}
-                        />
-                      </div>
-                    </div>
-                    <div className="row">
-                      {/* Description Field */}
-                      <div className="col-md-12 mb-3">
-                        <label htmlFor="description" style={{ fontWeight: '500', fontSize: 16, marginBottom: 4 }}>Description</label>
-                        <textarea
-                          id="description"
-                          name="description"
-                          className="form-control"
-                          placeholder="Enter product description"
-                          onChange={formik.handleChange}
-                          value={formik.values.description}
-                          style={{ padding: '.6rem .95rem', height: '100px' }}
-                        />
-                      </div>
-                    </div>
-
-
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            
-            <div className="accordion-item">
-              <h2 className="accordion-header" id="panelsStayOpen-headingTwo">
-                <button
-                  className="accordion-button collapsed"
-                  type="button"
-                  data-bs-toggle="collapse"
-                  data-bs-target="#panelsStayOpen-collapseTwo"
-                  aria-expanded="false"
-                  aria-controls="panelsStayOpen-collapseTwo"
-                  style={{ backgroundColor: 'white', fontSize: 17 }}
-                >
-                  Pricing & Stock
-                </button>
-              </h2>
-              <div
-                id="panelsStayOpen-collapseTwo"
-                className="accordion-collapse collapse"
-                aria-labelledby="panelsStayOpen-headingTwo"
-                style={{ backgroundColor: 'white' }}
-              >
-                <div className="accordion-body">
-                  <div className="row">
-                    {/* Quantity Field */}
-                    <div className="col-md-4 mb-3">
-                      <label htmlFor="quantity" style={{ fontWeight: '500', fontSize: 16, marginBottom: 4 }}>Quantity</label>
-                      <input
-                        type="number"
-                        id="quantity"
-                        name="quantity"
-                        className="form-control"
-                        placeholder="Enter quantity"
-                        onChange={formik.handleChange}
-                        value={formik.values.quantity}
-                        style={{ padding: '.6rem .95rem' }}
-                      />
-                    </div>
-
-                    {/* Price Field */}
-                    <div className="col-md-4 mb-3">
-                      <label htmlFor="price" style={{ fontWeight: '500', fontSize: 16, marginBottom: 4 }}>Price</label>
-                      <input
-                        type="number"
-                        id="price"
-                        name="price"
-                        className="form-control"
-                        placeholder="Enter price"
-                        onChange={formik.handleChange}
-                        value={formik.values.price}
-                        style={{ padding: '.6rem .95rem' }}
-                      />
-                    </div>
-
-
-                    <div className="col-md-4 mb-3">
-                      <label htmlFor="taxType" style={{ fontWeight: '500', fontSize: 16, marginBottom: 4 }}>Tax Type</label>
-                      <select
-                        id="taxType"
-                        name="taxType"
-                        className="form-control"
-                        onChange={formik.handleChange}
-                        value={formik.values.taxType}
-                        style={{ padding: '.6rem .95rem', color: 'grey' }}
-                      >
-                        <option value="">Select Tax Type</option>
-                        <option value="GST">GST</option>
-                        <option value="VAT">VAT</option>
-                        <option value="SalesTax">Sales Tax</option>
-                      </select>
-                    </div>
-                  </div>
-
-                  <div className="row mt-3">
-                    {/* Discount Type Field */}
-                    <div className="col-md-4 mb-3">
-                      <label htmlFor="discountType" style={{ fontWeight: '500', fontSize: 16, marginBottom: 4 }}>Discount Type</label>
-                      <select
-                        id="discountType"
-                        name="discountType"
-                        className="form-control"
-                        onChange={formik.handleChange}
-                        value={formik.values.discountType}
-                        style={{ padding: '.6rem .95rem', color: 'grey' }}
-                      >
-                        <option value="">Select Discount Type</option>
-                        <option value="percentage">Percentage</option>
-                        <option value="fixed">Fixed Amount</option>
-                      </select>
-                    </div>
-
-
-                    <div className="col-md-4 mb-3">
-                      <label htmlFor="discountValue" style={{ fontWeight: '500', fontSize: 16, marginBottom: 4 }}>Discount Value</label>
-                      <input
-                        type="number"
-                        id="discountValue"
-                        name="discountValue"
-                        className="form-control"
-                        placeholder="Enter discount value"
-                        onChange={formik.handleChange}
-                        value={formik.values.discountValue}
-                        style={{ padding: '.6rem .95rem' }}
-                      />
-                    </div>
-
-                    {/* Quantity Alert Field */}
-                    <div className="col-md-4 mb-3">
-                      <label htmlFor="quantityAlert" style={{ fontWeight: '500', fontSize: 16, marginBottom: 4 }}>Quantity Alert</label>
-                      <input
-                        type="number"
-                        id="quantityAlert"
-                        name="quantityAlert"
-                        className="form-control"
-                        placeholder="Enter quantity alert level"
-                        onChange={formik.handleChange}
-                        value={formik.values.quantityAlert}
-                        style={{ padding: '.6rem .95rem' }}
-                      />
-                    </div>
-                  </div>
-
-                  <div className="row mt-3">
- 
-  <div className="col-md-4 mb-3">
-    <label htmlFor="productImage" style={{ fontWeight: '500', fontSize: 16, marginBottom: 4 }}>Product Image</label>
-
-    <input
-      type="file"
-      id="productImage"
-      name="productImage"
-      className="form-control"
-      onChange={handleImageChange}
-      style={{ padding: '.6rem .95rem' }}
-    />
-
-    {/* Image Preview */}
-    {imagePreview ? (
-      <div className="mt-2">
-        <img
-          src={imagePreview}
-          alt="Preview"
-          style={{ maxWidth: '20%', height: 'auto', borderRadius: '8px' }}
-        />
-      </div>
-    ) : (
-      <div className="mt-2" style={{ color: 'gray' }}>
-        <small>Choose an image file (JPG, PNG, etc.)</small>
-      </div>
-    )}
-  </div>
-</div>
-
-
-
-                </div>
-              </div>
-            </div>
-
-
-
-            <div className="accordion-item">
-  <h2 className="accordion-header" id="panelsStayOpen-headingThree">
-    <button
-      className="accordion-button collapsed"
-      type="button"
-      data-bs-toggle="collapse"
-      data-bs-target="#panelsStayOpen-collapseThree"
-      aria-expanded="false"
-      aria-controls="panelsStayOpen-collapseThree"
-      style={{ backgroundColor: 'white', fontSize: 17 }}
-    >
-      Custom Fields
-    </button>
-  </h2>
-  <div
-    id="panelsStayOpen-collapseThree"
-    className="accordion-collapse collapse"
-    aria-labelledby="panelsStayOpen-headingThree"
-    style={{ backgroundColor: 'white' }}
-  >
-    <div className="accordion-body">
-      {/* Checkbox Fields */}
-      <div className="row  mt-4">
-        <div className="col-md-4">
-          <input
-            type="checkbox"
-            id="warranties"
-            name="warranties"
-            onChange={(e) => formik.setFieldValue('warranties', e.target.checked)}  // Custom onChange
-            checked={formik.values.warranties}  // Bind to Formik state
-            style={{ marginRight: 6 }}
-          />
-          <label htmlFor="warranties" style={{ fontWeight: '500', fontSize: 16 }}>
-            Warranties
-          </label>
-        </div>
-
-        <div className="col-md-4">
-          <input
-            type="checkbox"
-            id="manufacturers"
-            name="manufacturers"
-            onChange={(e) => formik.setFieldValue('manufacturers', e.target.checked)}  // Custom onChange
-            checked={formik.values.manufacturers}  // Bind to Formik state
-            style={{ marginRight: 6 }}
-          />
-          <label htmlFor="manufacturers" style={{ fontWeight: '500', fontSize: 16 }}>
-            Manufacturers
-          </label>
-        </div>
-
-        <div className="col-md-4" >
-          <input
-            type="checkbox"
-            id="expiry"
-            name="expiry"
-            onChange={(e) => formik.setFieldValue('expiry', e.target.checked)}  // Custom onChange
-            checked={formik.values.expiry}  // Bind to Formik state
-            style={{ marginRight: 6 }}
-          />
-          <label htmlFor="expiry" style={{ fontWeight: '500', fontSize: 16 }}>
-            Expiry
-          </label>
-        </div>
-        <div className="row mt-3">
-        <div className="col-md-4">
-          <label htmlFor="discountType" style={{ fontWeight: '500', fontSize: 16 }}>
-            Discount Type
-          </label>
-          <select
-            id="discountType"
-            name="discountType"
-            className="form-control"
-            onChange={formik.handleChange}
-            value={formik.values.discountType}
-            style={{ padding: '.6rem .95rem' }}
-          >
-            <option value="">Select Discount Type</option>
-            <option value="percentage">Percentage</option>
-            <option value="fixed">Fixed Amount</option>
-          </select>
+      <div className='d-flex justify-content-between row'>
+        <div className='d-flex flex-column col-sm-7'>
+          <h3>Create Product</h3>
+          <h5 style={{ fontWeight: 400 }}>Manage your product creation</h5>
         </div>
       </div>
-    </div>
 
-    <div className="row mt-4">
       
-        <div className="col-md-4 mb-3">
-          <label htmlFor="quantityAlert" style={{ fontWeight: '500', fontSize: 16 }}>
-            Quantity Alert
-          </label>
-          <input
-            type="number"
-            id="quantityAlert"
-            name="quantityAlert"
-            className="form-control"
-            placeholder="Enter quantity alert"
-            onChange={formik.handleChange}
-            value={formik.values.quantityAlert}
-            style={{ padding: '.6rem .95rem' }}
-          />
-        </div>
-
-        {/* Manufactured Date Field */}
-        <div className="col-md-4 mb-3">
-          <label htmlFor="manufacturedDate" style={{ fontWeight: '500', fontSize: 16 }}>
-            Manufactured Date
-          </label>
-          <input
-            type="date"
-            id="manufacturedDate"
-            name="manufacturedDate"
-            className="form-control"
-            onChange={formik.handleChange}
-            value={formik.values.manufacturedDate}
-            style={{ padding: '.6rem .95rem' }}
-          />
-        </div>
-
-        {/* Expiry On Field */}
-        <div className="col-md-4 mb-3">
-          <label htmlFor="expiryOn" style={{ fontWeight: '500', fontSize: 16 }}>
-            Expiry On
-          </label>
-          <input
-            type="date"
-            id="expiryOn"
-            name="expiryOn"
-            className="form-control"
-            onChange={formik.handleChange}
-            value={formik.values.expiryOn}
-            style={{ padding: '.6rem .95rem' }}
-          />
-        </div>
-      </div>
-   
+      <div style={{backgroundColor:'white', padding:10 ,border:"1px solid #d6d4d4"}}>
+      <form onSubmit={formik.handleSubmit}>
+ 
+  <div className='form-group mt-3'>
+    <label>Product Name</label>
+    <input
+      type='text'
+      name='productName'
+      className='form-control'
+      value={formik.values.productName}
+      onChange={formik.handleChange}
+      onBlur={formik.handleBlur}
+    />
+    {formik.touched.productName && formik.errors.productName ? (
+      <div className='text-danger'>{formik.errors.productName}</div>
+    ) : null}
   </div>
+
+  <div className='form-group mt-3'>
+    <label>Product Code</label>
+    <input
+      type='text'
+      name='productCode'
+      className='form-control'
+      value={formik.values.productCode}
+      onChange={formik.handleChange}
+      onBlur={formik.handleBlur}
+    />
+    {formik.touched.productCode && formik.errors.productCode ? (
+      <div className='text-danger'>{formik.errors.productCode}</div>
+    ) : null}
+  </div>
+
+  <div className='form-group mt-3'>
+    <label>Vendor Code</label>
+    <input
+      type='text'
+      name='productVendorCode'
+      className='form-control'
+      value={formik.values.productVendorCode}
+      onChange={formik.handleChange}
+      onBlur={formik.handleBlur}
+    />
+    {formik.touched.productVendorCode && formik.errors.productVendorCode ? (
+      <div className='text-danger'>{formik.errors.productVendorCode}</div>
+    ) : null}
+  </div>
+
+  {/* New fields */}
+  <div className='form-group mt-3'>
+    <label>Technical Details</label>
+    <input
+      type='text'
+      name='productTechnicalDetails'
+      className='form-control'
+      value={formik.values.productTechnicalDetails}
+      onChange={formik.handleChange}
+      onBlur={formik.handleBlur}
+    />
+    {formik.touched.productTechnicalDetails && formik.errors.productTechnicalDetails ? (
+      <div className='text-danger'>{formik.errors.productTechnicalDetails}</div>
+    ) : null}
+  </div>
+
+  <div className='form-group mt-3'>
+    <label>Creation Date</label>
+    <input
+      type='date'
+      name='productCreationDate'
+      className='form-control'
+      value={formik.values.productCreationDate}
+      onChange={formik.handleChange}
+      onBlur={formik.handleBlur}
+    />
+    {formik.touched.productCreationDate && formik.errors.productCreationDate ? (
+      <div className='text-danger'>{formik.errors.productCreationDate}</div>
+    ) : null}
+  </div>
+  <div className='form-group form-check mt-3
+  '>
+    <input
+      type='checkbox'
+      name='productStatus'
+      className='form-check-input'
+      checked={formik.values.productStatus}
+      onChange={formik.handleChange}
+      onBlur={formik.handleBlur}
+    />
+    <label className='form-check-label'>Product Status (Active)</label>
+  </div>
+
   
-</div>
+  <div className='form-group form-check mt-3'>
+    <input
+      type='checkbox'
+      name='isRawMaterial'
+      className='form-check-input'
+      checked={formik.values.isRawMaterial}
+      onChange={formik.handleChange}
+      onBlur={formik.handleBlur}
+    />
+    <label className='form-check-label'>Is Raw Material?</label>
+  </div>
+
+ 
+  <div className='form-group mt-3'>
+    <label>Minimum Quantity</label>
+    <input
+      type='number'
+      name='productMinimumQuantity'
+      className='form-control'
+      value={formik.values.productMinimumQuantity}
+      onChange={formik.handleChange}
+      onBlur={formik.handleBlur}
+    />
+    {formik.touched.productMinimumQuantity && formik.errors.productMinimumQuantity ? (
+      <div className='text-danger'>{formik.errors.productMinimumQuantity}</div>
+    ) : null}
+  </div>
+  <div className='form-group form-check  mt-3'>
+    <input
+      type='checkbox'
+      name='isSingleBranch'
+      className='form-check-input'
+      checked={formik.values.isSingleBranch}
+      onChange={formik.handleChange}
+      onBlur={formik.handleBlur}
+    />
+    <label className='form-check-label'>Single Branch?</label>
+    {formik.touched.isSingleBranch && formik.errors.isSingleBranch ? (
+      <div className='text-danger'>{formik.errors.isSingleBranch}</div>
+    ) : null}
+  </div>
+  <div className='form-group mt-3'>
+          <label>Brand</label>
+          <select
+            name='brandId'
+            className='form-control'
+            value={formik.values.brandId}
+            onChange={(e) => formik.setFieldValue('brandId', Number(e.target.value))} // Ensure it's a number
+            onBlur={formik.handleBlur}
+          >
+            <option value=''>Select Brand</option>
+            {brands.map((brand) => (
+              <option key={brand.id} value={brand.id}>
+                {brand.name} {/* Display name */}
+              </option>
+            ))}
+          </select>
+          {formik.touched.brandId && formik.errors.brandId ? (
+            <div className='text-danger'>{formik.errors.brandId}</div>
+          ) : null}
+        </div>
+
+        {/* Product Category Select Field */}
+        <div className='form-group mt-3'>
+          <label>Category</label>
+          <select
+            name='categoryId'
+            className='form-control'
+            value={formik.values.categoryId}
+            onChange={(e) => formik.setFieldValue('categoryId', Number(e.target.value))} // Ensure it's a number
+            onBlur={formik.handleBlur}
+          >
+            <option value=''>Select Category</option>
+            {categories.map((category) => (
+              <option key={category.id} value={category.id}>
+                {category.name} {/* Display category name */}
+              </option>
+            ))}
+          </select>
+          {formik.touched.categoryId && formik.errors.categoryId ? (
+            <div className='text-danger'>{formik.errors.categoryId}</div>
+          ) : null}
+        </div>
+
+        <div className='form-group mt-3'>
+          <label>Color</label>
+          <select
+            name='colorId'
+            className='form-control'
+            value={formik.values.colorId}
+            onChange={(e) => formik.setFieldValue('colorId', Number(e.target.value))} // Ensure it's a number
+            onBlur={formik.handleBlur}
+          >
+            <option value=''>Select Color</option>
+            {colors.map((color) => (
+              <option key={color.id} value={color.id}>
+                {color.name} {/* Display color name */}
+              </option>
+            ))}
+          </select>
+          {formik.touched.colorId && formik.errors.colorId ? (
+            <div className='text-danger'>{formik.errors.colorId}</div>
+          ) : null}
+        </div>
+
+        <div className='form-group mt-3'>
+          <label>Gender</label>
+          <select
+            name='genderId'
+            className='form-control'
+            value={formik.values.genderId}
+            onChange={(e) => formik.setFieldValue('genderId', Number(e.target.value))} // Ensure it's a number
+            onBlur={formik.handleBlur}
+          >
+            <option value=''>Select Gender</option>
+            {genders.map((gender) => (
+              <option key={gender.id} value={gender.id}>
+                {gender.name} {/* Display gender name */}
+              </option>
+            ))}
+          </select>
+          {formik.touched.genderId && formik.errors.genderId ? (
+            <div className='text-danger'>{formik.errors.genderId}</div>
+          ) : null}
+        </div>
+
+        {/* Product Grade Select Field */}
+        <div className='form-group mt-3'>
+          <label>Grade</label>
+          <select
+            name='gradeId'
+            className='form-control'
+            value={formik.values.gradeId}
+            onChange={(e) => formik.setFieldValue('gradeId', Number(e.target.value))} // Ensure it's a number
+            onBlur={formik.handleBlur}
+          >
+            <option value=''>Select Grade</option>
+            {grades.map((grade) => (
+              <option key={grade.id} value={grade.id}>
+                {grade.name} {/* Display grade name */}
+              </option>
+            ))}
+          </select>
+          {formik.touched.gradeId && formik.errors.gradeId ? (
+            <div className='text-danger'>{formik.errors.gradeId}</div>
+          ) : null}
+        </div>
+
+        {/* Product Size Select Field */}
+        <div className='form-group mt-3'>
+          <label>Size</label>
+          <select
+            name='sizeId'
+            className='form-control'
+            value={formik.values.sizeId}
+            onChange={(e) => formik.setFieldValue('sizeId', Number(e.target.value))} // Ensure it's a number
+            onBlur={formik.handleBlur}
+          >
+            <option value=''>Select Size</option>
+            {sizes.map((size) => (
+              <option key={size.id} value={size.id}>
+                {size.name} {/* Display size name */}
+              </option>
+            ))}
+          </select>
+          {formik.touched.sizeId && formik.errors.sizeId ? (
+            <div className='text-danger'>{formik.errors.sizeId}</div>
+          ) : null}
+        </div>
+
+        <div className='form-group mt-3'>
+          <label>SubCategory</label>
+          <select
+            name='subCategoryId'
+            className='form-control'
+            value={formik.values.subCategoryId}
+            onChange={(e) => formik.setFieldValue('subCategoryId', Number(e.target.value))} // Ensure it's a number
+            onBlur={formik.handleBlur}
+          >
+            <option value=''>Select SubCategory</option>
+            {subCategories.map((subCategory) => (
+              <option key={subCategory.id} value={subCategory.id}>
+                {subCategory.name} {/* Display subcategory name */}
+              </option>
+            ))}
+          </select>
+          {formik.touched.subCategoryId && formik.errors.subCategoryId ? (
+            <div className='text-danger'>{formik.errors.subCategoryId}</div>
+          ) : null}
+        </div>
+
+        <div className='form-group mt-3'>
+          <label>Product Type</label>
+          <select
+            name='productTypeId'
+            className='form-control'
+            value={formik.values.productTypeId}
+            onChange={(e) => formik.setFieldValue('productTypeId', Number(e.target.value))} // Ensure it's a number
+            onBlur={formik.handleBlur}
+          >
+            <option value=''>Select Product Type</option>
+            {productTypes.map((productType) => (
+              <option key={productType.id} value={productType.id}>
+                {productType.name}  
+              </option>
+            ))}
+          </select>
+          {formik.touched.productTypeId && formik.errors.productTypeId ? (
+            <div className='text-danger'>{formik.errors.productTypeId}</div>
+          ) : null}
+        </div>
 
 
+  <button type='submit' className='btn btn-primary mt-3'>Create Product</button>
+</form>
 
-</div>
 
-            {/* Submit Button */}
-            <div className="d-flex justify-content-end mt-4">
-              <button
-                type="submit"
-                className="btn"
-                style={{
-                  backgroundColor: '#ff9f43',
-                  color: 'white',
-                  padding: '10px 20px',
-                  borderRadius: '8px',
-                  border: 'none'
-                }}
-              >
-                Submit
-              </button>
-            </div>
-          </div>
-        </form>
       </div>
+
+      <Footer />
     </div>
   );
 }

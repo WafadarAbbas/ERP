@@ -13,6 +13,10 @@ const Invetory = [
     },
     { path: '/ProductBrand', icon: 'fa-solid fa-globe', title: 'Product Brand',
     },
+    { path: '/VariantDetail', icon: 'fa-solid fa-globe', title: 'Variant Detail',
+    },
+    { path: '/ProductVariantMain', icon: 'fa-solid fa-globe', title: 'Product Variant',
+    },
 
   
   ]
