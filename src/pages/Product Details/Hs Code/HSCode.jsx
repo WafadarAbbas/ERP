@@ -1,6 +1,6 @@
 
 import React, { useRef, useState, useEffect } from 'react';
-import { FaFilter, FaEdit, FaTrash, FaArrowUp, FaArrowDown } from 'react-icons/fa';
+import { FaFilter, FaEdit, FaTrash, FaArrowUp, FaArrowDown,FaSync } from 'react-icons/fa';
 import Buton from '../../../Compo/Buton';
 import CreateHSCode from './CreateHSCode';
 import ApiCall from '../../../Apicall/ApiCall';
@@ -54,6 +54,10 @@ function HSCode() {
     setSortOrder(newSortOrder);
   };
 
+  const handleRefresh = () => {
+    window.location.reload(); 
+   
+  };
   const handleDelete = async (HSCodeId) => {
     const result = await Swal.fire({
       title: 'Are you sure?',
@@ -139,9 +143,14 @@ function HSCode() {
             value={searchQuery}
             onChange={handleSearch}
           />
+         <div className="d-flex justify-content-between align-items-center ">
+            <button  onClick={handleRefresh} className="btn me-2" style={{ backgroundColor: '#ff9f43', color: 'white', padding: '8px 10px', borderRadius: '8px', border: 'none', display: 'flex', alignItems: 'center' }}>
+            <FaSync  size={16} />
+          </button>
           <button className="btn" style={{ backgroundColor: '#ff9f43', color: 'white', padding: '8px 10px', borderRadius: '8px', border: 'none', display: 'flex', alignItems: 'center' }}>
             <FaFilter size={16} />
           </button>
+          </div>
         </div>
         <hr />
 

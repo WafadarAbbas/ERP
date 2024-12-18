@@ -7,7 +7,7 @@ import ApiCall from "../../../Apicall/ApiCall";
 const EditProductBrand = (props) => {
   const { selectedProductBrandId } = props;
   
-  // Initialize form state
+   
   const [productBrandData, setProductBrandData] = useState(null);
 
   // Form validation schema (add fields as necessary)
@@ -18,10 +18,10 @@ const EditProductBrand = (props) => {
   // Formik setup
   const formik = useFormik({
     initialValues: {
-      productBrandName: "", // Set empty or default values
+      productBrandName: "",  
     },
     validationSchema: validationSchema,
-    enableReinitialize: true, // Enable reinitialization to set initial values from API response
+    enableReinitialize: true,  
     onSubmit: async (values) => {
       const formData = {
         ...values,
@@ -37,7 +37,7 @@ const EditProductBrand = (props) => {
           data: formData,
         });
 
-        if (response?.status === 200|| response?.status === 204) {
+        if (response?.status === 200 ) {
           Swal.fire({
             title: 'Success!',
             text: 'Product Brand saved successfully.',
@@ -45,9 +45,12 @@ const EditProductBrand = (props) => {
             confirmButtonColor: '#3085d6',
             confirmButtonText: 'OK',
           });
-          formik.resetForm();  // Reset form after successful submission
+          formik.resetForm();  
           if (typeof props.onclick === "function") {
-            props.onclick(); // Trigger any additional actions if needed
+            props.onclick(); 
+          }
+          if (props.close && props.close.current) {
+            props.close.current.click();
           }
         } else {
           throw new Error('Failed to save the Product Brand');
@@ -65,7 +68,7 @@ const EditProductBrand = (props) => {
     },
   });
 
-  // Fetch product brand data based on selectedProductBrandId
+  
   useEffect(() => {
     const fetchProductBrand = async () => {
       if (selectedProductBrandId) {
@@ -78,7 +81,7 @@ const EditProductBrand = (props) => {
             const productBrand = data[0]; // Assuming data is an array with the brand
             setProductBrandData(productBrand);
 
-            // Set formik values after fetching the product brand
+             
             formik.setValues({
               productBrandName: productBrand.productBrandName || "",
             });
@@ -90,9 +93,9 @@ const EditProductBrand = (props) => {
     };
 
     fetchProductBrand();
-  }, [selectedProductBrandId, formik]);
+  }, [selectedProductBrandId ]);
 
-  // Close modal handler
+   
   const handleModalClose = () => {
     formik.resetForm();
     if (typeof props.close === "function") {

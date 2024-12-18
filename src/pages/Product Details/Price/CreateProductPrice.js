@@ -1,39 +1,45 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import Swal from "sweetalert2";
 import ApiCall from "../../../Apicall/ApiCall";
 
+
 const CreateProductPrice = (props) => {
+
+  const [productVariantMains, setProductVariantMains] = useState([]);
+
+  const fetchProductVariantMains = async () => {
+    try {
+      const response = await ApiCall({
+        url: "http://localhost:5022/api/v1/ProductVariantMain/GetProductVariantMainBoxItems/combobox?organizationId=1&companyId=1",
+        method: "GET",
+      });
+      setProductVariantMains(response.data);  
+    } catch (error) {
+      console.error("Error fetching product variant mains:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchProductVariantMains();
+  }, []);
+
   const validationSchema = Yup.object({
-    storeId: Yup.number()
-      .required("Store ID is required")
-      .min(1, "Store ID must be greater than 0"),
-    PriceQuantity: Yup.number()
-      .required("Price Quantity is required")
-      .min(1, "Price Quantity must be greater than 0"),
-    productRate: Yup.number()
-      .required("Product Rate is required")
-      .min(0, "Product Rate cannot be negative"),
-      productAmount: Yup.number()
-  .required("Product Amount is required")
-  .min(0, "Product Amount cannot be negative"),
-productVariantMainId: Yup.number()
-  .required("Product Variant Main ID is required")
-  .min(1, "Product Variant Main ID must be greater than 0"),
-  productBatchId: Yup.number()
-  .required("Product Batch ID is required")
-  .min(1, "Product Batch ID must be greater than 0"),
+    startDate: Yup.date().required("Start date is required"),
+    endDate: Yup.date().required("End date is required").min(
+      Yup.ref("startDate"),
+      "End date cannot be earlier than start date"
+    ),
   });
 
   const formik = useFormik({
     initialValues: {
-      storeId: null,
-      PriceQuantity: null,
-      productRate: null,
-      productAmount: null,
-      productVariantMainId: null,
-      productBatchId: null, // New field
+      startDate: "", // Initialize with empty string or current date
+      endDate: "", // Initialize with empty string or current date
+      price: 0, // Initialize price
+      isCurrentPrice: false, // Default value for isCurrentPrice
+      productVariantMainId:0
     },
     validationSchema: validationSchema,
     onSubmit: async (values) => {
@@ -41,46 +47,47 @@ productVariantMainId: Yup.number()
         ...values,
         organizationId: 1,
         companyId: 1,
+        branchId:1,
       };
-      console.log(formData);
+          
 
-      // try {
-      //   const response = await ApiCall({
-      //     url: "http://localhost:5022/api/v1/ProductPrice/SaveProductPrice",
-      //     method: "POST",
-      //     data: formData,
-      //   });
+      try {
+        const response = await ApiCall({
+          url: "http://localhost:5022/api/v1/ProductPrice/SaveProductPrice",
+          method: "POST",
+          data: formData,
+        });
 
-      //   if (response?.status === 200) {
-      //     Swal.fire({
-      //       title: "Success!",
-      //       text: "Product Price saved successfully.",
-      //       icon: "success",
-      //       confirmButtonColor: "#3085d6",
-      //       confirmButtonText: "OK",
-      //     });
+        if (response?.status === 200) {
+          Swal.fire({
+            title: "Success!",
+            text: "Product Price saved successfully.",
+            icon: "success",
+            confirmButtonColor: "#3085d6",
+            confirmButtonText: "OK",
+          });
     
 
-      //     formik.resetForm();
-      //     if (props.close && props.close.current) {
-      //       props.close.current.click();  
-      //     }
-      //     if (typeof props.onclick === "function" ) {
-      //       props.onclick();
-      //     }
-      //   } else {
-      //     throw new Error("Failed to save the product Price");
-      //   }
-      // } catch (error) {
-      //   console.error("Error during product Price save:", error);
-      //   Swal.fire({
-      //     title: "Error",
-      //     text: error.message || "An error occurred while saving the product Price",
-      //     icon: "error",
-      //     confirmButtonColor: "#d33",
-      //     confirmButtonText: "Close",
-      //   });
-      // }
+          formik.resetForm();
+          if (props.close && props.close.current) {
+            props.close.current.click();  
+          }
+          if (typeof props.onclick === "function" ) {
+            props.onclick();
+          }
+        } else {
+          throw new Error("Failed to save the product Price");
+        }
+      } catch (error) {
+        console.error("Error during product Price save:", error);
+        Swal.fire({
+          title: "Error",
+          text: error.message || "An error occurred while saving the product Price",
+          icon: "error",
+          confirmButtonColor: "#d33",
+          confirmButtonText: "Close",
+        });
+      }
     },
   });
 
@@ -130,115 +137,116 @@ productVariantMainId: Yup.number()
 
             <div className="modal-body">
               <form onSubmit={formik.handleSubmit}>
-                {/* Store ID field */}
-                <div className="mb-3">
-                  <label htmlFor="storeId" className="form-label">
-                    Store ID
+              <div className="mb-3">
+                  <label htmlFor="startDate" className="form-label">
+                    Start Date
                   </label>
                   <input
-                    type="number"
-                    className={`form-control ${formik.touched.storeId && formik.errors.storeId ? "is-invalid" : ""}`}
-                    id="storeId"
-                    name="storeId"
-                    value={formik.values.storeId}
+                    type="datetime-local"
+                    className="form-control"
+                    id="startDate"
+                    name="startDate"
+                    value={formik.values.startDate}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
+                    required
                   />
-                  {formik.touched.storeId && formik.errors.storeId && (
-                    <div className="invalid-feedback">{formik.errors.storeId}</div>
+                  {formik.touched.startDate && formik.errors.startDate && (
+                    <div className="text-danger">{formik.errors.startDate}</div>
                   )}
                 </div>
 
                 <div className="mb-3">
-                  <label htmlFor="PriceQuantity" className="form-label">
-                    Price Quantity
+                  <label htmlFor="endDate" className="form-label">
+                    End Date
                   </label>
                   <input
-                    type="number"
-                    className={`form-control ${formik.touched.PriceQuantity && formik.errors.PriceQuantity ? "is-invalid" : ""}`}
-                    id="PriceQuantity"
-                    name="PriceQuantity"
-                    value={formik.values.PriceQuantity}
+                    type="datetime-local"
+                    className="form-control"
+                    id="endDate"
+                    name="endDate"
+                    value={formik.values.endDate}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
+                    required
                   />
-                  {formik.touched.PriceQuantity && formik.errors.PriceQuantity && (
-                    <div className="invalid-feedback">{formik.errors.PriceQuantity}</div>
+                  {formik.touched.endDate && formik.errors.endDate && (
+                    <div className="text-danger">{formik.errors.endDate}</div>
                   )}
                 </div>
 
-                {/* Product Rate Field */}
                 <div className="mb-3">
-                  <label htmlFor="productRate" className="form-label">
-                    Product Rate
+                  <label htmlFor="price" className="form-label">
+                    Price
                   </label>
                   <input
                     type="number"
-                    className={`form-control ${formik.touched.productRate && formik.errors.productRate ? "is-invalid" : ""}`}
-                    id="productRate"
-                    name="productRate"
-                    value={formik.values.productRate}
+                    className="form-control"
+                    id="price"
+                    name="price"
+                    value={formik.values.price}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
+                    required
                   />
-                  {formik.touched.productRate && formik.errors.productRate && (
-                    <div className="invalid-feedback">{formik.errors.productRate}</div>
+                  {formik.touched.price && formik.errors.price && (
+                    <div className="text-danger">{formik.errors.price}</div>
                   )}
                 </div>
+
                 <div className="mb-3">
-  <label htmlFor="productAmount" className="form-label">
-    Product Amount
-  </label>
-  <input
-    type="number"
-    className={`form-control ${formik.touched.productAmount && formik.errors.productAmount ? "is-invalid" : ""}`}
-    id="productAmount"
-    name="productAmount"
-    value={formik.values.productAmount}
-    onChange={formik.handleChange}
-    onBlur={formik.handleBlur}
-  />
-  {formik.touched.productAmount && formik.errors.productAmount && (
-    <div className="invalid-feedback">{formik.errors.productAmount}</div>
-  )}
-</div>
+                  <label htmlFor="isCurrentPrice" className="form-label">
+                    Is Current Price
+                  </label>
+                  <input
+                    type="checkbox"
+                    className="form-check-input"
+                    id="isCurrentPrice"
+                    name="isCurrentPrice"
+                    checked={formik.values.isCurrentPrice}
+                    onChange={(e) => formik.setFieldValue("isCurrentPrice", e.target.checked)}
+                    onBlur={formik.handleBlur}
+                  />
+                  {formik.touched.isCurrentPrice && formik.errors.isCurrentPrice && (
+                    <div className="text-danger">{formik.errors.isCurrentPrice}</div>
+                  )}
+                </div>
 
-{/* Product Variant Main ID Field */}
-<div className="mb-3">
-  <label htmlFor="productVariantMainId" className="form-label">
-    Product Variant Main ID
-  </label>
-  <input
-    type="number"
-    className={`form-control ${formik.touched.productVariantMainId && formik.errors.productVariantMainId ? "is-invalid" : ""}`}
-    id="productVariantMainId"
-    name="productVariantMainId"
-    value={formik.values.productVariantMainId}
-    onChange={formik.handleChange}
-    onBlur={formik.handleBlur}
-  />
-  {formik.touched.productVariantMainId && formik.errors.productVariantMainId && (
-    <div className="invalid-feedback">{formik.errors.productVariantMainId}</div>
-  )}
-</div>
-<div className="mb-3">
-  <label htmlFor="productBatchId" className="form-label">
-    Product Batch ID
-  </label>
-  <input
-    type="number"
-    className={`form-control ${formik.touched.productBatchId && formik.errors.productBatchId ? "is-invalid" : ""}`}
-    id="productBatchId"
-    name="productBatchId"
-    value={formik.values.productBatchId}
-    onChange={formik.handleChange}
-    onBlur={formik.handleBlur}
-  />
-  {formik.touched.productBatchId && formik.errors.productBatchId && (
-    <div className="invalid-feedback">{formik.errors.productBatchId}</div>
-  )}
-</div>
-
+                <div className="form-group mt-3">
+                  <label>Product Variant Main</label>
+                  <select
+                    name="productVariantMainId"
+                    className="form-control"
+                    value={formik.values.productVariantMainId}
+                    onChange={(e) => {
+                    
+                      formik.setFieldValue(
+                        "productVariantMainId",
+                        Number(e.target.value)
+                      );
+                    }}
+                    onBlur={formik.handleBlur}
+                  >
+                    <option value="">Select Product Variant Main</option>
+                    {Array.isArray(productVariantMains) && productVariantMains.length > 0? (
+                    
+                    productVariantMains.map((variant) => (
+                      <option key={variant.id} value={variant.id}>
+                        {variant.name} {/* Display name */}
+                      </option>
+                    ))
+                    ) : (
+                      <option value="">No Product Variant Main available</option>
+                      )
+                                        }
+                  </select>
+                  {formik.touched.productVariantMainId &&
+                  formik.errors.productVariantMainId ? (
+                    <div className="text-danger">
+                      {formik.errors.productVariantMainId}
+                    </div>
+                  ) : null}
+                </div>
 
                 <div className="d-flex justify-content-between modal-footer mt-3">
                   <button

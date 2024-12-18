@@ -6,6 +6,8 @@ import Swal from "sweetalert2";
 
 const EditCategory = (props) => {
   const { selectedCategoryId } = props;
+  console.log(selectedCategoryId);
+  
   const [initialValues, setInitialValues] = useState({
     productCategoryName: "",
   });
@@ -25,7 +27,7 @@ const EditCategory = (props) => {
         ...values,
         organizationId: 1,
         companyId: 1,
-        branchId: 1,
+     
         id: selectedCategoryId,
       };
 

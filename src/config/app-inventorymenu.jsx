@@ -13,10 +13,19 @@ const Invetory = [
     },
     { path: '/ProductBrand', icon: 'fa-solid fa-globe', title: 'Product Brand',
     },
-    { path: '/VariantDetail', icon: 'fa-solid fa-globe', title: 'Variant Detail',
+    { path: '/VariantDetail', icon: 'fa fa-building-o', title: 'Variant Detail',
     },
     { path: '/ProductVariantMain', icon: 'fa-solid fa-globe', title: 'Product Variant',
     },
+    { path: '/ProductVariantDetails', icon: 'fa-solid fa-globe', title: 'Product Variant Details',
+    },
+    { path: '/Supplier', icon: 'fa fa-cube', title: 'Supplier',
+    },
+    { path: '/SupplierType', icon: 'fa fa-boxes', title: 'Supplier Type',
+    },
+    { path: '/SupplierCategory', icon: 'fa fa-cube', title: 'Supplier Category',
+    },
+    
 
   
   ]

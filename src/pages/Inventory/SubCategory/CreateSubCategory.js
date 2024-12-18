@@ -60,8 +60,12 @@ const CreateSubCategory = (props) => {
             confirmButtonText: "OK",
           });
           formik.resetForm();
+        
           if (typeof props.onclick === "function") {
             props.onclick();
+          }
+          if (props.close && props.close.current) {
+            props.close.current.click(); // Close the modal by triggering the close button
           }
         } else {
           throw new Error("Failed to save the SubCategory");

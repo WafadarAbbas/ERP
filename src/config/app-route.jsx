@@ -17,7 +17,6 @@ import ManageStocks from '../pages/Stocks/ManageStocks.jsx';
 import Invoice from '../pages/Sales/invoice/invoice.jsx';
 import CreateProduct from '../pages/Inventory/Product/CreateProduct.jsx';
 import Layout from '../pages/Layout/Layout.jsx';
-// import ExpireProducts from '../pages/Inventory/Product/ExpireProducts.jsx';
 import Testing2 from '../pages/Testing/Testing2.jsx';
 import Category from '../pages/Inventory/Category/Category.jsx';
 import SubCategory from '../pages/Inventory/SubCategory/SubCategory.jsx';
@@ -35,8 +34,17 @@ import HSCode from '../pages/Product Details/Hs Code/HSCode.jsx';
 import MeasuringUnits from '../pages/Product Details/Measuring Unit/MeasuringUnits.jsx';
 import VariantDetail from '../pages/Inventory/Variant Detail/VariantDetail.jsx';
 import ProductVariantMain from '../pages/Inventory/Product Variant/ProductVariantMain.jsx';
-
-
+import ProductVariantDetails from '../pages/Inventory/Product Variant Details/ProductVariantDetails.jsx';
+import ProductPackageDetail from '../pages/Product Details/ProductPackageDetail/ProductPackageDetail.jsx';
+import ProductPackagePolicy from '../pages/Product Details/Product Package Policy/ProductPackagePolicy.jsx';
+import ProductPackageMain from '../pages/Product Details/ProductPackageMain/ProductPackageMain.jsx';
+import Supplier from '../pages/Inventory/Supplier/Supplier.jsx';
+import SupplierType from '../pages/Inventory/SupplierType/SupplierType.jsx';
+import SupplierCategory from '../pages/Inventory/SupplierCategory/SupplierCategory.jsx';
+import ProductPricePolicy from '../pages/Product Details/PricePolicy/ProductPricePolicy.jsx';
+import PaymentTerms from '../pages/Product Details/Payment Term/PaymentTerms.jsx';
+import EditProduct from '../pages/Inventory/Product/EditProduct.jsx';
+ 
 
 
 const AppRoute = [
@@ -106,6 +114,11 @@ const AppRoute = [
 			},
 
 			{
+				path: 'EditProduct',
+				element: <EditProduct/>,
+			},
+
+			{
 				path: 'VariantDetail',
 				element: <VariantDetail/>,
 			},
@@ -113,10 +126,16 @@ const AppRoute = [
 				path: 'ProductVariantMain',
 				element: <ProductVariantMain/>,
 			},
-			// {
-			// 	path: 'ExpireProducts',
-			// 	element: <ExpireProducts />,
-			// },
+
+			{
+				path: 'ProductVariantDetails',
+				element: <ProductVariantDetails/>,
+			},
+
+		
+			
+
+	
 
 			// End Here
 
@@ -162,6 +181,10 @@ const AppRoute = [
 				element: <ProductPrice/>,
 			},
 			{
+				path: 'ProductPricePolicy',
+				element: <ProductPricePolicy/>,
+			},
+			{
 				path: 'HSCode',
 				element: <HSCode/>,
 			},
@@ -170,20 +193,49 @@ const AppRoute = [
 				element: <MeasuringUnits/>,
 			},
 
+			{
+				path: 'ProductPackageDetail',
+				element: <ProductPackageDetail/>,
+			},
+			{
+				path: 'ProductPackageMain',
+				element: <ProductPackageMain/>,
+			},
+			{
+				path: 'ProductPackagePolicy',
+				element: <ProductPackagePolicy/>,
+			},
+			{
+				path: 'Supplier',
+				element: <Supplier/>,
+			},
+
+			{
+				path: 'SupplierType',
+				element: <SupplierType/>,
+			},
+			{
+				path: 'SupplierCategory',
+				element: <SupplierCategory/>,
+			},
+			{
+				path: 'PaymentTerms',
+				element: <PaymentTerms/>,
+			},
 
 
 			// End here
 
-			{
-				path: 'ManageStocks',
-				element: <ManageStocks />,
-			},
+			// {
+			// 	path: 'ManageStocks',
+			// 	element: <ManageStocks />,
+			// },
 
 
-			{
-				path: 'invoice',
-				element: <Invoice />,
-			},
+			// {
+			// 	path: 'invoice',
+			// 	element: <Invoice />,
+			// },
 
 
 			{

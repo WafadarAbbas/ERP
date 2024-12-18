@@ -24,6 +24,7 @@ const EditSubCategory = (props) => {
         ...values,
         organizationId: 1,
         companyId: 1,
+        productCategoryName: null,
         id: selectedSubCategoryId,
       };
 
@@ -35,7 +36,7 @@ const EditSubCategory = (props) => {
       console.log(formData); // Now the form includes productCategoryName
       try {
         const response = await ApiCall({
-          url: "http://localhost:5022/api/v1/ProductCategory/UpdateProductCategory",
+          url: "http://localhost:5022/api/v1/ProductSubCategory/UpdateProductSubCategory",
           method: "PUT",
           data: formData,
         });
@@ -97,7 +98,7 @@ const EditSubCategory = (props) => {
           formik.setValues({
             productSubCategoryName: data[0].productSubCategoryName,
             productCategoryId: data[0].productCategoryId,
-            productCategoryName: data[0].productCategoryName || "", // Assuming the API returns productCategoryName
+          
           });
 
           setSelectedCategoryName(data[0].productCategoryName); // Set category name from fetched data

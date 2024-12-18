@@ -43,7 +43,10 @@ const CreateCategory = (props) => {
             confirmButtonColor: '#3085d6',
             confirmButtonText: 'OK',
           });
-          formik.resetForm();  
+          formik.resetForm();
+          if (props.close && props.close.current) {
+            props.close.current.click();
+          }  
           if (typeof props.onclick === "function") {
             props.onclick(); 
           }

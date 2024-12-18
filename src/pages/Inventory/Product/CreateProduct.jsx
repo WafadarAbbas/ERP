@@ -5,9 +5,7 @@ import ApiCall from '../../../Apicall/ApiCall';
 import Swal from 'sweetalert2';
 import Footer from '../../../Compo/Footer';
 
-
-function CreateProduct() {
-  // Formik initialization with useFormik
+function CreateProduct() { 
   const formik = useFormik({
     initialValues: {
       productName: '',
@@ -16,13 +14,17 @@ function CreateProduct() {
       productTechnicalDetails: '',
       productCreationDate: '',
       productStatus: false,  
+      productMinimumQuantity: 0,
       isRawMaterial: false,  
       isSingleBranch: false,  
-      productMinimumQuantity: 0,
-      brandId: '',  
-      categoryId: '', 
-      colorId: '',  
-    
+      productBrandId: 0,  
+      productCategoryId: 0, 
+      productColorId: 0,  
+      productGanderId: 0,
+      productGradeId: 0,
+      productSizeId: 0,
+      productSubCategoryId: 0,
+      productTypeId:0,
     },
     
     // Updated validationSchema
@@ -39,9 +41,14 @@ function CreateProduct() {
       // isRawMaterial: Yup.boolean().required('Raw material status is required'),
       // isSingleBranch: Yup.boolean().required('Branch status is required'), // New validation
     }),
-    onSubmit: async (values, { resetForm }) => {
- console.log(values);
  
+onSubmit: async (values) => {
+  const formData = {
+    ...values,
+    organizationId: 1,
+    companyId: 1,
+  };
+  console.log(formData);
     },
   });
 
@@ -64,6 +71,7 @@ function CreateProduct() {
         setBrands(response.data);  
       } catch (error) {
         console.error('Error fetching brands:', error);
+        setBrands([]);
       }
     };
 
@@ -76,6 +84,7 @@ function CreateProduct() {
         setCategories(response.data);  
       } catch (error) {
         console.error('Error fetching categories:', error);
+        setCategories([]);
       }
     };
 
@@ -89,6 +98,7 @@ function CreateProduct() {
         setColors(response.data);  
       } catch (error) {
         console.error('Error fetching colors:', error);
+        setColors([]);
       }
     };
 
@@ -102,6 +112,7 @@ function CreateProduct() {
         setGenders(response.data);  
       } catch (error) {
         console.error('Error fetching genders:', error);
+        setGenders([]);
       }
     };
 
@@ -114,6 +125,7 @@ function CreateProduct() {
         setGrades(response.data); 
       } catch (error) {
         console.error('Error fetching grades:', error);
+        setGrades([]);
       }
     };
 
@@ -126,6 +138,7 @@ function CreateProduct() {
         setSizes(response.data);  
       } catch (error) {
         console.error('Error fetching sizes:', error);
+        setSizes([]);
       }
     };
 
@@ -138,6 +151,8 @@ function CreateProduct() {
         setSubCategories(response.data); // Assuming the response contains an array of subcategories
       } catch (error) {
         console.error('Error fetching subcategories:', error);
+        setSubCategories([]);
+        
       }
     };
     const fetchProductTypes = async () => {
@@ -146,9 +161,10 @@ function CreateProduct() {
           url: 'http://localhost:5022/api/v1/ProductType/GetProductTypeBoxItems/combobox?organizationId=1&companyId=1',
           method: 'GET',
         });
-        setProductTypes(response.data); // Assuming the response contains an array of product types
+        setProductTypes(response.data);  
       } catch (error) {
         console.error('Error fetching product types:', error);
+        setProductTypes([]);
       }
     };
 
@@ -222,7 +238,7 @@ function CreateProduct() {
     ) : null}
   </div>
 
-  {/* New fields */}
+
   <div className='form-group mt-3'>
     <label>Technical Details</label>
     <input
@@ -237,7 +253,6 @@ function CreateProduct() {
       <div className='text-danger'>{formik.errors.productTechnicalDetails}</div>
     ) : null}
   </div>
-
   <div className='form-group mt-3'>
     <label>Creation Date</label>
     <input
@@ -307,153 +322,185 @@ function CreateProduct() {
       <div className='text-danger'>{formik.errors.isSingleBranch}</div>
     ) : null}
   </div>
-  <div className='form-group mt-3'>
-          <label>Brand</label>
-          <select
-            name='brandId'
-            className='form-control'
-            value={formik.values.brandId}
-            onChange={(e) => formik.setFieldValue('brandId', Number(e.target.value))} // Ensure it's a number
-            onBlur={formik.handleBlur}
-          >
-            <option value=''>Select Brand</option>
-            {brands.map((brand) => (
+  <div className="form-group mt-3">
+        <label>Brand</label>
+        <select
+          name="productBrandId"
+          className="form-control"
+          value={formik.values.productBrandId}
+          onChange={(e) => formik.setFieldValue('productBrandId', Number(e.target.value))}
+          onBlur={formik.handleBlur}
+        >
+          <option value="">Select Brand</option>
+          {Array.isArray(brands) && brands.length > 0 ? (
+            brands.map((brand) => (
               <option key={brand.id} value={brand.id}>
-                {brand.name} {/* Display name */}
+                {brand.name}
               </option>
-            ))}
-          </select>
-          {formik.touched.brandId && formik.errors.brandId ? (
-            <div className='text-danger'>{formik.errors.brandId}</div>
-          ) : null}
-        </div>
+            ))
+          ) : (
+            <option disabled>Loading brands...</option>
+          )}
+        </select>
+        {formik.touched.productBrandId && formik.errors.productBrandId ? (
+          <div className="text-danger">{formik.errors.productBrandId}</div>
+        ) : null}
+      </div>
 
-        {/* Product Category Select Field */}
-        <div className='form-group mt-3'>
-          <label>Category</label>
-          <select
-            name='categoryId'
-            className='form-control'
-            value={formik.values.categoryId}
-            onChange={(e) => formik.setFieldValue('categoryId', Number(e.target.value))} // Ensure it's a number
-            onBlur={formik.handleBlur}
-          >
-            <option value=''>Select Category</option>
-            {categories.map((category) => (
+ 
+      <div className="form-group mt-3">
+        <label>Category</label>
+        <select
+          name="productCategoryId"
+          className="form-control"
+          value={formik.values.productCategoryId}
+          onChange={(e) => formik.setFieldValue('productCategoryId', Number(e.target.value))}
+          onBlur={formik.handleBlur}
+        >
+          <option value="">Select Category</option>
+          {Array.isArray(categories) && categories.length > 0 ? (
+            categories.map((category) => (
               <option key={category.id} value={category.id}>
-                {category.name} {/* Display category name */}
+                {category.name}
               </option>
-            ))}
-          </select>
-          {formik.touched.categoryId && formik.errors.categoryId ? (
-            <div className='text-danger'>{formik.errors.categoryId}</div>
-          ) : null}
-        </div>
+            ))
+          ) : (
+            <option disabled>Loading categories...</option>
+          )}
+        </select>
+        {formik.touched.productCategoryId && formik.errors.productCategoryId ? (
+          <div className="text-danger">{formik.errors.productCategoryId}</div>
+        ) : null}
+      </div>
 
         <div className='form-group mt-3'>
           <label>Color</label>
           <select
-            name='colorId'
+            name='productColorId'
             className='form-control'
-            value={formik.values.colorId}
-            onChange={(e) => formik.setFieldValue('colorId', Number(e.target.value))} // Ensure it's a number
+            value={formik.values.productColorId}
+            onChange={(e) => formik.setFieldValue('productColorId', Number(e.target.value))}  
             onBlur={formik.handleBlur}
           >
             <option value=''>Select Color</option>
-            {colors.map((color) => (
+            {Array.isArray(colors) && colors.length > 0 ? (
+            colors.map((color) => (
               <option key={color.id} value={color.id}>
-                {color.name} {/* Display color name */}
+                {color.name}  
               </option>
-            ))}
+            ))
+          ):( <option disabled>Loading Colors...</option>)
+
+          
+          }
           </select>
-          {formik.touched.colorId && formik.errors.colorId ? (
-            <div className='text-danger'>{formik.errors.colorId}</div>
+          {formik.touched.productColorId && formik.errors.productColorId ? (
+            <div className='text-danger'>{formik.errors.productColorId}</div>
           ) : null}
         </div>
 
         <div className='form-group mt-3'>
           <label>Gender</label>
           <select
-            name='genderId'
+            name='productGanderId'
             className='form-control'
-            value={formik.values.genderId}
-            onChange={(e) => formik.setFieldValue('genderId', Number(e.target.value))} // Ensure it's a number
+            value={formik.values.productGanderId}
+            onChange={(e) => formik.setFieldValue('productGanderId', Number(e.target.value))}  
             onBlur={formik.handleBlur}
           >
             <option value=''>Select Gender</option>
-            {genders.map((gender) => (
+            {Array.isArray(genders) && genders.length > 0 ? (
+
+            genders.map((gender) => (
               <option key={gender.id} value={gender.id}>
-                {gender.name} {/* Display gender name */}
+                {gender.name}  
               </option>
-            ))}
+            ))
+            ):( <option disabled>Loading Genders...</option>)
+          }
           </select>
-          {formik.touched.genderId && formik.errors.genderId ? (
-            <div className='text-danger'>{formik.errors.genderId}</div>
+          {formik.touched.productGanderId && formik.errors.productGanderId ? (
+            <div className='text-danger'>{formik.errors.productGanderId}</div>
           ) : null}
         </div>
 
-        {/* Product Grade Select Field */}
+ 
         <div className='form-group mt-3'>
           <label>Grade</label>
           <select
-            name='gradeId'
+            name='productGradeId'
             className='form-control'
-            value={formik.values.gradeId}
-            onChange={(e) => formik.setFieldValue('gradeId', Number(e.target.value))} // Ensure it's a number
+            value={formik.values.productGradeId}
+            onChange={(e) => formik.setFieldValue('productGradeId', Number(e.target.value))}  
             onBlur={formik.handleBlur}
           >
             <option value=''>Select Grade</option>
-            {grades.map((grade) => (
+            {Array.isArray(grades) && grades.length > 0 ? (
+            grades.map((grade) => (
               <option key={grade.id} value={grade.id}>
-                {grade.name} {/* Display grade name */}
+                {grade.name}  
               </option>
-            ))}
+            ))
+          ):(
+            <option disabled>Loading Grades...</option>
+          )
+          }
           </select>
-          {formik.touched.gradeId && formik.errors.gradeId ? (
-            <div className='text-danger'>{formik.errors.gradeId}</div>
+          {formik.touched.productGradeId && formik.errors.productGradeId ? (
+            <div className='text-danger'>{formik.errors.productGradeId}</div>
           ) : null}
         </div>
-
-        {/* Product Size Select Field */}
+ 
         <div className='form-group mt-3'>
           <label>Size</label>
           <select
-            name='sizeId'
+    
+           name='productSizeId'
             className='form-control'
-            value={formik.values.sizeId}
-            onChange={(e) => formik.setFieldValue('sizeId', Number(e.target.value))} // Ensure it's a number
+            value={formik.values.productSizeId}
+            onChange={(e) => formik.setFieldValue('productSizeId', Number(e.target.value))} 
             onBlur={formik.handleBlur}
           >
             <option value=''>Select Size</option>
-            {sizes.map((size) => (
+            {Array.isArray(sizes) && sizes.length > 0 ? (
+            sizes.map((size) => (
               <option key={size.id} value={size.id}>
-                {size.name} {/* Display size name */}
+                {size.name} 
               </option>
-            ))}
+            ))
+            ):(
+              <option disabled>Loading Sizes...</option>
+              )
+          }
           </select>
-          {formik.touched.sizeId && formik.errors.sizeId ? (
-            <div className='text-danger'>{formik.errors.sizeId}</div>
+          {formik.touched.productSizeId && formik.errors.productSizeId ? (
+            <div className='text-danger'>{formik.errors.productSizeId}</div>
           ) : null}
         </div>
 
         <div className='form-group mt-3'>
           <label>SubCategory</label>
           <select
-            name='subCategoryId'
+            name='productSubCategoryId'
             className='form-control'
-            value={formik.values.subCategoryId}
-            onChange={(e) => formik.setFieldValue('subCategoryId', Number(e.target.value))} // Ensure it's a number
+            value={formik.values.productSubCategoryId}
+            onChange={(e) => formik.setFieldValue('productSubCategoryId', Number(e.target.value))}  
             onBlur={formik.handleBlur}
           >
             <option value=''>Select SubCategory</option>
-            {subCategories.map((subCategory) => (
+            {Array.isArray(subCategories) && subCategories.length > 0 ? (
+            subCategories.map((subCategory) => (
               <option key={subCategory.id} value={subCategory.id}>
-                {subCategory.name} {/* Display subcategory name */}
+                {subCategory.name}  
               </option>
-            ))}
+            ))
+            ):(
+              <option disabled>Loading SubCategories...</option>
+              )
+          }
           </select>
-          {formik.touched.subCategoryId && formik.errors.subCategoryId ? (
-            <div className='text-danger'>{formik.errors.subCategoryId}</div>
+          {formik.touched.productSubCategoryId && formik.errors.productSubCategoryId ? (
+            <div className='text-danger'>{formik.errors.productSubCategoryId}</div>
           ) : null}
         </div>
 
@@ -463,15 +510,23 @@ function CreateProduct() {
             name='productTypeId'
             className='form-control'
             value={formik.values.productTypeId}
-            onChange={(e) => formik.setFieldValue('productTypeId', Number(e.target.value))} // Ensure it's a number
+            onChange={(e) => formik.setFieldValue('productTypeId', Number(e.target.value))} 
             onBlur={formik.handleBlur}
           >
             <option value=''>Select Product Type</option>
-            {productTypes.map((productType) => (
+
+            {Array.isArray(productTypes) && productTypes.length > 0 ? (
+
+
+            productTypes.map((productType) => (
               <option key={productType.id} value={productType.id}>
                 {productType.name}  
               </option>
-            ))}
+            ))
+            ):(
+              <option disabled>Loading Product Types...</option>
+              )
+          }
           </select>
           {formik.touched.productTypeId && formik.errors.productTypeId ? (
             <div className='text-danger'>{formik.errors.productTypeId}</div>

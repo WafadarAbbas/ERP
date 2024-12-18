@@ -1,6 +1,6 @@
 
 import React, { useRef, useState, useEffect } from 'react';
-import { FaFilter, FaEdit, FaTrash, FaArrowUp, FaArrowDown,FaCheckCircle, FaTimesCircle } from 'react-icons/fa';
+import { FaFilter, FaEdit, FaTrash, FaArrowUp, FaArrowDown,FaCheckCircle, FaTimesCircle, FaSync } from 'react-icons/fa';
 import Buton from '../../../Compo/Buton';
 import CreateProductPrice from './CreateProductPrice';
 import ApiCall from '../../../Apicall/ApiCall';
@@ -111,6 +111,9 @@ function ProductPrice() {
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage
   );
+  const handleRefresh = () => {
+    window.location.reload(); 
+  };
 
   return (
     <div style={{ marginTop: 10 }}>
@@ -138,9 +141,14 @@ function ProductPrice() {
             disabled
             onChange={handleSearch}
           />
-          <button className="btn" style={{ backgroundColor: '#ff9f43', color: 'white', padding: '8px 10px', borderRadius: '8px', border: 'none', display: 'flex', alignItems: 'center' }}>
-            <FaFilter Price={16} />
+         <div className="d-flex justify-content-between align-items-center ">
+            <button  onClick={handleRefresh} className="btn me-2" style={{ backgroundColor: '#ff9f43', color: 'white', padding: '8px 10px', borderRadius: '8px', border: 'none', display: 'flex', alignItems: 'center' }}>
+            <FaSync  size={16} />
           </button>
+          <button className="btn" style={{ backgroundColor: '#ff9f43', color: 'white', padding: '8px 10px', borderRadius: '8px', border: 'none', display: 'flex', alignItems: 'center' }}>
+            <FaFilter size={16} />
+          </button>
+          </div>
         </div>
         <hr />
 

@@ -5,10 +5,6 @@ import Swal from "sweetalert2";
 import ApiCall from "../../../Apicall/ApiCall";
 
 const CreateProductVariantMain = (props) => {
- 
-  
- 
- 
   const formik = useFormik({
     initialValues: {
       productName: "",
@@ -16,8 +12,8 @@ const CreateProductVariantMain = (props) => {
       productVendorCode: "",
       productSku: "",
       productId: "", // New field for selected product ID
-      isRawMaterial: false,  
-      isSingleBranch: false,  
+      isRawMaterial: false,
+      isSingleBranch: false,
     },
     validationSchema: Yup.object({
       // productName: Yup.string().required("Product Name is required"),
@@ -33,7 +29,6 @@ const CreateProductVariantMain = (props) => {
       };
 
       console.log(formData);
-      
 
       try {
         const response = await ApiCall({
@@ -55,7 +50,7 @@ const CreateProductVariantMain = (props) => {
           if (props.close && props.close.current) {
             props.close.current.click();
           }
-          if (typeof props.onclick === "function" ) {
+          if (typeof props.onclick === "function") {
             props.onclick();
           }
         } else {
@@ -65,7 +60,9 @@ const CreateProductVariantMain = (props) => {
         console.error("Error during product Variant Detail save:", error);
         Swal.fire({
           title: "Error",
-          text: error.message || "An error occurred while saving the product Variant Detail",
+          text:
+            error.message ||
+            "An error occurred while saving the product Variant Detail",
           icon: "error",
           confirmButtonColor: "#d33",
           confirmButtonText: "Close",
@@ -78,66 +75,63 @@ const CreateProductVariantMain = (props) => {
   const [measuringUnits, setMeasuringUnits] = useState([]);
   const [hsCodes, setHsCodes] = useState([]);
   const [manufacturers, setManufacturers] = useState([]);
- 
-  
-    const fetchProducts = async () => {
-      try {
-        const response = await ApiCall({
-          url: "http://localhost:5022/api/v1/Product/GetProductBoxItems/combobox?organizationId=1&companyId=1",
-          method: "GET",
-        });
-        setProducts(response.data); // Save product list to state
-      } catch (error) {
-        console.error("Error fetching products:", error);
-      }
-    };
 
-    const fetchMeasuringUnits = async () => {
-      try {
-        const response = await ApiCall({
-          url: "http://localhost:5022/api/v1/MeasuringUnits/GetMeasuringUnitsBoxItems/combobox?organizationId=1&companyId=1",
-          method: "GET",
-        });
-        setMeasuringUnits(response.data);
-      } catch (error) {
-        console.error("Error fetching measuring units:", error);
-      }
-    };
+  const fetchProducts = async () => {
+    try {
+      const response = await ApiCall({
+        url: "http://localhost:5022/api/v1/Product/GetProductBoxItems/combobox?organizationId=1&companyId=1",
+        method: "GET",
+      });
+      setProducts(response.data); // Save product list to state
+    } catch (error) {
+      console.error("Error fetching products:", error);
+    }
+  };
 
-    // Fetch HS Codes
-    const fetchHsCodes = async () => {
-      try {
-        const response = await ApiCall({
-          url: "http://localhost:5022/api/v1/HSCode/GetHSCodeBoxItems/combobox?organizationId=1&companyId=1",
-          method: "GET",
-        });
-        setHsCodes(response.data);
-      } catch (error) {
-        console.error("Error fetching HS codes:", error);
-      }
-    };
+  const fetchMeasuringUnits = async () => {
+    try {
+      const response = await ApiCall({
+        url: "http://localhost:5022/api/v1/MeasuringUnits/GetMeasuringUnitsBoxItems/combobox?organizationId=1&companyId=1",
+        method: "GET",
+      });
+      setMeasuringUnits(response.data);
+    } catch (error) {
+      console.error("Error fetching measuring units:", error);
+    }
+  };
 
-    // Fetch Product Manufacturers
-    const fetchManufacturers = async () => {
-      try {
-        const response = await ApiCall({
-          url: "http://localhost:5022/api/v1/ProductManufacturer/GetProductManufacturerBoxItems/combobox?organizationId=1&companyId=1",
-          method: "GET",
-        });
-        setManufacturers(response.data);
-      } catch (error) {
-        console.error("Error fetching manufacturers:", error);
-      }
-    };
+  // Fetch HS Codes
+  const fetchHsCodes = async () => {
+    try {
+      const response = await ApiCall({
+        url: "http://localhost:5022/api/v1/HSCode/GetHSCodeBoxItems/combobox?organizationId=1&companyId=1",
+        method: "GET",
+      });
+      setHsCodes(response.data);
+    } catch (error) {
+      console.error("Error fetching HS codes:", error);
+    }
+  };
 
+  // Fetch Product Manufacturers
+  const fetchManufacturers = async () => {
+    try {
+      const response = await ApiCall({
+        url: "http://localhost:5022/api/v1/ProductManufacturer/GetProductManufacturerBoxItems/combobox?organizationId=1&companyId=1",
+        method: "GET",
+      });
+      setManufacturers(response.data);
+    } catch (error) {
+      console.error("Error fetching manufacturers:", error);
+    }
+  };
 
-    useEffect(() => {
+  useEffect(() => {
     fetchProducts();
     fetchMeasuringUnits();
     fetchHsCodes();
     fetchManufacturers();
   }, []);
-
 
   useEffect(() => {
     formik.resetForm();
@@ -148,7 +142,6 @@ const CreateProductVariantMain = (props) => {
   };
   return (
     <div>
-      
       <button
         type="button"
         className="btn btn-primary d-none"
@@ -159,7 +152,6 @@ const CreateProductVariantMain = (props) => {
         Create Product ProductVariantMain
       </button>
 
-    
       <div
         className="modal fade"
         id="CreateProductVariantMainModal"
@@ -171,7 +163,10 @@ const CreateProductVariantMain = (props) => {
         <div className="modal-dialog modal-lg modal-dialog-centered">
           <div className="modal-content">
             <div className="modal-header">
-              <h5 className="modal-title" id="CreateProductVariantMainModalLabel">
+              <h5
+                className="modal-title"
+                id="CreateProductVariantMainModalLabel"
+              >
                 Create Product ProductVariantMain
               </h5>
               <button
@@ -186,8 +181,7 @@ const CreateProductVariantMain = (props) => {
 
             <div className="modal-body">
               <form onSubmit={formik.handleSubmit}>
-              
-              <div className="form-group mb-3">
+                <div className="form-group mb-3">
                   <label>Product Name</label>
                   <input
                     type="text"
@@ -198,7 +192,9 @@ const CreateProductVariantMain = (props) => {
                     onBlur={formik.handleBlur}
                   />
                   {formik.touched.productName && formik.errors.productName && (
-                    <div className="text-danger">{formik.errors.productName}</div>
+                    <div className="text-danger">
+                      {formik.errors.productName}
+                    </div>
                   )}
                 </div>
 
@@ -214,7 +210,9 @@ const CreateProductVariantMain = (props) => {
                     onBlur={formik.handleBlur}
                   />
                   {formik.touched.productCode && formik.errors.productCode && (
-                    <div className="text-danger">{formik.errors.productCode}</div>
+                    <div className="text-danger">
+                      {formik.errors.productCode}
+                    </div>
                   )}
                 </div>
 
@@ -229,9 +227,12 @@ const CreateProductVariantMain = (props) => {
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
                   />
-                  {formik.touched.productVendorCode && formik.errors.productVendorCode && (
-                    <div className="text-danger">{formik.errors.productVendorCode}</div>
-                  )}
+                  {formik.touched.productVendorCode &&
+                    formik.errors.productVendorCode && (
+                      <div className="text-danger">
+                        {formik.errors.productVendorCode}
+                      </div>
+                    )}
                 </div>
 
                 {/* Product SKU Field */}
@@ -246,118 +247,160 @@ const CreateProductVariantMain = (props) => {
                     onBlur={formik.handleBlur}
                   />
                   {formik.touched.productSku && formik.errors.productSku && (
-                    <div className="text-danger">{formik.errors.productSku}</div>
+                    <div className="text-danger">
+                      {formik.errors.productSku}
+                    </div>
                   )}
                 </div>
 
                 <div className="form-group mb-3">
                   <label>Product</label>
                   <select
-  name="productId"
-  className="form-control"
-  value={formik.values.productId}
-  onChange={(e) => {
-    const { name, value } = e.target;
-    formik.setFieldValue(name, Number(value)); // Ensure value is saved as a number
-  }}
-  onBlur={formik.handleBlur}
->
-  <option value="">Select Product</option>
-  {products.map((product) => (
-    <option key={product.id} value={product.id}>
-      {product.name}
-    </option>
-  ))}
-</select>
+                    name="productId"
+                    className="form-control"
+                    value={formik.values.productId}
+                    onChange={(e) => {
+                      const { name, value } = e.target;
+                      formik.setFieldValue(name, Number(value));  
+                    }}
+                    onBlur={formik.handleBlur}
+                  >
+                    <option value="">Select Product</option>
+                    {Array.isArray(products) && products.length >0 ?(
+                    products.map((product) => (
+                      <option key={product.id} value={product.id}>
+                        {product.name}
+                      </option>
+                    ))
+                    ) : (
+                      <option value="">No products available</option>
+                      )
+
+                  }
+                  </select>
                   {formik.touched.productId && formik.errors.productId && (
                     <div className="text-danger">{formik.errors.productId}</div>
                   )}
                 </div>
 
-
-           
                 <div className="form-group mb-3">
-        <label>Measuring Unit</label>
-        <select
-          name="measuringUnitsId"
-          className="form-control"
-          value={formik.values.measuringUnitsId}
-          onChange={(e) => formik.setFieldValue("measuringUnitsId", Number(e.target.value))}
-          onBlur={formik.handleBlur}
-        >
-          <option value="">Select Measuring Unit</option>
-          {measuringUnits.map((unit) => (
-            <option key={unit.id} value={unit.id}>
-              {unit.name}
-            </option>
-          ))}
-        </select>
-      </div>
+                  <label>Measuring Unit</label>
+                  <select
+                    name="measuringUnitsId"
+                    className="form-control"
+                    value={formik.values.measuringUnitsId}
+                    onChange={(e) =>
+                      formik.setFieldValue(
+                        "measuringUnitsId",
+                        Number(e.target.value)
+                      )
+                    }
+                    onBlur={formik.handleBlur}
+                  >
+                    <option value="">Select Measuring Unit</option>
 
-      {/* HS Code Select Field */}
-      <div className="form-group mb-3">
-        <label>HS Code</label>
-        <select
-          name="hsCodeId"
-          className="form-control"
-          value={formik.values.hsCodeId}
-          onChange={(e) => formik.setFieldValue("hsCodeId", Number(e.target.value))}
-          onBlur={formik.handleBlur}
-        >
-          <option value="">Select HS Code</option>
-          {hsCodes.map((hs) => (
-            <option key={hs.id} value={hs.id}>
-              {hs.name}
-            </option>
-          ))}
-        </select>
-      </div>
+{Array.isArray(measuringUnits) && measuringUnits.length > 0 ? (
 
-      {/* Product Manufacturer Select Field */}
-      <div className="form-group mb-3">
-        <label>Product Manufacturer</label>
-        <select
-          name="productManufacturerId"
-          className="form-control"
-          value={formik.values.productManufacturerId}
-          onChange={(e) => formik.setFieldValue("productManufacturerId", Number(e.target.value))}
-          onBlur={formik.handleBlur}
-        >
-          <option value="">Select Manufacturer</option>
-          {manufacturers.map((manufacturer) => (
-            <option key={manufacturer.id} value={manufacturer.id}>
-              {manufacturer.name}
-            </option>
-          ))}
-        </select>
-      </div>
+                    measuringUnits.map((unit) => (
+                      <option key={unit.id} value={unit.id}>
+                        {unit.name}
+                      </option>
+                    ))
+                    ) : (
+                      <option value="">No measuring units available</option>
 
-      <div className='form-group form-check mt-3
-  '>
-    <input
-      type='checkbox'
-      name='isSingleBranch'
-      className='form-check-input'
-      checked={formik.values.isSingleBranch}
-      onChange={formik.handleChange}
-      onBlur={formik.handleBlur}
-    />
-    <label className='form-check-label'> Single Branch </label>
-  </div>
+                    )
+                  
+                  }
+                  </select>
+                </div>
 
-  
-  <div className='form-group form-check mt-3'>
-    <input
-      type='checkbox'
-      name='isRawMaterial'
-      className='form-check-input'
-      checked={formik.values.isRawMaterial}
-      onChange={formik.handleChange}
-      onBlur={formik.handleBlur}
-    />
-    <label className='form-check-label'>Is Raw Material?</label>
-  </div>
+                {/* HS Code Select Field */}
+                <div className="form-group mb-3">
+                  <label>HS Code</label>
+                  <select
+                    name="hsCodeId"
+                    className="form-control"
+                    value={formik.values.hsCodeId}
+                    onChange={(e) =>
+                      formik.setFieldValue("hsCodeId", Number(e.target.value))
+                    }
+                    onBlur={formik.handleBlur}
+                  >
+                    <option value="">Select HS Code</option>
+                    {Array.isArray(hsCodes) && hsCodes.length > 0 ? (
+                      
+                    hsCodes.map((hs) => (
+                      <option key={hs.id} value={hs.id}>
+                        {hs.name}
+                      </option>
+                    ))
+                    ) : (
+                      <option value="">No HS Codes available</option>
+                    )
+                      
+                  }
+                  </select>
+                </div>
 
+                 
+                <div className="form-group mb-3">
+                  <label>Product Manufacturer</label>
+                  <select
+                    name="productManufacturerId"
+                    className="form-control"
+                    value={formik.values.productManufacturerId}
+                    onChange={(e) =>
+                      formik.setFieldValue(
+                        "productManufacturerId",
+                        Number(e.target.value)
+                      )
+                    }
+                    onBlur={formik.handleBlur}
+                  >
+                    <option value="">Select Manufacturer</option>
+                    {Array.isArray(manufacturers) && manufacturers.length > 0 ?(
+
+                    manufacturers.map((manufacturer) => (
+                      <option key={manufacturer.id} value={manufacturer.id}>
+                        {manufacturer.name}
+                      </option>
+                    ))
+                    ) : (
+                    
+                      <option value="">No Manufacturers available</option>
+                    )
+                  
+                  }
+                  </select>
+                </div>
+
+                <div
+                  className="form-group form-check mt-3
+  "
+                >
+                  <input
+                    type="checkbox"
+                    name="isSingleBranch"
+                    className="form-check-input"
+                    checked={formik.values.isSingleBranch}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                  />
+                  <label className="form-check-label"> Single Branch </label>
+                </div>
+
+                <div className="form-group form-check mt-3">
+                  <input
+                    type="checkbox"
+                    name="isRawMaterial"
+                    className="form-check-input"
+                    checked={formik.values.isRawMaterial}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                  />
+                  <label className="form-check-label">Is Raw Material?</label>
+                </div>
 
                 <div className="d-flex justify-content-between modal-footer mt-3">
                   <button

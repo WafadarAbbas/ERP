@@ -169,7 +169,8 @@ function VariantDetail() {
                 </tr>
               </thead>
               <tbody>
-                {paginatedVariantDetail.map((VariantDetail) => (
+              {paginatedVariantDetail.length > 0 ? (
+                paginatedVariantDetail.map((VariantDetail) => (
                   <tr key={VariantDetail.id}>
                     <td style={{ fontSize: 16 }}>{VariantDetail.variantDetailsName}</td>
                     
@@ -184,7 +185,14 @@ function VariantDetail() {
                       </div>
                     </td>
                   </tr>
-                ))}
+                ))
+              ) : (
+                <tr>
+                  <td colSpan="2" className="text-center">
+                    No data available
+                  </td>
+                </tr>
+               ) }
               </tbody>
             </table>
           </div>

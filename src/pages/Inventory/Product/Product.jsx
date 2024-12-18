@@ -7,6 +7,7 @@ import ApiCall from '../../../Apicall/ApiCall';
 
 import Swal from 'sweetalert2';
 import Footer from '../../../Compo/Footer';
+import { useNavigate } from 'react-router-dom';
 
 function Product() {
   const createRef = useRef(null);
@@ -113,6 +114,7 @@ function Product() {
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage
   );
+  const navigate = useNavigate();  
 
   return (
     <div style={{ marginTop: 10 }}>
@@ -125,7 +127,8 @@ function Product() {
           <i className="fa fa-print text-primary fs-2 me-2 p-2 bg-white border border-grey rounded-3 cursor-pointer" onClick={() => alert('Print button clicked!')} ></i>
           <i className="fa-solid fa-file-pdf text-danger fs-2 me-2 p-2 bg-white border border-grey rounded-3 cursor-pointer " onClick={() => alert('PDF button clicked!')} ></i>
           <i className="fa fa-file-excel-o fs-2 me-2 p-2 bg-white border border-grey rounded-3 cursor-pointer" onClick={() => alert('Excel button clicked!')} style={{ color: 'green' }}></i>
-          <Buton >Add Product</Buton>
+          <Buton  onClick={() => navigate("/CreateProduct")}>Add Product</Buton>
+          <Buton  onClick={() => navigate("/EditProduct")}>Edit Product</Buton>
         </div>
       </div>
 

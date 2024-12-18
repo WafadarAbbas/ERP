@@ -4,7 +4,11 @@ const detailsmenu = [
   },
   { path: '/Opening', icon: 'fa fa-gear', title: 'Opening',
   },
+  { path: '/PaymentTerms', icon: 'fa fa-money', title: 'Payment Term',
+  },
   { path: '/Price', icon: 'fa fa-money', title: 'Price',
+  },
+  { path: '/ProductPricePolicy', icon: 'fa fa-money', title: 'Product Price Policy',
   },
     { path: '/Color', icon: 'fa-solid fa-palette', title: 'Color',
     },
@@ -22,7 +26,12 @@ const detailsmenu = [
     },
     { path: '/MeasuringUnits', icon: 'fa fa-gear', title: 'Measuring Units',
     },
-
+  { path: '/ProductPackageDetail', icon: 'fa-solid fa-globe', title: 'Product Package Detail',
+  },
+  { path: '/ProductPackagePolicy', icon: 'fa-solid fa-globe', title: 'Product Package Policy',
+  },
+  { path: '/ProductPackageMain', icon: 'fa-solid fa-globe', title: 'Product Package Main',
+  },
 
   
   ]

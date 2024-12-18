@@ -7,7 +7,7 @@ import ApiCall from "../../../Apicall/ApiCall";
 const CreateVariantDetail = (props) => {
   const [products, setProducts] = useState([]); // State to store fetched products
 
-  // Fetch products from the API when the component mounts
+ 
   useEffect(() => {
     const fetchProducts = async () => {
       try {
@@ -15,21 +15,22 @@ const CreateVariantDetail = (props) => {
           url: "http://localhost:5022/api/v1/Product/GetProductBoxItems/combobox?organizationId=1&companyId=1",
           method: "GET",
         });
-        setProducts(response.data); // Assuming response.data is the array
+        setProducts(response.data);  
       } catch (error) {
         console.error("Error fetching products:", error);
+        setProducts([]);
       }
     };
 
     fetchProducts();
   }, []);
 
-  // Formik setup
+  
   const formik = useFormik({
     initialValues: {
       variantDetailsName: "",
-      productId: "",  // To store selected product ID
-      productName: "", // To store selected product Name
+      productId: "",  
+      productName: "", 
     },
     validationSchema: Yup.object({
       variantDetailsName: Yup.string().required("Variant detail name is required"),
@@ -90,7 +91,7 @@ const CreateVariantDetail = (props) => {
   };
   return (
     <div>
-      {/* Modal Trigger Button */}
+      
       <button
         type="button"
         className="btn btn-primary d-none"
@@ -101,7 +102,7 @@ const CreateVariantDetail = (props) => {
         Create Product VariantDetail
       </button>
 
-      {/* Modal */}
+ 
       <div
         className="modal fade"
         id="CreateVariantDetailModal"
@@ -128,7 +129,7 @@ const CreateVariantDetail = (props) => {
 
             <div className="modal-body">
               <form onSubmit={formik.handleSubmit}>
-                {/* Variant Details Name Field */}
+           
                 <div className="form-group mb-3">
                   <label>Variant Detail Name</label>
                   <input
@@ -144,7 +145,6 @@ const CreateVariantDetail = (props) => {
                   )}
                 </div>
 
-                {/* Product Select Field */}
                 <div className="form-group mb-3">
                   <label>Select Product</label>
                   <select
@@ -152,25 +152,31 @@ const CreateVariantDetail = (props) => {
                     className="form-control"
                     value={formik.values.productId}
                     onChange={(e) => {
-                      const selectedProduct = products.find(product => product.id === Number(e.target.value));
-                      formik.setFieldValue("productId", selectedProduct.id);
-                      formik.setFieldValue("productName", selectedProduct.name); // Save name too
+                      const selectedProduct = products.find(
+                        (product) => product.id === Number(e.target.value)
+                      );
+                      formik.setFieldValue("productId", selectedProduct?.id || "");
+                      formik.setFieldValue("productName", selectedProduct?.name || "");
                     }}
                     onBlur={formik.handleBlur}
                   >
                     <option value="">Select Product</option>
-                    {products.map((product) => (
-                      <option key={product.id} value={product.id}>
-                        {product.name} {/* Display product name */}
-                      </option>
-                    ))}
+                    {Array.isArray(products) && products.length > 0 ? (
+                      products.map((product) => (
+                        <option key={product.id} value={product.id}>
+                          {product.name}
+                        </option>
+                      ))
+                    ) : (
+                      <option value="">No products available</option>
+                    )}
                   </select>
                   {formik.touched.productId && formik.errors.productId && (
                     <div className="text-danger">{formik.errors.productId}</div>
                   )}
                 </div>
 
-                {/* Modal Footer */}
+                
                 <div className="d-flex justify-content-between modal-footer mt-3">
                   <button
                     type="button"

@@ -68,7 +68,7 @@ function ProductVariantMain() {
     if (result.isConfirmed) {
       try {
         const response = await ApiCall({
-          url: `http://localhost:5022/api/v1/ProductVariantMains/DeleteProductVariantMains/${ProductVariantMainId}?organizationId=1&companyId=1`,
+          url: `http://localhost:5022/api/v1/ProductVariantMain/DeleteProductVariantMain/${ProductVariantMainId}?organizationId=1&companyId=1`,
           method: 'DELETE',
         });
 

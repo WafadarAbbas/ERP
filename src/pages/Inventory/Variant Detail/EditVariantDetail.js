@@ -7,8 +7,6 @@ import ApiCall from "../../../Apicall/ApiCall";
 const EditVariantDetail = (props) => {
   const { selectedVariantDetailId } = props;
 
-  console.log(selectedVariantDetailId);
-
   const validationSchema = Yup.object({
     variantDetailsName: Yup.string().required("Variant detail name is required"),
      
@@ -41,10 +39,15 @@ const EditVariantDetail = (props) => {
     },
     validationSchema: validationSchema,
     onSubmit: async (values) => {
+      const selectedproductName = products.find(
+        (product) => product.id === values.productId
+      );
+
       const formData = {
         ...values,
         organizationId: 1,
         companyId: 1,
+        productName: selectedproductName?.name || null,
         id: selectedVariantDetailId,
       };
       console.log(formData);
@@ -78,16 +81,35 @@ const EditVariantDetail = (props) => {
         }
       } catch (error) {
         console.error("Error during product VariantDetail save:", error);
-        Swal.fire({
-          title: "Error",
-          text:
-            error.message ||
-            "An error occurred while saving the product VariantDetail",
-          icon: "error",
-          confirmButtonColor: "#d33",
-          confirmButtonText: "Close",
-        });
+      
+        if (error.response && error.response.data && error.response.data.errors) {
+          const validationErrors = error.response.data.errors;
+      
+          // Format errors for Swal.fire
+          const formattedErrors = Object.entries(validationErrors)
+            .map(([field, messages]) => `<b>${field}</b>: ${messages.join(", ")}`)
+            .join("<br>");
+      
+          Swal.fire({
+            title: "Validation Errors",
+            html: formattedErrors, // Display errors using HTML formatting
+            icon: "error",
+            confirmButtonColor: "#d33",
+            confirmButtonText: "Close",
+          });
+        } else {
+          Swal.fire({
+            title: "Error",
+            text:
+              error.message ||
+              "An error occurred while saving the product VariantDetail",
+            icon: "error",
+            confirmButtonColor: "#d33",
+            confirmButtonText: "Close",
+          });
+        }
       }
+      
     },
   });
 
@@ -193,23 +215,33 @@ const EditVariantDetail = (props) => {
                     onChange={(e) => {
                       const selectedProduct = products.find(product => product.id === Number(e.target.value));
                       formik.setFieldValue("productId", selectedProduct.id);
-                      formik.setFieldValue("productName", selectedProduct.name); // Save name too
+                      formik.setFieldValue("productName", selectedProduct.name);  
                     }}
                     onBlur={formik.handleBlur}
                   >
                     <option value="">Select Product</option>
-                    {products.map((product) => (
+
+                    {Array.isArray(products) && products.length > 0 ? (
+
+                   products.map((product) => (
                       <option key={product.id} value={product.id}>
-                        {product.name} {/* Display product name */}
+                        {product.name}  
                       </option>
-                    ))}
+                    ))
+                  )
+                  : (
+                    <option value="">No products found</option>
+                    )
+                    
+                  
+                  }
                   </select>
                   {formik.touched.productId && formik.errors.productId && (
                     <div className="text-danger">{formik.errors.productId}</div>
                   )}
                 </div>
 
-                {/* Modal Footer */}
+               
                 <div className="d-flex justify-content-between modal-footer mt-3">
                   <button
                     type="button"

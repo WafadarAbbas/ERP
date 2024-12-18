@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react';
-import { FaFilter, FaEdit, FaTrash, FaArrowUp, FaArrowDown } from 'react-icons/fa';
+import { FaFilter, FaEdit, FaTrash, FaArrowUp, FaArrowDown,FaSync } from 'react-icons/fa';
 import Buton from '../../../Compo/Buton';
 import CreateGander from './CreateGander';
 import ApiCall from '../../../Apicall/ApiCall';
@@ -119,6 +119,10 @@ function Gander() {
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage
   );
+  const handleRefresh = () => {
+    window.location.reload(); 
+  
+  };
 
   return (
     <div style={{ marginTop: 10 }}>
@@ -145,9 +149,14 @@ function Gander() {
             onChange={handleSearch}
             style={{ maxWidth: '300px' }}
           />
+          <div className="d-flex justify-content-between align-items-center ">
+            <button  onClick={handleRefresh} className="btn me-2" style={{ backgroundColor: '#ff9f43', color: 'white', padding: '8px 10px', borderRadius: '8px', border: 'none', display: 'flex', alignItems: 'center' }}>
+            <FaSync  size={16} />
+          </button>
           <button className="btn" style={{ backgroundColor: '#ff9f43', color: 'white', padding: '8px 10px', borderRadius: '8px', border: 'none', display: 'flex', alignItems: 'center' }}>
             <FaFilter size={16} />
           </button>
+          </div>
         </div>
         <hr />
 

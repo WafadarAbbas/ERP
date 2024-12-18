@@ -1,6 +1,6 @@
 
 import React, { useRef, useState, useEffect } from 'react';
-import { FaFilter, FaEdit, FaTrash, FaArrowUp, FaArrowDown } from 'react-icons/fa';
+import { FaFilter, FaEdit, FaTrash, FaArrowUp, FaArrowDown ,FaSync} from 'react-icons/fa';
 import Buton from '../../../Compo/Buton';
 import CreateProductBatch from './CreateProductBatch';
 import ApiCall from '../../../Apicall/ApiCall';
@@ -37,7 +37,7 @@ function ProductBatch() {
       if (response && response.data) {
         setBatch(response.data);
       } else {
-        throw new Error('Failed to load Batch.');
+        throw new Error('Failed to load Batch.');     
       }
     } catch (error) {
       setError(error.message || 'An error occurred while fetching data');
@@ -47,6 +47,11 @@ function ProductBatch() {
   useEffect(() => {
     fetchProductBatch();
   }, []);
+
+ 
+  const handleRefresh = () => {
+    window.location.reload();   
+  };
 
   const handleSort = (column) => {
     const newSortOrder = sortOrder === 'asc' ? 'desc' : 'asc';
@@ -139,9 +144,14 @@ function ProductBatch() {
             value={searchQuery}
             onChange={handleSearch}
           />
-          <button className="btn" style={{ backgroundColor: '#ff9f43', color: 'white', padding: '8px 10px', borderRadius: '8px', border: 'none', display: 'flex', alignItems: 'center' }}>
-            <FaFilter Batch={16} />
+          <div className="d-flex justify-content-between align-items-center ">
+            <button  onClick={handleRefresh} className="btn me-2" style={{ backgroundColor: '#ff9f43', color: 'white', padding: '8px 10px', borderRadius: '8px', border: 'none', display: 'flex', alignItems: 'center' }}>
+            <FaSync  size={16} />
           </button>
+          <button className="btn" style={{ backgroundColor: '#ff9f43', color: 'white', padding: '8px 10px', borderRadius: '8px', border: 'none', display: 'flex', alignItems: 'center' }}>
+            <FaFilter size={16} />
+          </button>
+          </div>
         </div>
         <hr />
 
