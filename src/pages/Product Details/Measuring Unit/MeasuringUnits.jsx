@@ -23,6 +23,10 @@ function MeasuringUnits() {
   const [searchQuery, setSearchQuery] = useState('');
   const itemsPerPage = 6;
 
+
+  const handleIdReset = () => {
+    setSelectedMeasuringUnitsId(0);
+  };
   const fetchMeasuringUnits = async (query = '') => {
     try {
       const url = query
@@ -222,7 +226,7 @@ function MeasuringUnits() {
       </div>
       <Footer/>
       <CreateMeasuringUnits open={createRef} close={refClose} onclick={fetchMeasuringUnits} />
-      <EditMeasuringUnits open={createEditRef} close={refEditClose} selectedMeasuringUnitsId={selectedMeasuringUnitsId} onclick={fetchMeasuringUnits} />
+      <EditMeasuringUnits open={createEditRef} close={refEditClose} selectedMeasuringUnitsId={selectedMeasuringUnitsId} onclick={fetchMeasuringUnits} onIdReset={handleIdReset} />
     </div>
   );
 }

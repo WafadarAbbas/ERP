@@ -8,7 +8,7 @@ import ApiCall from "../../../Apicall/ApiCall";
 const EditProductPrice = (props) => {
   const { selectedProductPriceId } = props;
   
-  console.log(selectedProductPriceId);
+ 
   
 
   const validationSchema = Yup.object({
@@ -25,10 +25,15 @@ const EditProductPrice = (props) => {
     },
     validationSchema: validationSchema,
     onSubmit: async (values) => {
+      const selectedProductVariantMain = productVariantMains.find(
+        (variant) => variant.id === values.productVariantMainId
+      );
+
       const formData = {
         ...values,
         organizationId: 1,
         companyId: 1,
+        productName: selectedProductVariantMain?.name || ' ',
         id:selectedProductPriceId,
       };
       console.log(formData);
@@ -53,6 +58,9 @@ const EditProductPrice = (props) => {
           formik.resetForm();
           if (props.close && props.close.current) {
             props.close.current.click();  
+          }
+          if (typeof props.onIdReset === "function") {
+            props.onIdReset();
           }
           if (typeof props.onclick === "function" ) {
             props.onclick();

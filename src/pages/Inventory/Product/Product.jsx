@@ -10,11 +10,7 @@ import Footer from '../../../Compo/Footer';
 import { useNavigate } from 'react-router-dom';
 
 function Product() {
-  const createRef = useRef(null);
-  const refClose = useRef(null);
-  const createEditRef = useRef(null);
-  const refEditClose = useRef(null);
-
+ 
   const [Product, setProduct] = useState([]);
   const [sortColumn, setSortColumn] = useState('productName');
   const [sortOrder, setSortOrder] = useState('asc');
@@ -54,7 +50,7 @@ function Product() {
     setSortColumn(column);
     setSortOrder(newSortOrder);
   };
-
+ 
   const handleDelete = async (ProductId) => {
     const result = await Swal.fire({
       title: 'Are you sure?',
@@ -87,8 +83,7 @@ function Product() {
   };
 
   const handleEdit = (ProductId) => {
-    setSelectedProductId(ProductId);
-    createEditRef.current.click();
+    navigate(`/EditProduct`, { state: { id: ProductId } });
   };
 
   const handlePageChange = (newPage) => {
@@ -128,7 +123,7 @@ function Product() {
           <i className="fa-solid fa-file-pdf text-danger fs-2 me-2 p-2 bg-white border border-grey rounded-3 cursor-pointer " onClick={() => alert('PDF button clicked!')} ></i>
           <i className="fa fa-file-excel-o fs-2 me-2 p-2 bg-white border border-grey rounded-3 cursor-pointer" onClick={() => alert('Excel button clicked!')} style={{ color: 'green' }}></i>
           <Buton  onClick={() => navigate("/CreateProduct")}>Add Product</Buton>
-          <Buton  onClick={() => navigate("/EditProduct")}>Edit Product</Buton>
+          
         </div>
       </div>
 
@@ -174,39 +169,7 @@ function Product() {
                       </button>
                     </div>
                   </th>
-                  <th scope="col" style={{ fontSize: 16 }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
-                    Product Color 
-                      <button onClick={() => handleSort('productColorProductColorName')} className="btn p-0">
-                        {sortOrder === 'asc' && sortColumn === 'productColorProductColorName' ? <FaArrowUp color="green" /> : <FaArrowDown color="red" />}
-                      </button>
-                    </div>
-                  </th>
-                  <th scope="col" style={{ fontSize: 16 }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
-                    Product Grade 
-                      <button onClick={() => handleSort('productGradeProductGradeName')} className="btn p-0">
-                        {sortOrder === 'asc' && sortColumn === 'productGradeProductGradeName' ? <FaArrowUp color="green" /> : <FaArrowDown color="red" />}
-                      </button>
-                    </div>
-                  </th>
-
-                  <th scope="col" style={{ fontSize: 16 }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
-                    Product Size 
-                      <button onClick={() => handleSort('productSizeProductSizeName')} className="btn p-0">
-                        {sortOrder === 'asc' && sortColumn === 'productSizeProductSizeName' ? <FaArrowUp color="green" /> : <FaArrowDown color="red" />}
-                      </button>
-                    </div>
-                  </th>
-                  <th scope="col" style={{ fontSize: 16 }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
-                    Product SubCategory 
-                      <button onClick={() => handleSort('productSubCategoryProductSubCategoryName')} className="btn p-0">
-                        {sortOrder === 'asc' && sortColumn === 'productSubCategoryProductSubCategoryName' ? <FaArrowUp color="green" /> : <FaArrowDown color="red" />}
-                      </button>
-                    </div>
-                  </th>
+                  
          
                   <th scope="col" style={{ fontSize: 16, textAlign: 'center' }}>Actions</th>
                 </tr>
@@ -216,11 +179,7 @@ function Product() {
                   <tr key={Product.id}>
                     <td style={{ fontSize: 16 }}>{Product.productName}</td>
                     <td style={{ fontSize: 16 }}>{Product.productCategoryProductCategoryName}</td>
-                    <td style={{ fontSize: 16 }}>{Product.productColorProductColorName}</td>
-                    <td style={{ fontSize: 16 }}>{Product.productGradeProductGradeName}</td>
-                    <td style={{ fontSize: 16 }}>{Product.productSizeProductSizeName}</td>
-                    <td style={{ fontSize: 16 }}>{Product.productSubCategoryProductSubCategoryName}</td>
-                    
+                    <td style={{ fontSize: 16 }}>{Product.productCreationDate}</td>
                     <td style={{ fontSize: 16, textAlign: 'center' }}>
                       <div className="d-flex gap-2 justify-content-center">
                         <button className="btn" onClick={() => handleDelete(Product.id)} style={{ border: '1px solid #ddd', padding: '6px 8px', borderRadius: '8px', display: 'flex', alignItems: 'center' }}>

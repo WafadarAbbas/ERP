@@ -15,7 +15,7 @@ function ProductPackageMain() {
   const refEditClose = useRef(null);
 
   const [Main, setMain] = useState([]);
-  const [sortColumn, setSortColumn] = useState('productName');
+  const [sortColumn, setSortColumn] = useState('packageCode');
   const [sortOrder, setSortOrder] = useState('asc');
   const [error, setError] = useState(null);
   const [selectedProductPackageMainId, setSelectedProductPackageMainId] = useState(null);
@@ -23,9 +23,17 @@ function ProductPackageMain() {
   const [searchQuery, setSearchQuery] = useState('');
   const itemsPerPage = 6;
 
+  const handleIdReset = () => {
+    setSelectedProductPackageMainId(0);
+  };
+
   const fetchProductPackageMain = async (query = '') => {
     try {
-      const url = `http://localhost:5022/api/v1/ProductVariantMain/GetAllAppModal/list?organizationId=1&companyId=1`;
+      const url = query
+      ? `http://localhost:5022/api/v1/ProductPackageMain/GetProductPackageMainByName?name=${query}&organizationId=1&companyId=1`
+      : 'http://localhost:5022/api/v1/ProductPackageMain/GetAllAppModal/list?organizationId=1&companyId=1';
+
+    
       const response = await ApiCall({
         url: url,
         method: 'GET',
@@ -62,24 +70,24 @@ function ProductPackageMain() {
       confirmButtonText: 'Yes, delete it!'
     });
 
-    // if (result.isConfirmed) {
-    //   try {
-    //     const response = await ApiCall({
-    //       url: `http://localhost:5022/api/v1/ProductPackageMain/DeleteProductPackageMain/${ProductPackageMainId}?organizationId=1&companyId=1`,
-    //       method: 'DELETE',
-    //     });
+    if (result.isConfirmed) {
+      try {
+        const response = await ApiCall({
+          url: `http://localhost:5022/api/v1/ProductPackageMain/DeleteProductPackageMain/${ProductPackageMainId}?organizationId=1&companyId=1`,
+          method: 'DELETE',
+        });
 
-    //     if (response?.status === 200 || response?.status === 204) {
-    //       Swal.fire('Deleted', 'The ProductPackageMain has been deleted.', 'success');
-    //       setMain(Main.filter(ProductPackageMain => ProductPackageMain.id !== ProductPackageMainId));
-    //     } else {
-    //       Swal.fire('Error', 'Failed to delete ProductPackageMain', 'error');
-    //     }
-    //   } catch (error) {
-    //     console.error('Error during delete:', error);
-    //     Swal.fire('Error', 'An error occurred while deleting the ProductPackageMain', 'error');
-    //   }
-    // }
+        if (response?.status === 200 || response?.status === 204) {
+          Swal.fire('Deleted', 'The ProductPackageMain has been deleted.', 'success');
+          setMain(Main.filter(ProductPackageMain => ProductPackageMain.id !== ProductPackageMainId));
+        } else {
+          Swal.fire('Error', 'Failed to delete ProductPackageMain', 'error');
+        }
+      } catch (error) {
+        console.error('Error during delete:', error);
+        Swal.fire('Error', 'An error occurred while deleting the ProductPackageMain', 'error');
+      }
+    }
   };
 
   const handleEdit = (ProductPackageMainId) => {
@@ -139,7 +147,6 @@ function ProductPackageMain() {
             className="form-control"
             style={{ maxWidth: '300px' }}
             value={searchQuery}
-            disabled
             onChange={handleSearch}
           />
           <div className="d-flex justify-content-between align-items-center ">
@@ -164,9 +171,25 @@ function ProductPackageMain() {
                 <tr>
                   <th scope="col" style={{ fontSize: 16 }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
-                    productName
-                      <button onClick={() => handleSort('productName')} className="btn p-0">
-                        {sortOrder === 'asc' && sortColumn === 'productName' ? <FaArrowUp color="green" /> : <FaArrowDown color="red" />}
+                    packageCode
+                      <button onClick={() => handleSort('packageCode')} className="btn p-0">
+                        {sortOrder === 'asc' && sortColumn === 'packageCode' ? <FaArrowUp color="green" /> : <FaArrowDown color="red" />}
+                      </button>
+                    </div>
+                  </th>
+                  <th scope="col" style={{ fontSize: 16 }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
+                    packagePrice
+                      <button onClick={() => handleSort('packagePrice')} className="btn p-0">
+                        {sortOrder === 'asc' && sortColumn === 'packagePrice' ? <FaArrowUp color="green" /> : <FaArrowDown color="red" />}
+                      </button>
+                    </div>
+                  </th>
+                  <th scope="col" style={{ fontSize: 16 }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
+                    packageCode
+                      <button onClick={() => handleSort('packageCode')} className="btn p-0">
+                        {sortOrder === 'asc' && sortColumn === 'packageCode' ? <FaArrowUp color="green" /> : <FaArrowDown color="red" />}
                       </button>
                     </div>
                   </th>
@@ -181,7 +204,12 @@ function ProductPackageMain() {
               <tbody>
                 {paginatedPackage.map((ProductPackageMain) => (
                   <tr key={ProductPackageMain.id}>
-                    <td style={{ fontSize: 16 }}>{ProductPackageMain.productName}</td>
+                    <td style={{ fontSize: 16 }}>{ProductPackageMain.packageCode}</td>
+                    <td style={{ fontSize: 16 }}>{ProductPackageMain.packagePrice}</td>
+                       <td style={{ fontSize: 16 }}>{ProductPackageMain.packageStatus ? ( <FaCheckCircle style={{ color: 'green' }} />
+                                           ) : ( <FaTimesCircle style={{ color: 'red' }} /> )}
+                                         </td>
+                    
                   
                     <td style={{ fontSize: 16, textAlign: 'center' }}>
                       <div className="d-flex gap-2 justify-content-center">
@@ -222,7 +250,7 @@ function ProductPackageMain() {
       </div>
       <Footer />
       <CreateProductPackageMain open={createRef} close={refClose} onclick={fetchProductPackageMain} />
-      <EditProductPackageMain open={createEditRef} close={refEditClose} selectedProductPackageMainId={selectedProductPackageMainId} onclick={fetchProductPackageMain} />
+      <EditProductPackageMain open={createEditRef} close={refEditClose} selectedProductPackageMainId={selectedProductPackageMainId} onclick={fetchProductPackageMain} onIdReset={handleIdReset} />
     </div>
   );
 }

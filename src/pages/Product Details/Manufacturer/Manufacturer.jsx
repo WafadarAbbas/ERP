@@ -24,6 +24,9 @@ function Manufacturer() {
 
   const totalPages = Math.ceil(manufacturers.length / itemsPerPage);
 
+  const handleIdReset = () => {
+  setSelectedManufacturerId(null);
+  };
   const handlePageChange = (newPage) => {
     if (newPage >= 1 && newPage <= totalPages) {
       setCurrentPage(newPage);
@@ -252,7 +255,7 @@ function Manufacturer() {
       <Footer/>
 
       <CreateManufacturer open={createRef} close={refClose} onclick={fetch} />
-      <EditManufacturer open={createEditRef} close={refEditClose} selectedManufacturerId={selectedManufacturerId} onclick={fetch} />
+      <EditManufacturer open={createEditRef} close={refEditClose} selectedManufacturerId={selectedManufacturerId} onclick={fetch}onIdReset={handleIdReset}  />
     </div>
   );
 }

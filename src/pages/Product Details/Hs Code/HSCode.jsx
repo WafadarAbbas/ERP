@@ -23,6 +23,11 @@ function HSCode() {
   const [searchQuery, setSearchQuery] = useState('');
   const itemsPerPage = 6;
 
+
+  const handleIdReset = () => {
+  
+    setSelectedHSCodeId(null);
+  };
   const fetchHSCode = async (query = '') => {
     try {
       const url = query
@@ -247,7 +252,7 @@ function HSCode() {
       </div>
       <Footer/>
       <CreateHSCode open={createRef} close={refClose} onclick={fetchHSCode} />
-      <EditHSCode open={createEditRef} close={refEditClose} selectedHSCodeId={selectedHSCodeId} onclick={fetchHSCode} />
+      <EditHSCode open={createEditRef} close={refEditClose} selectedHSCodeId={selectedHSCodeId} onclick={fetchHSCode}onIdReset={handleIdReset}  />
     </div>
   );
 }

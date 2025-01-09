@@ -13,16 +13,20 @@ function ProductBrand() {
   const createEditRef = useRef(null);
   const refEditClose = useRef(null);
 
-  const [brands, setBrands] = useState([]); // Renamed for clarity
+  const [brands, setBrands] = useState([]);  
   const [sortColumn, setSortColumn] = useState('productBrandName');
   const [sortOrder, setSortOrder] = useState('asc');
   const [error, setError] = useState(null);  
   const [selectedProductBrandId, setSelectedProductBrandId] = useState(null);
-  const [searchQuery, setSearchQuery] = useState(''); // Added state for search query
+  const [searchQuery, setSearchQuery] = useState(''); 
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 6;
 
   const totalPages = Math.ceil(brands.length / itemsPerPage);
+
+  const handleIdReset = () => {
+    setSelectedProductBrandId(0);
+  };
 
   const handlePageChange = (newPage) => {
     if (newPage >= 1 && newPage <= totalPages) {
@@ -216,7 +220,7 @@ function ProductBrand() {
 
       <Footer />
       <CreateProductBrand open={createRef} close={refClose} onclick={fetch} />
-      <EditProductBrand open={createEditRef} close={refEditClose} selectedProductBrandId={selectedProductBrandId} onclick={fetch} />
+      <EditProductBrand open={createEditRef} close={refEditClose} selectedProductBrandId={selectedProductBrandId} onclick={fetch} onIdReset={handleIdReset} />
     </div>
   );
 }

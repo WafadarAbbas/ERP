@@ -6,9 +6,7 @@ import ApiCall from "../../../Apicall/ApiCall";
 
 const EditProductVariantDetails = (props) => {
   const { selectedProductVariantDetailsId } = props;
-
- 
-
+  
   const validationSchema = Yup.object({
     productVariantDetailsName: Yup.string()
     .required("Product Variant Details Name is required")
@@ -61,6 +59,9 @@ const EditProductVariantDetails = (props) => {
           formik.resetForm();
           if (props.close && props.close.current) {
             props.close.current.click();
+          }
+          if (typeof props.onIdReset === "function") {
+            props.onIdReset();
           }
           if (typeof props.onclick === "function") {
             props.onclick();

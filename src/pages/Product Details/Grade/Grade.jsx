@@ -22,6 +22,10 @@ function Grade() {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 6;
 
+
+  const handleIdReset = () => {
+    setSelectedGradeId(null);
+  };
   const totalPages = Math.ceil(Grades.length / itemsPerPage);
 
   const handlePageChange = (newPage) => {
@@ -224,7 +228,7 @@ function Grade() {
       </div>
       <Footer/>
       <CreateGrade open={createRef} close={refClose} onclick={fetch} />
-      <EditGrade open={createEditRef} close={refEditClose} selectedGradeId={selectedGradeId} onclick={fetch} />
+      <EditGrade open={createEditRef} close={refEditClose} selectedGradeId={selectedGradeId} onclick={fetch} onIdReset={handleIdReset} />
     </div>
   );
 }

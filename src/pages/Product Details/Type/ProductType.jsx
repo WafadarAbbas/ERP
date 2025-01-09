@@ -23,6 +23,9 @@ function ProductType() {
   const [searchQuery, setSearchQuery] = useState('');
   const itemsPerPage = 6;
 
+  const handleIdReset = () => {
+    setSelectedProductTypeId(0);
+  };
   const fetchProductType = async (query = '') => {
     try {
       const url = query
@@ -209,7 +212,7 @@ function ProductType() {
       </div>
       <Footer/>
       <CreateProductType open={createRef} close={refClose} onclick={fetchProductType} />
-      <EditProductType open={createEditRef} close={refEditClose} selectedProductTypeId={selectedProductTypeId} onclick={fetchProductType} />
+      <EditProductType open={createEditRef} close={refEditClose} selectedProductTypeId={selectedProductTypeId} onclick={fetchProductType} onIdReset={handleIdReset} />
     </div>
   );
 }

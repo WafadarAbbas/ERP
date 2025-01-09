@@ -24,6 +24,9 @@ function ProductSize() {
 
   const totalPages = Math.ceil(Size.length / itemsPerPage);
 
+  const handleIdReset = () => {
+    setSelectedProductSizeId(null);
+  };
   const handlePageChange = (newPage) => {
     if (newPage >= 1 && newPage <= totalPages) {
       setCurrentPage(newPage);
@@ -209,7 +212,7 @@ function ProductSize() {
       </div>
       <Footer/>
       <CreateProductSize open={createRef} close={refClose} onclick={fetchProductSize} />
-      <EditProductSize open={createEditRef} close={refEditClose} selectedProductSizeId={selectedProductSizeId} onclick={fetchProductSize} />
+      <EditProductSize open={createEditRef} close={refEditClose} selectedProductSizeId={selectedProductSizeId} onclick={fetchProductSize}onIdReset={handleIdReset}  />
     </div>
   );
 }

@@ -64,6 +64,9 @@ const EditProductPackagePolicy = (props) => {
           if (props.close && props.close.current) {
             props.close.current.click();
           }
+          if (typeof props.onIdReset === "function") {
+            props.onIdReset();
+          }
           if (typeof props.onclick === "function" ) {
             props.onclick();
           }
@@ -189,7 +192,7 @@ const EditProductPackagePolicy = (props) => {
 
             <div className="modal-body">
               <form onSubmit={formik.handleSubmit}>
-                {/* Start Date Field */}
+               
                 <div className="mb-3">
                   <label htmlFor="startDate" className="form-label">
                     Start Date

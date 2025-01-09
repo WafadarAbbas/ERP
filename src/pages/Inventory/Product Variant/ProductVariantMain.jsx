@@ -23,6 +23,10 @@ function ProductVariantMain() {
   const [searchQuery, setSearchQuery] = useState('');
   const itemsPerPage = 6;
 
+  const handleIdReset = () => {
+    setSelectedProductVariantMainId(0);
+  };
+
   const fetchProductVariantMain = async (query = '') => {
     try {
       const url = query
@@ -239,7 +243,7 @@ function ProductVariantMain() {
       </div>
       <Footer/>
       <CreateProductVariantMain open={createRef} close={refClose} onclick={fetchProductVariantMain} />
-      <EditProductVariantMain open={createEditRef} close={refEditClose} selectedProductVariantMainId={selectedProductVariantMainId} onclick={fetchProductVariantMain} />
+      <EditProductVariantMain open={createEditRef} close={refEditClose} selectedProductVariantMainId={selectedProductVariantMainId} onclick={fetchProductVariantMain} onIdReset={handleIdReset}/>
     </div>
   );
 }

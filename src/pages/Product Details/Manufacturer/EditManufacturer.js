@@ -65,6 +65,9 @@ const EditManufacturer = (props) => {
           if (typeof props.onclick === "function") {
             props.onclick();
           }
+          if (typeof props.onIdReset === "function") {
+            props.onIdReset();
+          }
               
         if (props.close && typeof props.close.current?.click === "function") {
           props.close.current.click();  

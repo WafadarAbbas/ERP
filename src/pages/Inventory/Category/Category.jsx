@@ -20,6 +20,10 @@ function Category() {
   const [selectedCategoryId, setSelectedCategoryId] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
 
+
+  const handleIdReset = () => {
+    setSelectedCategoryId(0);
+  };
   const fetchCategories = async (query = '') => {
     try {
       const url = query
@@ -179,7 +183,7 @@ function Category() {
       </div>
       <Footer/>
       <CreateCategory open={createRef} close={refClose} onclick={ fetch}   />
-      <EditCategory open={createEditRef} close={refEditClose} selectedCategoryId={selectedCategoryId} onclick={ fetch} />
+      <EditCategory open={createEditRef} close={refEditClose} selectedCategoryId={selectedCategoryId} onclick={ fetch} onIdReset={handleIdReset} />
     </div>
   );
 }

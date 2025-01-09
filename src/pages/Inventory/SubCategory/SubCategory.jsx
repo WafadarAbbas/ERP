@@ -20,9 +20,16 @@ function SubCategory() {
   const [selectedSubCategoryId, setSelectedSubCategoryId] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 6;
+
+
   const [searchTerm, setSearchTerm] = useState('');
 
-  // Fetch subcategories with an optional query
+
+  const handleIdReset = () => {
+    setSelectedSubCategoryId(0);
+  };
+  
+
   const fetchSubCategory = async (query = '') => {
     try {
       const url = query
@@ -252,7 +259,7 @@ function SubCategory() {
 
       <Footer/>
       <CreateSubCategory open={createRef} close={refClose} onclick={fetchSubCategory} />
-      <EditSubCategory open={createEditRef} close={refEditClose} selectedSubCategoryId={selectedSubCategoryId} onclick={fetchSubCategory} />
+      <EditSubCategory open={createEditRef} close={refEditClose} selectedSubCategoryId={selectedSubCategoryId} onclick={fetchSubCategory} onIdReset={handleIdReset} />
     </div>
   );
 }

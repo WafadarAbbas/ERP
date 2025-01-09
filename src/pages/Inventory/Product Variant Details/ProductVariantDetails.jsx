@@ -23,6 +23,9 @@ function ProductVariantDetails() {
   const [searchQuery, setSearchQuery] = useState('');
   const itemsPerPage = 6;
 
+  const handleIdReset = () => {
+    setSelectedProductVariantDetailsId(0);
+  };
   const fetchProductVariantDetails = async (query = '') => {
     try {
       const url = query
@@ -239,7 +242,7 @@ function ProductVariantDetails() {
       </div>
       <Footer/>
       <CreateProductVariantDetails open={createRef} close={refClose} onclick={fetchProductVariantDetails} />
-      <EditProductVariantDetails open={createEditRef} close={refEditClose} selectedProductVariantDetailsId={selectedProductVariantDetailsId} onclick={fetchProductVariantDetails} />
+      <EditProductVariantDetails open={createEditRef} close={refEditClose} selectedProductVariantDetailsId={selectedProductVariantDetailsId} onclick={fetchProductVariantDetails} onIdReset={handleIdReset}/>
     </div>
   );
 }

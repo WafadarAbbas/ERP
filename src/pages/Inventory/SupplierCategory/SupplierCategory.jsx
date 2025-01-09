@@ -23,6 +23,11 @@ function SupplierCategory() {
   const [searchQuery, setSearchQuery] = useState('');
   const itemsPerPage = 6;
 
+
+  const handleIdReset = () => {
+    setSelectedSupplierCategoryId(0);
+  };
+
   const fetchSupplierCategory = async (query = '') => {
     try {
       const url = query
@@ -224,7 +229,7 @@ function SupplierCategory() {
       </div>
       <Footer />
       <CreateSupplierCategory open={createRef} close={refClose} onclick={fetchSupplierCategory} />
-      <EditSupplierCategory open={createEditRef} close={refEditClose} selectedSupplierCategoryId={selectedSupplierCategoryId} onclick={fetchSupplierCategory} />
+      <EditSupplierCategory open={createEditRef} close={refEditClose} selectedSupplierCategoryId={selectedSupplierCategoryId} onclick={fetchSupplierCategory} onIdReset={handleIdReset} />
     </div>
   );
 }

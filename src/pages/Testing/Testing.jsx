@@ -1,63 +1,86 @@
-import React from 'react';
-import { Formik, Form, Field, ErrorMessage } from 'formik';
-import * as Yup from 'yup';
+import React, { useEffect, useState } from "react";
+import { useFormik } from "formik";
+import * as Yup from "yup";
+import ApiCall from "../../Apicall/ApiCall"; // Adjust the path to your ApiCall utility
 
-function Testing() {
-  // Validation schema for datetime-local
-  const validationSchema = Yup.object({
-    dateInput: Yup.date()
-      .required('Please select a date and time'),
-  });
+const Testing = () => {
+  const [suppliers, setSuppliers] = useState([]);
 
-  const handleSubmit = (values) => {
-    const isoDate = new Date(values.dateInput).toISOString(); // Convert to ISO 8601
-    console.log('Selected ISO 8601 Date:', isoDate);
+  // Fetch suppliers from the API
+  const fetchSuppliers = async () => {
+    try {
+      const response = await ApiCall({
+        url: "http://localhost:5022/api/v1/Supplier/GetSupplierBoxItems/combobox?organizationId=1&companyId=1",
+        method: "GET",
+      });
+      if (response?.data) {
+        setSuppliers(response.data);
+      } else {
+        throw new Error("Failed to fetch suppliers.");
+      }
+    } catch (error) {
+      console.error("Error fetching suppliers:", error);
+    }
   };
 
+  // Fetch suppliers on component mount
+  useEffect(() => {
+    fetchSuppliers();
+  }, []);
+
+  // Formik configuration
+  const formik = useFormik({
+    initialValues: {
+      supplierId: "",
+    },
+    validationSchema: Yup.object({
+      supplierId: Yup.number().required("Supplier is required"),
+    }),
+    onSubmit: async (values) => {
+      console.log("Form submitted with values:", values);
+      // Handle form submission here
+    },
+  });
+
   return (
-    <div style={{ padding: '20px' }}>
-      <h2>Select Date and Time</h2>
-      <Formik
-        initialValues={{ dateInput: '' }}
-        validationSchema={validationSchema}
-        onSubmit={handleSubmit}
-      >
-        {({ isValid, dirty }) => (
-          <Form>
-            <div style={{ marginBottom: '10px' }}>
-              <label htmlFor="dateInput" style={{ display: 'block', marginBottom: '5px' }}>
-                Date and Time:
-              </label>
-              <Field
-                id="dateInput"
-                name="dateInput"
-                type="datetime-local"
-                style={{ padding: '10px', width: '300px' }}
-              />
-              <ErrorMessage
-                name="dateInput"
-                component="div"
-                style={{ color: 'red', marginTop: '5px' }}
-              />
-            </div>
-            <button
-              type="submit"
-              disabled={!(isValid && dirty)}
-              style={{
-                padding: '10px 20px',
-                backgroundColor: isValid && dirty ? 'green' : 'gray',
-                color: 'white',
-                border: 'none',
-                cursor: isValid && dirty ? 'pointer' : 'not-allowed',
-              }}
-            >
-              Submit
-            </button>
-          </Form>
-        )}
-      </Formik>
+    <div className="container mt-5">
+      <form onSubmit={formik.handleSubmit}>
+        <div className="col-md-4 mb-3">
+          <label htmlFor="supplierId" className="form-label">
+            Supplier
+          </label>
+          <select
+            id="supplierId"
+            name="supplierId"
+            className={`form-select ${
+              formik.touched.supplierId && formik.errors.supplierId ? "is-invalid" : ""
+            }`}
+            value={formik.values.supplierId}
+            onChange={(e) => formik.setFieldValue("supplierId", Number(e.target.value))}
+            onBlur={formik.handleBlur}
+          >
+            <option value="">Select Supplier</option>
+            {Array.isArray(suppliers) && suppliers.length > 0 ? (
+              suppliers.map((supplier) => (
+                <option key={supplier.id} value={supplier.id}>
+                  {supplier.name}
+                </option>
+              ))
+            ) : (
+              <option value="">No Suppliers Available</option>
+            )}
+          </select>
+          {formik.touched.supplierId && formik.errors.supplierId && (
+            <div className="invalid-feedback">{formik.errors.supplierId}</div>
+          )}
+        </div>
+        <button type="submit" className="btn btn-primary">
+          Submit
+        </button>
+      </form>
     </div>
   );
-}
+};
 
 export default Testing;
+

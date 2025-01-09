@@ -69,8 +69,13 @@ const EditProductSize = (props) => {
             confirmButtonColor: "#3085d6",
             confirmButtonText: "OK",
           });
-          formik.resetForm(); // Reset form after successful submission
-
+          formik.resetForm();
+          if (props.close && props.close.current) {
+            props.close.current.click();  
+          }
+          if (typeof props.onIdReset === "function") {
+            props.onIdReset();
+          }
           if (typeof props.onclick === "function") {
             props.onclick(); // Trigger any additional actions
           }

@@ -79,7 +79,7 @@ const EditSupplier = (props) => {
         if (response?.status === 200 || response?.status === 204) {
           Swal.fire({
             title: "Success!",
-            text: "Product Price saved successfully.",
+            text: "Supplier saved successfully.",
             icon: "success",
             confirmButtonColor: "#3085d6",
             confirmButtonText: "OK",
@@ -89,6 +89,9 @@ const EditSupplier = (props) => {
           formik.resetForm();
           if (props.close && props.close.current) {
             props.close.current.click();  
+          }
+          if (typeof props.onIdReset === "function") {
+            props.onIdReset();
           }
           if (typeof props.onclick === "function" ) {
             props.onclick();
@@ -157,10 +160,10 @@ useEffect(() => {
      
         });
       } else {
-        console.error("Failed to load Product Price data.");
+        console.error("Failed to load Supplier data.");
       }
     } catch (error) {
-      console.error("Error fetching Product Price:", error.message);
+      console.error("Error fetching Supplier:", error.message);
     }
   };
 

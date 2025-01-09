@@ -24,6 +24,11 @@ function Color() {
 
   const totalPages = Math.ceil(colors.length / itemsPerPage);
 
+  const handleIdReset = () => {
+    
+    setSelectedColorId(null);
+  };
+
   const handlePageChange = (newPage) => {
     if (newPage >= 1 && newPage <= totalPages) {
       setCurrentPage(newPage);
@@ -226,7 +231,7 @@ function Color() {
 
       <Footer/>
       <CreateColor open={createRef} close={refClose} onclick={fetch} />
-      <EditColor open={createEditRef} close={refEditClose} selectedColorId={selectedColorId} onclick={fetch} />
+      <EditColor open={createEditRef} close={refEditClose} selectedColorId={selectedColorId} onclick={fetch}onIdReset={handleIdReset}  />
     </div>
   );
 }

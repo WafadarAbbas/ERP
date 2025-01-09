@@ -23,6 +23,11 @@ function ProductPackageDetail() {
   const [searchQuery, setSearchQuery] = useState('');
   const itemsPerPage = 6;
 
+  
+  const handleIdReset = () => {
+     
+    setSelectedProductPackageDetailId(null);
+  };
   const fetchProductPackageDetail = async (query = '') => {
     try {
       const url =`http://localhost:5022/api/v1/ProductPackageDetail/GetAllAppModal/list?organizationId=1&companyId=1`;
@@ -229,7 +234,7 @@ function ProductPackageDetail() {
       </div>
       <Footer/>
       <CreateProductPackageDetail open={createRef} close={refClose} onclick={fetchProductPackageDetail} />
-      <EditProductPackageDetail open={createEditRef} close={refEditClose} selectedProductPackageDetailId={selectedProductPackageDetailId} onclick={fetchProductPackageDetail} />
+      <EditProductPackageDetail open={createEditRef} close={refEditClose} selectedProductPackageDetailId={selectedProductPackageDetailId} onclick={fetchProductPackageDetail} onIdReset={handleIdReset} />
     </div>
   );
 }

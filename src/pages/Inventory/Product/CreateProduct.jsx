@@ -27,19 +27,9 @@ function CreateProduct() {
       productTypeId:0,
     },
     
-    // Updated validationSchema
+ 
     validationSchema: Yup.object({
-      // productName: Yup.string().required('Product name is required'),
-      // productCode: Yup.string().required('Product code is required'),
-      // productVendorCode: Yup.string().required('Vendor code is required'),
-      // productTechnicalDetails: Yup.string().required('Technical details are required'),
-      // productCreationDate: Yup.string().required('Creation date is required'),
-      // productStatus: Yup.boolean().required('Product status is required'),
-      // productMinimumQuantity: Yup.number()
-      //   .min(0, 'Minimum quantity cannot be negative')
-      //   .required('Minimum quantity is required'),
-      // isRawMaterial: Yup.boolean().required('Raw material status is required'),
-      // isSingleBranch: Yup.boolean().required('Branch status is required'), // New validation
+ 
     }),
  
 onSubmit: async (values) => {
@@ -75,18 +65,7 @@ onSubmit: async (values) => {
       }
     };
 
-    const fetchCategories = async () => {
-      try {
-        const response = await ApiCall({
-          url: 'http://localhost:5022/api/v1/ProductCategory/GetProductCategoryBoxItems/combobox?organizationId=1&companyId=1',
-          method: 'GET',
-        });
-        setCategories(response.data);  
-      } catch (error) {
-        console.error('Error fetching categories:', error);
-        setCategories([]);
-      }
-    };
+   
 
 
     const fetchColors = async () => {
@@ -142,19 +121,7 @@ onSubmit: async (values) => {
       }
     };
 
-    const fetchSubCategories = async () => {
-      try {
-        const response = await ApiCall({
-          url: 'http://localhost:5022/api/v1/ProductSubCategory/GetProductSubCategoryBoxItems/combobox?organizationId=1&companyId=1',
-          method: 'GET',
-        });
-        setSubCategories(response.data); // Assuming the response contains an array of subcategories
-      } catch (error) {
-        console.error('Error fetching subcategories:', error);
-        setSubCategories([]);
-        
-      }
-    };
+  
     const fetchProductTypes = async () => {
       try {
         const response = await ApiCall({
@@ -170,14 +137,53 @@ onSubmit: async (values) => {
 
 
     fetchProductTypes();
-    fetchSubCategories();
+     
     fetchBrands();
-    fetchCategories();
+     
     fetchColors();
     fetchGenders();
     fetchGrades();
     fetchSizes();
   }, []);
+
+
+  useEffect(() => {
+    // Fetch Categories
+    const fetchCategories = async () => {
+      try {
+        const response = await ApiCall({
+          url: 'http://localhost:5022/api/v1/ProductCategory/GetProductCategoryBoxItems/combobox?organizationId=1&companyId=1',
+          method: 'GET',
+        });
+        setCategories(response.data);
+      } catch (error) {
+        console.error('Error fetching categories:', error);
+        setCategories([]);
+      }
+    };
+    fetchCategories();
+  }, []);
+
+  useEffect(() => {
+    // Fetch SubCategories when a Category is selected
+    if (formik.values.productCategoryId) {
+      const fetchSubCategories = async () => {
+        try {
+          const response = await ApiCall({
+            url: `http://localhost:5022/api/v1/ProductSubCategory/GetProductSubCategoryByProductCategoryIdQuery/GetProductSubCategoryByProductCategoryId?id=${formik.values.productCategoryId}&organizationId=1&companyId=1`,
+            method: 'GET',
+          });
+          setSubCategories(response.data);
+        } catch (error) {
+          console.error('Error fetching subcategories:', error);
+          setSubCategories([]);
+        }
+      };
+      fetchSubCategories();
+    } else {
+      setSubCategories([]); // Reset SubCategories if no category is selected
+    }
+  }, [formik.values.productCategoryId]);
 
 
   return (
@@ -348,7 +354,7 @@ onSubmit: async (values) => {
       </div>
 
  
-      <div className="form-group mt-3">
+      {/* <div className="form-group mt-3">
         <label>Category</label>
         <select
           name="productCategoryId"
@@ -372,6 +378,77 @@ onSubmit: async (values) => {
           <div className="text-danger">{formik.errors.productCategoryId}</div>
         ) : null}
       </div>
+
+      <div className='form-group mt-3'>
+          <label>SubCategory</label>
+          <select
+            name='productSubCategoryId'
+            className='form-control'
+            value={formik.values.productSubCategoryId}
+            onChange={(e) => formik.setFieldValue('productSubCategoryId', Number(e.target.value))}  
+            onBlur={formik.handleBlur}
+          >
+            <option value=''>Select SubCategory</option>
+            {Array.isArray(subCategories) && subCategories.length > 0 ? (
+            subCategories.map((subCategory) => (
+              <option key={subCategory.id} value={subCategory.id}>
+                {subCategory.name}  
+              </option>
+            ))
+            ):(
+              <option disabled>Loading SubCategories...</option>
+              )
+          }
+          </select>
+          {formik.touched.productSubCategoryId && formik.errors.productSubCategoryId ? (
+            <div className='text-danger'>{formik.errors.productSubCategoryId}</div>
+          ) : null}
+        </div> */}
+
+<div className="form-group mt-3">
+          <label>Category</label>
+          <select
+            name="productCategoryId"
+            className="form-control"
+            value={formik.values.productCategoryId}
+            onChange={(e) => {
+              formik.setFieldValue('productCategoryId', Number(e.target.value));
+              formik.setFieldValue('productSubCategoryId', 0); // Reset SubCategory when Category changes
+            }}
+            onBlur={formik.handleBlur}
+          >
+            <option value="">Select Category</option>
+            {categories.map((category) => (
+              <option key={category.id} value={category.id}>
+                {category.name}
+              </option>
+            ))}
+          </select>
+          {formik.touched.productCategoryId && formik.errors.productCategoryId ? (
+            <div className="text-danger">{formik.errors.productCategoryId}</div>
+          ) : null}
+        </div>
+
+        <div className="form-group mt-3">
+          <label>SubCategory</label>
+          <select
+            name="productSubCategoryId"
+            className="form-control"
+            value={formik.values.productSubCategoryId}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+          >
+            <option value="">Select SubCategory</option>
+            {subCategories.map((subCategory) => (
+              <option key={subCategory.id} value={subCategory.id}>
+                {subCategory.productSubCategoryName}
+              </option>
+            ))}
+          </select>
+          {formik.touched.productSubCategoryId && formik.errors.productSubCategoryId ? (
+            <div className="text-danger">{formik.errors.productSubCategoryId}</div>
+          ) : null}
+        </div>
 
         <div className='form-group mt-3'>
           <label>Color</label>
@@ -478,31 +555,7 @@ onSubmit: async (values) => {
           ) : null}
         </div>
 
-        <div className='form-group mt-3'>
-          <label>SubCategory</label>
-          <select
-            name='productSubCategoryId'
-            className='form-control'
-            value={formik.values.productSubCategoryId}
-            onChange={(e) => formik.setFieldValue('productSubCategoryId', Number(e.target.value))}  
-            onBlur={formik.handleBlur}
-          >
-            <option value=''>Select SubCategory</option>
-            {Array.isArray(subCategories) && subCategories.length > 0 ? (
-            subCategories.map((subCategory) => (
-              <option key={subCategory.id} value={subCategory.id}>
-                {subCategory.name}  
-              </option>
-            ))
-            ):(
-              <option disabled>Loading SubCategories...</option>
-              )
-          }
-          </select>
-          {formik.touched.productSubCategoryId && formik.errors.productSubCategoryId ? (
-            <div className='text-danger'>{formik.errors.productSubCategoryId}</div>
-          ) : null}
-        </div>
+      
 
         <div className='form-group mt-3'>
           <label>Product Type</label>

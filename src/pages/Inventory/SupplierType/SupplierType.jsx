@@ -23,6 +23,10 @@ function SupplierType() {
   const [searchQuery, setSearchQuery] = useState('');
   const itemsPerPage = 6;
 
+  const handleIdReset = () => {
+    setSelectedSupplierTypeId(0);
+  };
+
   const fetchSupplierType = async (query = '') => {
     try {
  
@@ -225,7 +229,7 @@ function SupplierType() {
       </div>
       <Footer />
       <CreateSupplierType open={createRef} close={refClose} onclick={fetchSupplierType} />
-      <EditSupplierType open={createEditRef} close={refEditClose} selectedSupplierTypeId={selectedSupplierTypeId} onclick={fetchSupplierType} />
+      <EditSupplierType open={createEditRef} close={refEditClose} selectedSupplierTypeId={selectedSupplierTypeId} onclick={fetchSupplierType} onIdReset={handleIdReset}/>
     </div>
   );
 }

@@ -4,8 +4,60 @@ import * as Yup from 'yup'; // For validation
 import ApiCall from '../../../Apicall/ApiCall';
 import Swal from 'sweetalert2';
 import Footer from '../../../Compo/Footer';
+import { useNavigate } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
+import Buton from '../../../Compo/Buton';
 
 function EditProduct() { 
+
+   
+const location = useLocation();
+const productId = location.state?.id;
+const navigate = useNavigate(); 
+
+
+useEffect(() => {
+  const fetchProduct = async () => {
+    try {
+      const response = await ApiCall({
+        url: `http://localhost:5022/api/v1/Product/GetProductByIdQuery/${productId}?organizationId=1&companyId=1`,
+        method: "GET",
+      });
+ 
+      if (response && response.data && response.data.length > 0) {
+        const product = response.data[0];
+        formik.setValues({
+          productName: product.productName || "",
+          productCode: product.productCode || "",
+          productVendorCode: product.productVendorCode || "",
+          productTechnicalDetails: product.productTechnicalDetails || "",
+          productCreationDate: product.productCreationDate || "",
+          productStatus: product.productStatus || "",
+          productMinimumQuantity: product.productMinimumQuantity || "",
+          isRawMaterial: product.isRawMaterial || "",
+          isSingleBranch: product.isSingleBranch || "",
+          productBrandId: product.productBrandId || "",
+          productCategoryId: product.productCategoryId || "",
+          productColorId: product.productColorId || "",
+          productGanderId: product.productGanderId || "",
+          productSizeId: product.productSizeId || "",
+          productSubCategoryId: product.productSubCategoryId || "",
+          productTypeId: product.productTypeId || "",
+          productGradeId: product.productGradeId || "",
+        });
+      } else {
+        console.error("Failed to load po Status data.");
+      }
+    } catch (error) {
+      console.error("Error fetching poStatus:", error.message);
+    }
+  };
+
+  if (productId) {
+    fetchProduct();
+  }
+}, [productId]);
+
   const formik = useFormik({
     initialValues: {
       productName: '',
@@ -41,6 +93,8 @@ function EditProduct() {
       // isRawMaterial: Yup.boolean().required('Raw material status is required'),
       // isSingleBranch: Yup.boolean().required('Branch status is required'), // New validation
     }),
+
+
  
 onSubmit: async (values) => {
   const formData = {
@@ -183,14 +237,22 @@ onSubmit: async (values) => {
   return (
     <div style={{ marginTop: 10 }}>
       <div className='d-flex justify-content-between row'>
-        <div className='d-flex flex-column col-sm-7'>
+        <div className='d-flex flex-column col-sm-8'>
           <h3>Edit Product</h3>
           <h5 style={{ fontWeight: 400 }}>Manage your product Updation</h5>
+          
         </div>
+        <div className='col-sm-4' style={{ display: 'flex', gap: '10px', alignItems: 'center', justifyContent: 'flex-end' }}>
+          <i className="fa fa-print text-primary fs-2 me-2 p-2 bg-white border border-grey rounded-3 cursor-pointer" onClick={() => alert('Print button clicked!')} ></i>
+          <i className="fa-solid fa-file-pdf text-danger fs-2 me-2 p-2 bg-white border border-grey rounded-3 cursor-pointer " onClick={() => alert('PDF button clicked!')} ></i>
+          <i className="fa fa-file-excel-o fs-2 me-2 p-2 bg-white border border-grey rounded-3 cursor-pointer" onClick={() => alert('Excel button clicked!')} style={{ color: 'green' }}></i>
+          <Buton  onClick={() => navigate("/Product")}>Move to Product</Buton>
+        </div>
+        
       </div>
 
       
-      <div style={{backgroundColor:'white', padding:10 ,border:"1px solid #d6d4d4"}}>
+      <div style={{backgroundColor:'white',marginTop:15, padding:10 ,border:"1px solid #d6d4d4"}}>
       <form onSubmit={formik.handleSubmit}>
  
   <div className='form-group mt-3'>

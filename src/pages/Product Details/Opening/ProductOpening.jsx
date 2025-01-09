@@ -23,6 +23,12 @@ function ProductOpening() {
   const [searchQuery, setSearchQuery] = useState('');
   const itemsPerPage = 6;
 
+
+  const handleIdReset = () => {
+     
+    setSelectedProductOpeningId(null);
+
+  };
   const fetchProductOpening = async (query = '') => {
     try {
       const url =`http://localhost:5022/api/v1/ProductOpening/GetAllAppModal/list?organizationId=1&companyId=1`;
@@ -254,7 +260,7 @@ function ProductOpening() {
       </div>
       <Footer/>
       <CreateProductOpening open={createRef} close={refClose} onclick={fetchProductOpening} />
-      <EditProductOpening open={createEditRef} close={refEditClose} selectedProductOpeningId={selectedProductOpeningId} onclick={fetchProductOpening} />
+      <EditProductOpening open={createEditRef} close={refEditClose} selectedProductOpeningId={selectedProductOpeningId} onclick={fetchProductOpening} onIdReset={handleIdReset} />
     </div>
   );
 }

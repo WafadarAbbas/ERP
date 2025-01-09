@@ -24,6 +24,10 @@ function PaymentTerms() {
   const [searchQuery, setSearchQuery] = useState('');
   const itemsPerPage = 6;
 
+  const handleIdReset = () => {
+    setSelectedPaymentTermsId(0);
+
+  };
   const fetchPaymentTerms = async (query = '') => {
     try {
       const url = query
@@ -227,7 +231,7 @@ function PaymentTerms() {
       </div>
       <Footer/>
       <CreatePaymentTerms open={createRef} close={refClose} onclick={fetchPaymentTerms} />
-      <EditPaymentTerms open={createEditRef} close={refEditClose} selectedPaymentTermsId={selectedPaymentTermsId} onclick={fetchPaymentTerms} />
+      <EditPaymentTerms open={createEditRef} close={refEditClose} selectedPaymentTermsId={selectedPaymentTermsId} onclick={fetchPaymentTerms} onIdReset={handleIdReset}  />
     </div>
   );
 }

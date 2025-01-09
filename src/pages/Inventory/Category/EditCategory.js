@@ -6,7 +6,7 @@ import Swal from "sweetalert2";
 
 const EditCategory = (props) => {
   const { selectedCategoryId } = props;
-  console.log(selectedCategoryId);
+   
   
   const [initialValues, setInitialValues] = useState({
     productCategoryName: "",
@@ -15,7 +15,7 @@ const EditCategory = (props) => {
   const validationSchema = Yup.object({
     productCategoryName: Yup.string()
       .required("Product Category Name is required")
-      .min(3, "Category name must be at least 3 characters"),
+      .min(1, "Category name must be at least 1 characters"),
   });
 
   const formik = useFormik({
@@ -49,6 +49,9 @@ const EditCategory = (props) => {
 
           if (typeof props.onclick === "function") {
             props.onclick();
+          }
+          if (typeof props.onIdReset === "function") {
+            props.onIdReset();
           }
           if (props.close && props.close.current) {
             props.close.current.click(); // Close the modal by triggering the close button

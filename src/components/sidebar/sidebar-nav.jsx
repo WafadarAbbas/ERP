@@ -7,6 +7,8 @@ import StockMenu from '../../config/app-stockmenu.jsx';
 import SaleMenu from '../../config/app-salesmenu.jsx';
 import Invetory from '../../config/app-inventorymenu.jsx';
 import detailsmenu from '../../config/app-detailsmenu.jsx';
+import purchaseMenu from '../../config/app-PurchaseOrder.jsx';
+
 
 
 
@@ -190,6 +192,12 @@ function SidebarNav() {
       <h6 style={{ fontFamily: 'Nunito, sans-serif', fontWeight: 500, fontSize: '1.1rem' }}>Product Details</h6>
       {detailsmenu.map((detailsmenu, i) => (
         <NavItem key={i} menu={detailsmenu} />
+      ))}
+	  <hr style={{ bo: '#ddd', borderWidth: '1px', borderStyle: 'solid' }} />
+
+	  <h6 style={{ fontFamily: 'Nunito, sans-serif', fontWeight: 500, fontSize: '1.1rem' }}>Purchase Order</h6>
+      {purchaseMenu.map((purchasemenu, i) => (
+        <NavItem key={i} menu={purchasemenu} />
       ))}
 	  <hr style={{ bo: '#ddd', borderWidth: '1px', borderStyle: 'solid' }} />
 

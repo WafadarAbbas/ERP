@@ -3,23 +3,24 @@ import 'bootstrap/dist/css/bootstrap.min.css'; // Import Bootstrap CSS
 import { Form, FormControl, Button } from 'react-bootstrap'; // Import Form components
 import { FaHome, FaInfoCircle } from 'react-icons/fa';
 import './IconStyles.css';
+import DropdownProfile from '../dropdown/profile';
 function Items() {
   return (
-    <div className="d-flex" >
+    <div className="d-flex justify-content-between mt-3" >
 <div>
       <Form className="d-flex align-items-center">
         <FormControl
           type="search"
           placeholder="Search "
-          className="me-5"
+          className="me-2"
           aria-label="Search"
-          style={{ width: '500px',height:40, backgroundColor: '#fafafa', borderRadius: '10px', marginLeft:'70px'}}
+          style={{ width: '500px',height:40, backgroundColor: '#fafafa', borderRadius: '10px', marginLeft:'60px'}}
         />
 
       </Form>
       </div>
       <div className="d-flex justify-content-end align-items-center" 
-       style={{ width: '510px'}}>
+      >
 
         <div
           className="d-flex align-items-center justify-content-center me-3"
@@ -55,6 +56,7 @@ function Items() {
           }}>
          <i class="fa fa-cog  icon-hover" aria-hidden="true" style={{fontSize:18}}></i>
         </div>
+        <DropdownProfile/>
       </div>
     </div>
   );

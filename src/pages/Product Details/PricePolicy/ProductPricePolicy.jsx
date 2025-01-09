@@ -23,6 +23,10 @@ function ProductPricePolicy() {
   const [searchQuery, setSearchQuery] = useState('');
   const itemsPerPage = 6;
 
+  const handleIdReset = () => {
+    setSelectedProductPricePolicyId(0);
+  };
+
   const fetchProductPricePolicy = async (query = '') => {
     try {
       const url = `http://localhost:5022/api/v1/ProductPricePolicy/GetAllAppModal/list?organizationId=1&companyId=1`;
@@ -222,7 +226,7 @@ function ProductPricePolicy() {
       </div>
       <Footer />
       <CreateProductPricePolicy open={createRef} close={refClose} onclick={fetchProductPricePolicy} />
-      <EditProductPricePolicy open={createEditRef} close={refEditClose} selectedProductPricePolicyId={selectedProductPricePolicyId} onclick={fetchProductPricePolicy} />
+      <EditProductPricePolicy open={createEditRef} close={refEditClose} selectedProductPricePolicyId={selectedProductPricePolicyId} onclick={fetchProductPricePolicy} onIdReset={handleIdReset} />
     </div>
   );
 }

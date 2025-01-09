@@ -23,6 +23,9 @@ function Supplier() {
   const [searchQuery, setSearchQuery] = useState('');
   const itemsPerPage = 6;
 
+  const handleIdReset = () => {
+    setSelectedSupplierId(0);
+  };
   const fetchSupplier = async (query = '') => {
     try {
        
@@ -277,7 +280,7 @@ function Supplier() {
       </div>
       <Footer />
       <CreateSupplier open={createRef} close={refClose} onclick={fetchSupplier} />
-      <EditSupplier open={createEditRef} close={refEditClose} selectedSupplierId={selectedSupplierId} onclick={fetchSupplier} />
+      <EditSupplier open={createEditRef} close={refEditClose} selectedSupplierId={selectedSupplierId} onclick={fetchSupplier}onIdReset={handleIdReset} />
     </div>
   );
 }

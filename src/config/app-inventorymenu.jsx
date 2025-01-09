@@ -25,7 +25,8 @@ const Invetory = [
     },
     { path: '/SupplierCategory', icon: 'fa fa-cube', title: 'Supplier Category',
     },
-    
+ 
+   
 
   
   ]

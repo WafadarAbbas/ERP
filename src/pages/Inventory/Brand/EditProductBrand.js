@@ -46,12 +46,16 @@ const EditProductBrand = (props) => {
             confirmButtonText: 'OK',
           });
           formik.resetForm();  
+          if (props.close && props.close.current) {
+            props.close.current.click(); 
+          }
           if (typeof props.onclick === "function") {
             props.onclick(); 
           }
-          if (props.close && props.close.current) {
-            props.close.current.click();
+          if (typeof props.onIdReset === "function") {
+            props.onIdReset();
           }
+        
         } else {
           throw new Error('Failed to save the Product Brand');
         }
@@ -96,12 +100,7 @@ const EditProductBrand = (props) => {
   }, [selectedProductBrandId ]);
 
    
-  const handleModalClose = () => {
-    formik.resetForm();
-    if (typeof props.close === "function") {
-      props.close();
-    }
-  };
+  
 
   return (
     <div>
@@ -133,7 +132,7 @@ const EditProductBrand = (props) => {
                 type="button"
                 className="btn-close"
                 data-bs-dismiss="modal"
-                onClick={handleModalClose}
+              
                 aria-label="Close"
               ></button>
             </div>
@@ -165,7 +164,7 @@ const EditProductBrand = (props) => {
                     type="button"
                     className="btn btn-secondary"
                     data-bs-dismiss="modal"
-                    onClick={handleModalClose}
+                     
                   >
                     Close
                   </button>

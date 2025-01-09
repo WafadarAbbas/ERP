@@ -1,9 +1,9 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import Swal from "sweetalert2";
 import ApiCall from "../../../Apicall/ApiCall";
-
+ 
 const CreateProductOpening = (props) => {
   const validationSchema = Yup.object({
     storeId: Yup.number()
@@ -28,12 +28,7 @@ productVariantMainId: Yup.number()
 
   const formik = useFormik({
     initialValues: {
-      storeId: null,
-      openingQuantity: null,
-      productRate: null,
-      productAmount: null,
-      productVariantMainId: null,
-      productBatchId: null, // New field
+  
     },
     validationSchema: validationSchema,
     onSubmit: async (values) => {
@@ -44,43 +39,43 @@ productVariantMainId: Yup.number()
       };
       console.log(formData);
 
-      // try {
-      //   const response = await ApiCall({
-      //     url: "http://localhost:5022/api/v1/ProductOpening/SaveProductOpening",
-      //     method: "POST",
-      //     data: formData,
-      //   });
+      try {
+        const response = await ApiCall({
+          url: "http://localhost:5022/api/v1/ProductOpening/SaveProductOpening",
+          method: "POST",
+          data: formData,
+        });
 
-      //   if (response?.status === 200) {
-      //     Swal.fire({
-      //       title: "Success!",
-      //       text: "Product Opening saved successfully.",
-      //       icon: "success",
-      //       confirmButtonColor: "#3085d6",
-      //       confirmButtonText: "OK",
-      //     });
+        if (response?.status === 200) {
+          Swal.fire({
+            title: "Success!",
+            text: "Product Opening saved successfully.",
+            icon: "success",
+            confirmButtonColor: "#3085d6",
+            confirmButtonText: "OK",
+          });
     
 
-      //     formik.resetForm();
-      //     if (props.close && props.close.current) {
-      //       props.close.current.click();  
-      //     }
-      //     if (typeof props.onclick === "function" ) {
-      //       props.onclick();
-      //     }
-      //   } else {
-      //     throw new Error("Failed to save the product Opening");
-      //   }
-      // } catch (error) {
-      //   console.error("Error during product Opening save:", error);
-      //   Swal.fire({
-      //     title: "Error",
-      //     text: error.message || "An error occurred while saving the product Opening",
-      //     icon: "error",
-      //     confirmButtonColor: "#d33",
-      //     confirmButtonText: "Close",
-      //   });
-      // }
+          formik.resetForm();
+          if (props.close && props.close.current) {
+            props.close.current.click();  
+          }
+          if (typeof props.onclick === "function" ) {
+            props.onclick();
+          }
+        } else {
+          throw new Error("Failed to save the product Opening");
+        }
+      } catch (error) {
+        console.error("Error during product Opening save:", error);
+        Swal.fire({
+          title: "Error",
+          text: error.message || "An error occurred while saving the product Opening",
+          icon: "error",
+          confirmButtonColor: "#d33",
+          confirmButtonText: "Close",
+        });
+      }
     },
   });
 
@@ -92,6 +87,36 @@ productVariantMainId: Yup.number()
     formik.resetForm();
   };
 
+  
+const [productVariantMains, setProductVariantMains] = useState([]);
+const [productBatches, setProductBatches] = useState([]);  
+const fetchProductVariantMains = async () => {
+  try {
+    const response = await ApiCall({
+      url: "http://localhost:5022/api/v1/ProductVariantMain/GetProductVariantMainBoxItems/combobox?organizationId=1&companyId=1",
+      method: "GET",
+    });
+    setProductVariantMains(response.data);  
+  } catch (error) {
+    console.error("Error fetching product variant mains:", error);
+  }
+};
+const fetchProductBatches = async () => {
+  try {
+    const response = await ApiCall({
+      url: "http://localhost:5022/api/v1/ProductBatch/GetProductBatchBoxItems/combobox?organizationId=1&companyId=1",
+      method: "GET",
+    });
+    setProductBatches(response.data);
+  } catch (error) {
+    console.error("Error fetching product batches:", error);
+  }
+};
+
+  useEffect(() => {
+    fetchProductVariantMains();
+    fetchProductBatches();
+  }, []);
   return (
     <div>
       <button
@@ -202,42 +227,68 @@ productVariantMainId: Yup.number()
     <div className="invalid-feedback">{formik.errors.productAmount}</div>
   )}
 </div>
-
-{/* Product Variant Main ID Field */}
-<div className="mb-3">
-  <label htmlFor="productVariantMainId" className="form-label">
-    Product Variant Main ID
-  </label>
-  <input
-    type="number"
-    className={`form-control ${formik.touched.productVariantMainId && formik.errors.productVariantMainId ? "is-invalid" : ""}`}
-    id="productVariantMainId"
-    name="productVariantMainId"
-    value={formik.values.productVariantMainId}
-    onChange={formik.handleChange}
-    onBlur={formik.handleBlur}
-  />
-  {formik.touched.productVariantMainId && formik.errors.productVariantMainId && (
-    <div className="invalid-feedback">{formik.errors.productVariantMainId}</div>
-  )}
-</div>
-<div className="mb-3">
-  <label htmlFor="productBatchId" className="form-label">
-    Product Batch ID
-  </label>
-  <input
-    type="number"
-    className={`form-control ${formik.touched.productBatchId && formik.errors.productBatchId ? "is-invalid" : ""}`}
-    id="productBatchId"
+<div className="form-group mt-3">
+                  <label>Product Variant Main</label>
+                  <select
+                    name="productVariantMainId"
+                    className="form-control"
+                    value={formik.values.productVariantMainId}
+                    onChange={(e) => {
+                      
+                      formik.setFieldValue(
+                        "productVariantMainId",
+                        Number(e.target.value)
+                      );
+                    }}
+                    onBlur={formik.handleBlur}
+                  >
+                    <option value="">Select Product Variant Main</option>
+                    {Array.isArray(productVariantMains) && productVariantMains.length > 0 ? (
+                    productVariantMains.map((variant) => (
+                      <option key={variant.id} value={variant.id}>
+                        {variant.name} {/* Display name */}
+                      </option>
+                    ))
+                  ) : ( 
+                    <option value="">No Product Variant Mains Available</option>
+                    )
+                  }
+                  </select>
+                  {formik.touched.productVariantMainId &&
+                  formik.errors.productVariantMainId ? (
+                    <div className="text-danger">
+                      {formik.errors.productVariantMainId}
+                    </div>
+                  ) : null}
+                </div>
+                <div className="form-group mt-3">
+  <label>Product Batch</label>
+  <select
     name="productBatchId"
+    className="form-control"
     value={formik.values.productBatchId}
-    onChange={formik.handleChange}
+    onChange={(e) => {
+      formik.setFieldValue("productBatchId", Number(e.target.value));
+    }}
     onBlur={formik.handleBlur}
-  />
-  {formik.touched.productBatchId && formik.errors.productBatchId && (
-    <div className="invalid-feedback">{formik.errors.productBatchId}</div>
-  )}
+  >
+    <option value="">Select Product Batch</option>
+    {Array.isArray(productBatches) && productBatches.length > 0 ? (
+      productBatches.map((batch) => (
+        <option key={batch.id} value={batch.id}>
+          {batch.name}  
+        </option>
+      ))
+    ) : (
+      <option value="">No Product Batches Available</option>
+    )}
+  </select>
+  {formik.touched.productBatchId && formik.errors.productBatchId ? (
+    <div className="text-danger">{formik.errors.productBatchId}</div>
+  ) : null}
 </div>
+
+
 
 
                 <div className="d-flex justify-content-between modal-footer mt-3">

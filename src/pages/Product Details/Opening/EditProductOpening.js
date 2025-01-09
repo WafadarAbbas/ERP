@@ -8,45 +8,32 @@ import ApiCall from "../../../Apicall/ApiCall";
 const EditProductOpening = (props) => {
   const { selectedProductOpeningId } = props;
   
-  console.log(selectedProductOpeningId);
-  
 
   const validationSchema = Yup.object({
-    storeId: Yup.number()
-      .required("Store ID is required")
-      .min(1, "Store ID must be greater than 0"),
-    openingQuantity: Yup.number()
-      .required("Opening Quantity is required")
-      .min(1, "Opening Quantity must be greater than 0"),
-    productRate: Yup.number()
-      .required("Product Rate is required")
-      .min(0, "Product Rate cannot be negative"),
-      productAmount: Yup.number()
-  .required("Product Amount is required")
-  .min(0, "Product Amount cannot be negative"),
-productVariantMainId: Yup.number()
-  .required("Product Variant Main ID is required")
-  .min(1, "Product Variant Main ID must be greater than 0"),
-  productBatchId: Yup.number()
-  .required("Product Batch ID is required")
-  .min(1, "Product Batch ID must be greater than 0"),
+  
   });
 
   const formik = useFormik({
     initialValues: {
-      storeId: null,
-      openingQuantity: null,
-      productRate: null,
-      productAmount: null,
-      productVariantMainId: null,
-      productBatchId: null, // New field
+ 
     },
     validationSchema: validationSchema,
     onSubmit: async (values) => {
+
+      const selectedProductVariantMain = productVariantMains.find(
+        (variant) => variant.id === values.productVariantMainId
+      );
+      const selectedBatchCode = productBatches.find(
+        (batch) => batch.id === values.productBatchId
+      );
+
+
       const formData = {
         ...values,
         organizationId: 1,
         companyId: 1,
+        productName: selectedProductVariantMain?.name || null,
+        productBatchCode:selectedBatchCode?.name || null,
         id:selectedProductOpeningId,
       };
       console.log(formData);
@@ -71,6 +58,9 @@ productVariantMainId: Yup.number()
           formik.resetForm();
           if (props.close && props.close.current) {
             props.close.current.click();  
+          }
+          if (typeof props.onIdReset === "function") {
+            props.onIdReset();
           }
           if (typeof props.onclick === "function" ) {
             props.onclick();
@@ -133,6 +123,36 @@ useEffect(() => {
     fetchProductOpening();
   }
 }, [selectedProductOpeningId]);
+
+const [productVariantMains, setProductVariantMains] = useState([]);
+const [productBatches, setProductBatches] = useState([]);  
+const fetchProductVariantMains = async () => {
+  try {
+    const response = await ApiCall({
+      url: "http://localhost:5022/api/v1/ProductVariantMain/GetProductVariantMainBoxItems/combobox?organizationId=1&companyId=1",
+      method: "GET",
+    });
+    setProductVariantMains(response.data);  
+  } catch (error) {
+    console.error("Error fetching product variant mains:", error);
+  }
+};
+const fetchProductBatches = async () => {
+  try {
+    const response = await ApiCall({
+      url: "http://localhost:5022/api/v1/ProductBatch/GetProductBatchBoxItems/combobox?organizationId=1&companyId=1",
+      method: "GET",
+    });
+    setProductBatches(response.data);
+  } catch (error) {
+    console.error("Error fetching product batches:", error);
+  }
+};
+
+  useEffect(() => {
+    fetchProductVariantMains();
+    fetchProductBatches();
+  }, []);
 
     return (
     <div>
@@ -245,41 +265,69 @@ useEffect(() => {
   )}
 </div>
 
-{/* Product Variant Main ID Field */}
-<div className="mb-3">
-  <label htmlFor="productVariantMainId" className="form-label">
-    Product Variant Main ID
-  </label>
-  <input
-    type="number"
-    className={`form-control ${formik.touched.productVariantMainId && formik.errors.productVariantMainId ? "is-invalid" : ""}`}
-    id="productVariantMainId"
-    name="productVariantMainId"
-    value={formik.values.productVariantMainId}
-    onChange={formik.handleChange}
-    onBlur={formik.handleBlur}
-  />
-  {formik.touched.productVariantMainId && formik.errors.productVariantMainId && (
-    <div className="invalid-feedback">{formik.errors.productVariantMainId}</div>
-  )}
-</div>
-<div className="mb-3">
-  <label htmlFor="productBatchId" className="form-label">
-    Product Batch ID
-  </label>
-  <input
-    type="number"
-    className={`form-control ${formik.touched.productBatchId && formik.errors.productBatchId ? "is-invalid" : ""}`}
-    id="productBatchId"
+<div className="form-group mt-3">
+                  <label>Product Variant Main</label>
+                  <select
+                    name="productVariantMainId"
+                    className="form-control"
+                    value={formik.values.productVariantMainId}
+                    onChange={(e) => {
+                      
+                      formik.setFieldValue(
+                        "productVariantMainId",
+                        Number(e.target.value)
+                      );
+                    }}
+                    onBlur={formik.handleBlur}
+                  >
+                    <option value="">Select Product Variant Main</option>
+                    {Array.isArray(productVariantMains) && productVariantMains.length > 0 ? (
+                    productVariantMains.map((variant) => (
+                      <option key={variant.id} value={variant.id}>
+                        {variant.name} {/* Display name */}
+                      </option>
+                    ))
+                  ) : ( 
+                    <option value="">No Product Variant Mains Available</option>
+                    )
+                  }
+                  </select>
+                  {formik.touched.productVariantMainId &&
+                  formik.errors.productVariantMainId ? (
+                    <div className="text-danger">
+                      {formik.errors.productVariantMainId}
+                    </div>
+                  ) : null}
+                </div>
+                <div className="form-group mt-3">
+  <label>Product Batch</label>
+  <select
     name="productBatchId"
+    className="form-control"
     value={formik.values.productBatchId}
-    onChange={formik.handleChange}
+    onChange={(e) => {
+      formik.setFieldValue("productBatchId", Number(e.target.value));
+    }}
     onBlur={formik.handleBlur}
-  />
-  {formik.touched.productBatchId && formik.errors.productBatchId && (
-    <div className="invalid-feedback">{formik.errors.productBatchId}</div>
-  )}
+  >
+    <option value="">Select Product Batch</option>
+    {Array.isArray(productBatches) && productBatches.length > 0 ? (
+      productBatches.map((batch) => (
+        <option key={batch.id} value={batch.id}>
+          {batch.name}  
+        </option>
+      ))
+    ) : (
+      <option value="">No Product Batches Available</option>
+    )}
+  </select>
+  {formik.touched.productBatchId && formik.errors.productBatchId ? (
+    <div className="text-danger">{formik.errors.productBatchId}</div>
+  ) : null}
 </div>
+
+
+
 
 
                 <div className="d-flex justify-content-between modal-footer mt-3">

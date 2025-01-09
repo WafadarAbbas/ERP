@@ -23,6 +23,11 @@ function ProductBatch() {
   const [searchQuery, setSearchQuery] = useState('');
   const itemsPerPage = 6;
 
+
+  const handleIdReset = () => {
+    setSelectedProductBatchId(null);
+  };
+
   const fetchProductBatch = async (query = '') => {
     try {
       const url = query
@@ -238,7 +243,7 @@ function ProductBatch() {
       </div>
       <Footer/>
       <CreateProductBatch open={createRef} close={refClose} onclick={fetchProductBatch} />
-      <EditProductBatch open={createEditRef} close={refEditClose} selectedProductBatchId={selectedProductBatchId} onclick={fetchProductBatch} />
+      <EditProductBatch open={createEditRef} close={refEditClose} selectedProductBatchId={selectedProductBatchId} onclick={fetchProductBatch} onIdReset={handleIdReset}  />
     </div>
   );
 }

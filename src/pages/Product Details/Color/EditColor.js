@@ -47,6 +47,9 @@ const EditColor = (props) => {
           if (typeof props.onclick === "function") {
             props.onclick();
           }
+          if (typeof props.onIdReset === "function") {
+            props.onIdReset();
+          }
           if (props.close && props.close.current) {
             props.close.current.click(); // Close the modal by triggering the close button
           }

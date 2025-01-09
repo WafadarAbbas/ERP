@@ -24,6 +24,11 @@ function ProductPrice() {
   const [searchQuery, setSearchQuery] = useState('');
   const itemsPerPage = 6;
 
+  const handleIdReset = () => {
+     
+    setSelectedProductPriceId(null);
+  };
+
   const fetchProductPrice = async (query = '') => {
     try {
       const url =`http://localhost:5022/api/v1/ProductPrice/GetAllAppModal/list?organizationId=1&companyId=1`;
@@ -249,7 +254,7 @@ function ProductPrice() {
       </div>
       <Footer/>
       <CreateProductPrice open={createRef} close={refClose} onclick={fetchProductPrice} />
-      <EditProductPrice open={createEditRef} close={refEditClose} selectedProductPriceId={selectedProductPriceId} onclick={fetchProductPrice} />
+      <EditProductPrice open={createEditRef} close={refEditClose} selectedProductPriceId={selectedProductPriceId} onclick={fetchProductPrice} onIdReset={handleIdReset} />
     </div>
   );
 }

@@ -13,7 +13,7 @@ function DropdownProfile() {
   };
 
   return (
-    <Dropdown className="navbar-item navbar-user " style={{marginTop:18}}>
+    <Dropdown className="navbar-item navbar-user ">
       <Dropdown.Toggle className="navbar-link d-flex align-items-center " as="a">
      
         <Image
@@ -22,8 +22,7 @@ function DropdownProfile() {
           className="rounded"   
           style={{ width: '40px', height: '40px' }} 
         />
-    
-        <span className="me-2" style={{ fontWeight: 'bold', fontSize: '14px',color:'grey', textDecoration: 'none !important', }}>Wafadar Abbas</span>
+  
       </Dropdown.Toggle>
 
       <Dropdown.Menu align="end">

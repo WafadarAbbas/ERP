@@ -54,6 +54,9 @@ const EditHSCode = (props) => {
           if (props.close && props.close.current) {
             props.close.current.click();
           }
+          if (typeof props.onIdReset === "function") {
+            props.onIdReset();
+          }
           if (typeof props.onclick === "function") {
             props.onclick();
           }

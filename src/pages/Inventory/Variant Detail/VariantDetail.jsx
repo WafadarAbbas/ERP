@@ -23,6 +23,10 @@ function VariantDetail() {
   const [searchQuery, setSearchQuery] = useState('');
   const itemsPerPage = 6;
 
+  const handleIdReset = () => {
+    setSelectedVariantDetailId(0);
+  };
+
   const fetchVariantDetail = async (query = '') => {
     try {
       const url = query
@@ -220,7 +224,7 @@ function VariantDetail() {
       </div>
       <Footer/>
       <CreateVariantDetail open={createRef} close={refClose} onclick={fetchVariantDetail} />
-      <EditVariantDetail open={createEditRef} close={refEditClose} selectedVariantDetailId={selectedVariantDetailId} onclick={fetchVariantDetail} />
+      <EditVariantDetail open={createEditRef} close={refEditClose} selectedVariantDetailId={selectedVariantDetailId} onclick={fetchVariantDetail} onIdReset={handleIdReset}/>
     </div>
   );
 }

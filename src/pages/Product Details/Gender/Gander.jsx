@@ -24,6 +24,11 @@ function Gander() {
 
   const totalPages = Math.ceil(Ganders.length / itemsPerPage);
 
+
+  const handleIdReset = () => {
+
+    setSelectedGanderId(null);
+  };
   const handlePageChange = (newPage) => {
     if (newPage >= 1 && newPage <= totalPages) {
       setCurrentPage(newPage);
@@ -224,7 +229,7 @@ function Gander() {
 
       <Footer/>
       <CreateGander open={createRef} close={refClose} onclick={fetch} />
-      <EditGander open={createEditRef} close={refEditClose} selectedGanderId={selectedGanderId} onclick={fetch} />
+      <EditGander open={createEditRef} close={refEditClose} selectedGanderId={selectedGanderId} onclick={fetch} onIdReset={handleIdReset} />
     </div>
   );
 }

@@ -7,7 +7,7 @@ import ProtectedRoute from './ProtectedRoute.js'
 import DashboardV1 from './../pages/dashboard/dashboard-v1.js';
 import DashboardV2 from './../pages/dashboard/dashboard-v2.js';
 import DashboardV3 from './../pages/dashboard/dashboard-v3.js';
-import ExtraError from './../pages/extra/extra-error.js';
+ 
 import LoginV3 from './../pages/user/login-v3.js';
 import HelperCSS from './../pages/helper/helper-css.js';
 import Users from '../pages/users/users.jsx';
@@ -44,6 +44,23 @@ import SupplierCategory from '../pages/Inventory/SupplierCategory/SupplierCatego
 import ProductPricePolicy from '../pages/Product Details/PricePolicy/ProductPricePolicy.jsx';
 import PaymentTerms from '../pages/Product Details/Payment Term/PaymentTerms.jsx';
 import EditProduct from '../pages/Inventory/Product/EditProduct.jsx';
+import PurchseOrderTerms from '../pages/Inventory/PurchseOrderTerms/PurchseOrderTerms.jsx';
+import PurchaseOrderStatus from '../pages/Inventory/PurchaseOrderStatus/PurchaseOrderStatus.jsx';
+import PurchaseOrderMain from '../pages/Inventory/PurchaseOrderMain/PurchaseOrderMain.jsx';
+import PurchaseOrderDetails from '../pages/Inventory/PurchaseOrderDetails/PurchaseOrderDetails.jsx';
+import EditPurchaseOrderMain from '../pages/Inventory/PurchaseOrderMain/EditPurchaseOrderMain.jsx';
+import CreatePurchaseOrderMain from '../pages/Inventory/PurchaseOrderMain/CreatePurchaseOrderMain.jsx';
+import GRNMain from '../pages/Inventory/GrnMain/GRNMain.jsx';
+import CreateGRNMain from '../pages/Inventory/GrnMain/CreateGRNMain.jsx';
+import EditGRNMain from '../pages/Inventory/GrnMain/EditGRNMain.jsx';
+import GRNDetails from '../pages/Inventory/GRNDetails/GRNDetails.jsx';
+import PurchaseMain from '../pages/Inventory/PurchaseMain/PurchaseMain.jsx';
+import CreatePurchaseMain from '../pages/Inventory/PurchaseMain/CreatePurchaseMain.jsx';
+import EditPurchaseMain from '../pages/Inventory/PurchaseMain/EditPurchaseMain.jsx';
+import PurchaseDetail from '../pages/Inventory/PurchaseDetails/PurchaseDetail.jsx';
+// import PurchaseReturnMain from '../pages/Inventory/PurchaseMain/PurchaseReturnMain.jsx';
+// import EditPurchaseReturnMain from '../pages/Inventory/PurchaseMain/EditPurchaseMain.jsx';
+// import CreatePurchaseReturnMain from '../pages/Inventory/PurchaseMain/CreatePurchaseReturnMain.js';
  
 
 
@@ -64,7 +81,7 @@ const AppRoute = [
 					{ path: 'v1', element: <DashboardV1 /> },
 					{ path: 'v2', element: <DashboardV2 /> },
 					{ path: 'v3', element: <DashboardV3 /> },
-					{ path: '*', element: <ExtraError /> }
+				 
 				]
 			},
 
@@ -83,7 +100,7 @@ const AppRoute = [
 				element: <Outlet />,
 				children: [
 					{ path: 'Testing', element: <Testing /> },
-					{ path: 'Testing2', element: <Testing2 /> },
+					{ path: 'Testing2/:id', element: <Testing2 /> },
 					{ path: 'Layout', element: <Layout /> },
 				]
 			},
@@ -132,7 +149,90 @@ const AppRoute = [
 				element: <ProductVariantDetails/>,
 			},
 
-		
+			{
+				path: 'PurchseOrderTerms',
+				element: <PurchseOrderTerms/>,
+			},
+
+			{
+				path: 'PurchaseOrderStatus',
+				element: <PurchaseOrderStatus/>,
+			},
+		 
+
+			{
+				path: 'PurchaseOrderDetails',
+				element: <PurchaseOrderDetails/>,
+			},
+			 
+
+			{
+				path: 'PurchaseOrderMain',
+				element: <Outlet />,
+				children: [
+					{ path: 'PurchaseOrderMain', element: <PurchaseOrderMain/> },
+					{ path: 'EditPurchaseOrderMain', element: <EditPurchaseOrderMain/> },
+					{ path: 'CreatePurchaseOrderMain', element: <CreatePurchaseOrderMain/> },	 
+				]
+			},
+			
+
+		  
+			{
+				path: 'GRNDetails',
+				element: <GRNDetails/>,
+			},
+
+			
+
+
+			{
+				path: 'GRNMain',
+				element: <Outlet />,
+				children: [
+					{ path: 'GRNMain', element: <GRNMain/> },
+					{ path: 'EditGRNMain', element: <EditGRNMain/> },
+					{ path: 'CreateGRNMain', element: <CreateGRNMain/> },	 
+				]
+			},
+
+
+			
+
+			{
+				path: 'PurchaseMain',
+				element: <Outlet />,
+				children: [
+					{ path: 'PurchaseMain', element: < PurchaseMain/> },
+					{ path: 'EditPurchaseMain', element: <EditPurchaseMain/> },
+					{ path: 'CreatePurchaseMain', element: <CreatePurchaseMain/> },	 
+				]
+			},
+
+			{
+				path: 'PurchaseMain',
+				element: <Outlet />,
+				children: [
+					{ path: 'PurchaseMain', element: < PurchaseMain/> },
+					{ path: 'EditPurchaseMain', element: <EditPurchaseMain/> },
+					{ path: 'CreatePurchaseMain', element: <CreatePurchaseMain/> },	 
+				]
+			},
+
+			// {
+			// 	path: 'PurchaseReturnMain',
+			// 	element: <Outlet />,
+			// 	children: [
+			// 		{ path: 'PurchaseReturnMain', element: <PurchaseReturnMain/> },
+			// 		{ path: 'EditPurchaseReturnMain', element: <EditPurchaseReturnMain/> },
+			// 		{ path: 'CreatePurchaseReturnMain', element: <CreatePurchaseReturnMain/> },	 
+			// 	]
+			// },
+			
+			{
+				path: 'PurchaseDetail',
+				element: <PurchaseDetail/>,
+			},
 			
 
 	
@@ -242,7 +342,7 @@ const AppRoute = [
 				path: 'helper/css',
 				element: <HelperCSS />
 			},
-			{ path: '*', element: <ExtraError /> }
+			 
 		]
 	}
 ];

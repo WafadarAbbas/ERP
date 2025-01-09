@@ -23,6 +23,10 @@ function ProductPackagePolicy() {
   const [searchQuery, setSearchQuery] = useState('');
   const itemsPerPage = 6;
 
+  const handleIdReset = () => {
+    
+    setSelectedProductPackagePolicyId(null);
+  };
   const fetchProductPackagePolicy = async (query = '') => {
     try {
       const url = `http://localhost:5022/api/v1/ProductPackagePolicy/GetAllAppModal/list?organizationId=1&companyId=1`;
@@ -245,7 +249,7 @@ function ProductPackagePolicy() {
       </div>
       <Footer />
       <CreateProductPackagePolicy open={createRef} close={refClose} onclick={fetchProductPackagePolicy} />
-      <EditProductPackagePolicy open={createEditRef} close={refEditClose} selectedProductPackagePolicyId={selectedProductPackagePolicyId} onclick={fetchProductPackagePolicy} />
+      <EditProductPackagePolicy open={createEditRef} close={refEditClose} selectedProductPackagePolicyId={selectedProductPackagePolicyId} onclick={fetchProductPackagePolicy} onIdReset={handleIdReset} />
     </div>
   );
 }
