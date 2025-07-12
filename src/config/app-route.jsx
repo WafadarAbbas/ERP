@@ -74,7 +74,7 @@ const AppRoute = [
 		children: [
 			{
 				path: '',
-				element: <Navigate to='/dashboard/v3' />
+				element: <Navigate to='/dashboard/' />
 			},
 
 			{
@@ -163,10 +163,7 @@ const AppRoute = [
 			},
 		 
 
-			{
-				path: 'PurchaseOrderDetails',
-				element: <PurchaseOrderDetails/>,
-			},
+		 
 			 
 
 			{
@@ -176,15 +173,16 @@ const AppRoute = [
 					{ path: 'PurchaseOrderMain', element: <PurchaseOrderMain/> },
 					{ path: 'EditPurchaseOrderMain', element: <EditPurchaseOrderMain/> },
 					{ path: 'CreatePurchaseOrderMain', element: <CreatePurchaseOrderMain/> },	 
+					{ path: 'PurchaseOrderDetails', element: <PurchaseOrderDetails/> },	
 				]
 			},
 			
 
 		  
-			{
-				path: 'GRNDetails',
-				element: <GRNDetails/>,
-			},
+			// {
+			// 	path: 'GRNDetails',
+			// 	element: <GRNDetails/>,
+			// },
 
 			
 
@@ -195,7 +193,8 @@ const AppRoute = [
 				children: [
 					{ path: 'GRNMain', element: <GRNMain/> },
 					{ path: 'EditGRNMain', element: <EditGRNMain/> },
-					{ path: 'CreateGRNMain', element: <CreateGRNMain/> },	 
+					{ path: 'CreateGRNMain', element: <CreateGRNMain/> },
+					{ path: 'GRNDetails', element: <GRNDetails/> },		 
 				]
 			},
 

@@ -35,7 +35,7 @@ function Color() {
     }
   };
 
-  // Updated to include search query as a parameter
+  
   const fetchColors = async (query = '') => {
     try {
       const url = query
@@ -62,7 +62,7 @@ function Color() {
   }, []);
 
   const fetch = () => {
-    fetchColors(searchQuery); // Re-fetch colors when the search query changes
+    fetchColors(searchQuery);  
   };
 
   const handleSort = (column) => {

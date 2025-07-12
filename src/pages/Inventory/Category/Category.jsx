@@ -8,106 +8,159 @@ import Swal from 'sweetalert2';
 import Footer from '../../../Compo/Footer';
 
 function Category() {
-  const createRef = useRef(null);
-  const refClose = useRef(null);
-  const createEditRef = useRef(null);
-  const refEditClose = useRef(null);
+ 
+  // ================== STATE & REFS ==================
+const createRef = useRef(null);           // Reference for create modal trigger
+const refClose = useRef(null);            // Reference to close create modal
+const createEditRef = useRef(null);       // Reference for edit modal trigger
+const refEditClose = useRef(null);        // Reference to close edit modal
 
-  const [categories, setCategories] = useState([]);
-  const [sortColumn, setSortColumn] = useState('productCategoryName');
-  const [sortOrder, setSortOrder] = useState('asc');
-  const [error, setError] = useState(null);  
-  const [selectedCategoryId, setSelectedCategoryId] = useState(null);
-  const [searchQuery, setSearchQuery] = useState('');
+const [categories, setCategories] = useState([]);                 // List of product categories
+const [sortColumn, setSortColumn] = useState('productCategoryName'); // Current sorting column
+const [sortOrder, setSortOrder] = useState('asc');               // Sorting order: asc/desc
+const [error, setError] = useState(null);                        // Error state for fetching
+const [selectedCategoryId, setSelectedCategoryId] = useState(null); // Currently selected category for edit
+const [searchQuery, setSearchQuery] = useState('');              // Search input
+ const [currentPage, setCurrentPage] = useState(1);
+const itemsPerPage = 6;  
+// ================== UTILITY FUNCTIONS ==================
 
+/**
+ * Reset selected category ID to 0
+ */
+const handleIdReset = () => {
+  setSelectedCategoryId(0);
+};
 
-  const handleIdReset = () => {
-    setSelectedCategoryId(0);
-  };
-  const fetchCategories = async (query = '') => {
-    try {
-      const url = query
-        ? `http://localhost:5022/api/v1/ProductCategory/GetProductCategoryByName?name=${query}&organizationId=1&companyId=1`
-        : 'http://localhost:5022/api/v1/ProductCategory/GetAllAppModal/list?organizationId=1&companyId=1';
+/**
+ * Fetch categories from API with optional search query
+ */
+const fetchCategories = async (query = '') => {
+  try {
+    const url = query
+      ? `http://localhost:5022/api/v1/ProductCategory/GetProductCategoryByName?name=${query}&organizationId=1&companyId=1`
+      : 'http://localhost:5022/api/v1/ProductCategory/GetAllAppModal/list?organizationId=1&companyId=1';
 
-      const response = await ApiCall({
-        url,
-        method: 'GET',
-      });
+    const response = await ApiCall({ url, method: 'GET' });
 
-      if (response && response.data) {
-        setCategories(response.data);
-      } else {
-        throw new Error('Failed to load categories.');
-      }
-    } catch (error) {
-      setError(error.message || 'An error occurred while fetching data');
-    }
-  };
-
-  useEffect(() => {
-    fetchCategories();
-  }, []);
-
-  const fetch = () => {
-    fetchCategories(searchQuery);  // Re-fetch with current search query
-  };
-
-  const handleSort = (column) => {
-    const newSortOrder = sortOrder === 'asc' ? 'desc' : 'asc';
-    setSortColumn(column);
-    setSortOrder(newSortOrder);
-  };
-
-  const handleDelete = async (categoryId) => {
-    const result = await Swal.fire({
-      title: 'Are you sure?',
-      text: 'This action cannot be undone!',
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#d33',
-      cancelButtonColor: '#3085d6',
-      confirmButtonText: 'Yes, delete it!'
-    });
-  
-    if (result.isConfirmed) {
-      try {
-        const response = await ApiCall({
-          url: `http://localhost:5022/api/v1/ProductCategory/DeleteProductCategory/${categoryId}?organizationId=1&companyId=1`,
-          method: 'DELETE',
-        });
-
-        // Check for either 200 or 204 status to show success
-        if (response?.status === 200 || response?.status === 204) {
-          Swal.fire('Deleted', 'The category has been deleted.', 'success');
-          setCategories(categories.filter(category => category.id !== categoryId));
-        } else {
-          Swal.fire('Error', 'Failed to delete category', 'error');
-        }
-      } catch (error) {
-        console.error('Error during delete:', error);
-        Swal.fire('Error', 'An error occurred while deleting the category', 'error');
-      }
-    }
-  };
-
-  const handleEdit = (categoryId) => {
-    setSelectedCategoryId(categoryId);
-    createEditRef.current.click();  
-  };
-
-  const sortedCategories = [...categories].sort((a, b) => {
-    if (sortOrder === 'asc') {
-      return a[sortColumn] > b[sortColumn] ? 1 : -1;
+    if (response?.data) {
+      setCategories(response.data);
     } else {
-      return a[sortColumn] < b[sortColumn] ? 1 : -1;
+      throw new Error('Failed to load categories.');
     }
+  } catch (error) {
+    setError(error.message || 'An error occurred while fetching data');
+  }
+};
+
+/**
+ * Triggers fetch with current search query
+ */
+const fetch = () => {
+  fetchCategories(searchQuery);
+};
+
+/**
+ * Handles sorting logic on column header click
+ */
+const handleSort = (column) => {
+  const newSortOrder = sortOrder === 'asc' ? 'desc' : 'asc';
+  setSortColumn(column);
+  setSortOrder(newSortOrder);
+};
+
+/**
+ * Handles category deletion with confirmation
+ */
+const handleDelete = async (categoryId) => {
+  const result = await Swal.fire({
+    title: 'Are you sure?',
+    text: 'This action cannot be undone!',
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#d33',
+    cancelButtonColor: '#3085d6',
+    confirmButtonText: 'Yes, delete it!'
   });
 
-  const handleSearch = (event) => {
-    setSearchQuery(event.target.value);
-    fetchCategories(event.target.value); // Fetch with search query
-  };
+  if (result.isConfirmed) {
+    try {
+      const response = await ApiCall({
+        url: `http://localhost:5022/api/v1/ProductCategory/DeleteProductCategory/${categoryId}?organizationId=1&companyId=1`,
+        method: 'DELETE',
+      });
+
+      if (response?.status === 200 || response?.status === 204) {
+        Swal.fire('Deleted', 'The category has been deleted.', 'success');
+        setCategories(categories.filter(category => category.id !== categoryId));
+      } else {
+        Swal.fire('Error', 'Failed to delete category', 'error');
+      }
+    } catch (error) {
+      console.error('Error during delete:', error);
+      Swal.fire('Error', 'An error occurred while deleting the category', 'error');
+    }
+  }
+};
+
+/**
+ * Opens edit modal and sets selected category
+ */
+const handleEdit = (categoryId) => {
+  setSelectedCategoryId(categoryId);
+  createEditRef.current.click(); // Simulates click to open modal
+};
+
+/**
+ * Filters categories based on search input
+ */
+const handleSearch = (event) => {
+  const query = event.target.value;
+  setSearchQuery(query);
+  fetchCategories(query);
+};
+
+// ================== EFFECT HOOKS ==================
+
+/**
+ * Load all categories on component mount
+ */
+useEffect(() => {
+  fetchCategories();
+}, []);
+
+// ================== SORTED DATA ==================
+
+/**
+ * Sort categories based on selected column and order
+ */
+const sortedCategories = [...categories].sort((a, b) => {
+  if (sortOrder === 'asc') {
+    return a[sortColumn] > b[sortColumn] ? 1 : -1;
+  } else {
+    return a[sortColumn] < b[sortColumn] ? 1 : -1;
+  }
+});
+
+
+
+// Calculate total pages
+const totalPages = Math.ceil(sortedCategories.length / itemsPerPage);
+
+// Slice data for current page
+const paginatedCategories = sortedCategories.slice(
+  (currentPage - 1) * itemsPerPage,
+  currentPage * itemsPerPage
+);
+
+// Pagination handler
+const handlePageChange = (newPage) => {
+  if (newPage >= 1 && newPage <= totalPages) {
+    setCurrentPage(newPage);
+  }
+};
+
+ 
 
   return (
     <div style={{ marginTop: 10 }}>
@@ -160,26 +213,46 @@ function Category() {
                   <th scope="col" style={{ fontSize: 16 ,textAlign:'center'}}>Actions</th>
                 </tr>
               </thead>
-              <tbody>
-                {sortedCategories.map((category) => (
-                  <tr key={category.id}>
-                    <td style={{ fontSize: 16 }}>{category.productCategoryName}</td>
-                    <td style={{ fontSize: 16, textAlign: 'center' }}>
-                      <div className="d-flex gap-2 justify-content-center">
-                        <button className="btn" onClick={() => handleDelete(category.id)} style={{ border: '1px solid #ddd', padding: '6px 8px', borderRadius: '8px', display: 'flex', alignItems: 'center' }}>
-                          <FaTrash size={16} title="Delete" color='red' />
-                        </button>
-                        <button className="btn" onClick={() => handleEdit(category.id)} style={{ border: '1px solid #ddd', padding: '6px 8px', borderRadius: '8px', display: 'flex', alignItems: 'center' }}>
-                          <FaEdit size={16} title="Edit" color='#ff9f43' />
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
+             <tbody>
+  {paginatedCategories.map((category) => (
+    <tr key={category.id}>
+      <td style={{ fontSize: 16 }}>{category.productCategoryName}</td>
+      <td style={{ fontSize: 16, textAlign: 'center' }}>
+        <div className="d-flex gap-2 justify-content-center">
+          <button className="btn" onClick={() => handleDelete(category.id)} style={{ border: '1px solid #ddd', padding: '6px 8px', borderRadius: '8px', display: 'flex', alignItems: 'center' }}>
+            <FaTrash size={16} title="Delete" color='red' />
+          </button>
+          <button className="btn" onClick={() => handleEdit(category.id)} style={{ border: '1px solid #ddd', padding: '6px 8px', borderRadius: '8px', display: 'flex', alignItems: 'center' }}>
+            <FaEdit size={16} title="Edit" color='#ff9f43' />
+          </button>
+        </div>
+      </td>
+    </tr>
+  ))}
+</tbody>
             </table>
           </div>
         )}
+
+       <div className="d-flex justify-content-center mt-3">
+  <button
+    className="btn"
+    style={{ backgroundColor: "#ff9f43", color: "white" }}
+    onClick={() => handlePageChange(currentPage - 1)}
+    disabled={currentPage === 1}
+  >
+    Previous
+  </button>
+  <span className="mx-3 align-self-center">Page {currentPage} of {totalPages}</span>
+  <button
+    className="btn"
+    style={{ backgroundColor: "#ff9f43", color: "white" }}
+    onClick={() => handlePageChange(currentPage + 1)}
+    disabled={currentPage === totalPages}
+  >
+    Next
+  </button>
+</div>
       </div>
       <Footer/>
       <CreateCategory open={createRef} close={refClose} onclick={ fetch}   />

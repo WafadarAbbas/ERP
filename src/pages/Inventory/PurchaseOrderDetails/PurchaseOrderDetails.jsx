@@ -132,7 +132,7 @@ function PurchaseOrderDetails() {
           <i className="fa fa-print text-primary fs-2 me-2 p-2 bg-white border border-grey rounded-3 cursor-pointer" onClick={() => alert('Print button clicked!')} ></i>
           <i className="fa-solid fa-file-pdf text-danger fs-2 me-2 p-2 bg-white border border-grey rounded-3 cursor-pointer " onClick={() => alert('PDF button clicked!')} ></i>
           <i className="fa fa-file-excel-o fs-2 me-2 p-2 bg-white border border-grey rounded-3 cursor-pointer" onClick={() => alert('Excel button clicked!')} style={{ color: 'green' }}></i>
-          <Buton onClick={() => createRef.current.click()}>Add Purchase Order Details</Buton>
+          {/* <Buton onClick={() => createRef.current.click()}>Add Purchase Order Details</Buton> */}
         </div>
       </div>
 
@@ -185,6 +185,15 @@ function PurchaseOrderDetails() {
                       </button>
                     </div>
                   </th>
+
+                   <th scope="col" style={{ fontSize: 16 }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
+                    Balance quantity
+                      <button onClick={() => handleSort('poBalanceQuantity')} className="btn p-0">
+                        {sortOrder === 'asc' && sortColumn === 'poBalanceQuantity' ? <FaArrowUp color="green" /> : <FaArrowDown color="red" />}
+                      </button>
+                    </div>
+                  </th>
                   <th scope="col" style={{ fontSize: 16 }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
                     productName
@@ -210,6 +219,8 @@ function PurchaseOrderDetails() {
                   <tr key={PurchaseOrderDetails.id}>
                     <td style={{ fontSize: 16 }}>{PurchaseOrderDetails.poNumber}</td>
                     <td style={{ fontSize: 16 }}>{PurchaseOrderDetails.poQuantity}</td>
+                    <td style={{ fontSize: 16 }}>{PurchaseOrderDetails.poBalanceQuantity}</td>
+                    
                     <td style={{ fontSize: 16 }}>{PurchaseOrderDetails.productName}</td>
                     <td style={{ fontSize: 16 }}>{PurchaseOrderDetails.productVariantMainsProductName}</td>
 
@@ -218,9 +229,9 @@ function PurchaseOrderDetails() {
                         <button className="btn" onClick={() => handleDelete(PurchaseOrderDetails.id)} style={{ border: '1px solid #ddd', padding: '6px 8px', borderRadius: '8px', display: 'flex', alignItems: 'center' }}>
                           <FaTrash size={16} title="Delete" color='red' />
                         </button>
-                        <button className="btn" onClick={() => handleEdit(PurchaseOrderDetails.id)} style={{ border: '1px solid #ddd', padding: '6px 8px', borderRadius: '8px', display: 'flex', alignItems: 'center' }}>
+                        {/* <button className="btn" onClick={() => handleEdit(PurchaseOrderDetails.id)} style={{ border: '1px solid #ddd', padding: '6px 8px', borderRadius: '8px', display: 'flex', alignItems: 'center' }}>
                           <FaEdit size={16} title="Edit" color='#ff9f43' />
-                        </button>
+                        </button> */}
                       </div>
                     </td>
                   </tr>

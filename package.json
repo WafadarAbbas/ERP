@@ -1,7 +1,6 @@
 {
   "name": "color-admin",
   "version": "5.3.3",
- 
   "private": true,
   "dependencies": {
     "@babel/plugin-transform-private-property-in-object": "^7.24.1",
@@ -30,7 +29,6 @@
     "lodash": "^4.17.21",
     "masonry-layout": "^4.2.2",
     "nanoid": "^5.0.7",
-    "node-sass": "^9.0.0",
     "photoswipe": "^5.4.3",
     "react": "^18.2.0",
     "react-apexcharts": "^1.4.1",
@@ -56,6 +54,7 @@
     "react-spring": "^8.0.27",
     "react-tag-autocomplete": "^7.2.0",
     "react-to-print": "^2.15.1",
+    "sass": "^1.89.0",
     "simple-line-icons": "^2.5.5",
     "sweetalert2": "^11.12.4",
     "yup": "^1.4.0"

@@ -73,36 +73,36 @@ function CreatePurchaseMain() {
       };
       console.log("Final Data Submitted:", finalData);
 
-      try {
-        const response = await ApiCall({
-          url: "http://localhost:5022/api/v1/PurchaseMain/SavePurchaseMain",
-          method: "POST",
-          data: finalData,
-        });
+      // try {
+      //   const response = await ApiCall({
+      //     url: "http://localhost:5022/api/v1/PurchaseMain/SavePurchaseMain",
+      //     method: "POST",
+      //     data: finalData,
+      //   });
 
-        if (response?.status === 200) {
-          Swal.fire({
-            title: "Success!",
-            text: "Purchase Main saved successfully.",
-            icon: "success",
-            confirmButtonColor: "#3085d6",
-            confirmButtonText: "OK",
-          });
-          formik.resetForm();
+      //   if (response?.status === 200) {
+      //     Swal.fire({
+      //       title: "Success!",
+      //       text: "Purchase Main saved successfully.",
+      //       icon: "success",
+      //       confirmButtonColor: "#3085d6",
+      //       confirmButtonText: "OK",
+      //     });
+      //     formik.resetForm();
 
-        } else {
-          throw new Error("Failed to save the Purchase Main");
-        }
-      } catch (error) {
-        Swal.fire({
-          title: "Error",
-          text:
-            error.message || "An error occurred while saving the Purchase Main",
-          icon: "error",
-          confirmButtonColor: "#d33",
-          confirmButtonText: "Close",
-        });
-      }
+      //   } else {
+      //     throw new Error("Failed to save the Purchase Main");
+      //   }
+      // } catch (error) {
+      //   Swal.fire({
+      //     title: "Error",
+      //     text:
+      //       error.message || "An error occurred while saving the Purchase Main",
+      //     icon: "error",
+      //     confirmButtonColor: "#d33",
+      //     confirmButtonText: "Close",
+      //   });
+      // }
     },
   });
 
@@ -266,10 +266,578 @@ function CreatePurchaseMain() {
       </div>
 
 
-      <div style={{ backgroundColor: 'white', padding: 10, border: "1px solid #d6d4d4" }}>
-        <h5 className="mt-1 ">Add Purchase Details :</h5>
+ <div style={{ backgroundColor: 'white', padding: 10 ,boxShadow: "0 0 4px 4px rgba(206, 204, 204, 0.5)"  }}>
+    
+        {/* --------------------------------------- */}
+      
+        <form onSubmit={formik.handleSubmit}>
+          <div className="row">
+
+            <div className="col-md-4">
+              <label htmlFor="purchaseMainInvoiceDate" className="form-label">
+                Invoice Date
+              </label>
+              <input
+                type="datetime-local"
+                id="purchaseMainInvoiceDate"
+                name="purchaseMainInvoiceDate"
+                className={`form-control ${formik.touched.purchaseMainInvoiceDate && formik.errors.purchaseMainInvoiceDate ? 'is-invalid' : ''
+                  }`}
+                value={formik.values.purchaseMainInvoiceDate}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+              />
+              {formik.touched.purchaseMainInvoiceDate && formik.errors.purchaseMainInvoiceDate && (
+                <div className="invalid-feedback">{formik.errors.purchaseMainInvoiceDate}</div>
+              )}
+            </div>
+
+            
+            {/* <div className="col-md-4">
+              <label htmlFor="branchId" className="form-label">
+                Branch ID
+              </label>
+              <input
+                type="number"
+                id="branchId"
+                name="branchId"
+                className={`form-control ${formik.touched.branchId && formik.errors.branchId ? 'is-invalid' : ''
+                  }`}
+                value={formik.values.branchId}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+              />
+              {formik.touched.branchId && formik.errors.branchId && (
+                <div className="invalid-feedback">{formik.errors.branchId}</div>
+              )}
+            </div>
+
+            
+            <div className="col-md-4 mt-3">
+              <label htmlFor="branchName" className="form-label">
+                Branch Name
+              </label>
+              <input
+                type="text"
+                id="branchName"
+                name="branchName"
+                className={`form-control ${formik.touched.branchName && formik.errors.branchName ? 'is-invalid' : ''
+                  }`}
+                value={formik.values.branchName}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+              />
+              {formik.touched.branchName && formik.errors.branchName && (
+                <div className="invalid-feedback">{formik.errors.branchName}</div>
+              )}
+            </div>
+
+          
+            <div className="col-md-4 mt-3">
+              <label htmlFor="purchaseMainDocNo" className="form-label">
+                Document Number
+              </label>
+              <input
+                type="text"
+                id="purchaseMainDocNo"
+                name="purchaseMainDocNo"
+                className={`form-control ${formik.touched.purchaseMainDocNo && formik.errors.purchaseMainDocNo ? 'is-invalid' : ''
+                  }`}
+                value={formik.values.purchaseMainDocNo}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+              />
+              {formik.touched.purchaseMainDocNo && formik.errors.purchaseMainDocNo && (
+                <div className="invalid-feedback">{formik.errors.purchaseMainDocNo}</div>
+              )}
+            </div>
+
+            
+            <div className="col-md-4 mt-3">
+              <label htmlFor="totalPurchaseMainVest" className="form-label">
+                Total Vest
+              </label>
+              <input
+                type="number"
+                id="totalPurchaseMainVest"
+                name="totalPurchaseMainVest"
+                className={`form-control ${formik.touched.totalPurchaseMainVest && formik.errors.totalPurchaseMainVest ? 'is-invalid' : ''
+                  }`}
+                value={formik.values.totalPurchaseMainVest}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+              />
+              {formik.touched.totalPurchaseMainVest && formik.errors.totalPurchaseMainVest && (
+                <div className="invalid-feedback">{formik.errors.totalPurchaseMainVest}</div>
+              )}
+            </div>
+
+            
+            <div className="col-md-4 mt-3">
+              <label htmlFor="totalPurchaseMainValue" className="form-label">
+                Total Value
+              </label>
+              <input
+                type="number"
+                id="totalPurchaseMainValue"
+                name="totalPurchaseMainValue"
+                className={`form-control ${formik.touched.totalPurchaseMainValue && formik.errors.totalPurchaseMainValue ? 'is-invalid' : ''
+                  }`}
+                value={formik.values.totalPurchaseMainValue}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+              />
+              {formik.touched.totalPurchaseMainValue && formik.errors.totalPurchaseMainValue && (
+                <div className="invalid-feedback">{formik.errors.totalPurchaseMainValue}</div>
+              )}
+            </div>
+
+     
+            <div className="col-md-4 mt-3">
+              <label htmlFor="taxAmount" className="form-label">
+                Tax Amount
+              </label>
+              <input
+                type="number"
+                id="taxAmount"
+                name="taxAmount"
+                className={`form-control ${formik.touched.taxAmount && formik.errors.taxAmount ? 'is-invalid' : ''
+                  }`}
+                value={formik.values.taxAmount}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+              />
+              {formik.touched.taxAmount && formik.errors.taxAmount && (
+                <div className="invalid-feedback">{formik.errors.taxAmount}</div>
+              )}
+            </div>
+
+            
+            <div className="col-md-4 mt-3">
+              <label htmlFor="furtherTax" className="form-label">
+                Further Tax
+              </label>
+              <input
+                type="number"
+                id="furtherTax"
+                name="furtherTax"
+                className={`form-control ${formik.touched.furtherTax && formik.errors.furtherTax ? 'is-invalid' : ''
+                  }`}
+                value={formik.values.furtherTax}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+              />
+              {formik.touched.furtherTax && formik.errors.furtherTax && (
+                <div className="invalid-feedback">{formik.errors.furtherTax}</div>
+              )}
+            </div>
+
+            
+            <div className="col-md-4 mt-3">
+              <label htmlFor="totalTaxCharged" className="form-label">
+                Total Tax Charged
+              </label>
+              <input
+                type="number"
+                id="totalTaxCharged"
+                name="totalTaxCharged"
+                className={`form-control ${formik.touched.totalTaxCharged && formik.errors.totalTaxCharged ? 'is-invalid' : ''
+                  }`}
+                value={formik.values.totalTaxCharged}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+              />
+              {formik.touched.totalTaxCharged && formik.errors.totalTaxCharged && (
+                <div className="invalid-feedback">{formik.errors.totalTaxCharged}</div>
+              )}
+            </div>
+
+           
+            <div className="col-md-4 mt-3">
+              <label htmlFor="discount" className="form-label">
+                Discount
+              </label>
+              <input
+                type="number"
+                id="discount"
+                name="discount"
+                className={`form-control ${formik.touched.discount && formik.errors.discount ? 'is-invalid' : ''
+                  }`}
+                value={formik.values.discount}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+              />
+              {formik.touched.discount && formik.errors.discount && (
+                <div className="invalid-feedback">{formik.errors.discount}</div>
+              )}
+            </div>
+
+            
+            <div className="col-md-4 mt-3">
+              <label htmlFor="totalPurchaseMainAmount" className="form-label">
+                Total Amount
+              </label>
+              <input
+                type="number"
+                id="totalPurchaseMainAmount"
+                name="totalPurchaseMainAmount"
+                className={`form-control ${formik.touched.totalPurchaseMainAmount && formik.errors.totalPurchaseMainAmount ? 'is-invalid' : ''
+                  }`}
+                value={formik.values.totalPurchaseMainAmount}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+              />
+              {formik.touched.totalPurchaseMainAmount && formik.errors.totalPurchaseMainAmount && (
+                <div className="invalid-feedback">{formik.errors.totalPurchaseMainAmount}</div>
+              )}
+            </div>
+
+           
+            <div className="col-md-4 mt-3">
+              <label htmlFor="rvMainId" className="form-label">
+                RV Main ID
+              </label>
+              <input
+                type="number"
+                id="rvMainId"
+                name="rvMainId"
+                className={`form-control ${formik.touched.rvMainId && formik.errors.rvMainId ? 'is-invalid' : ''
+                  }`}
+                value={formik.values.rvMainId}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+              />
+              {formik.touched.rvMainId && formik.errors.rvMainId && (
+                <div className="invalid-feedback">{formik.errors.rvMainId}</div>
+              )}
+            </div>
+
+           
+            <div className="col-md-4 mt-3">
+              <label htmlFor="term" className="form-label">
+                Term
+              </label>
+              <input
+                type="text"
+                id="term"
+                name="term"
+                className={`form-control ${formik.touched.term && formik.errors.term ? 'is-invalid' : ''
+                  }`}
+                value={formik.values.term}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+              />
+              {formik.touched.term && formik.errors.term && (
+                <div className="invalid-feedback">{formik.errors.term}</div>
+              )}
+            </div>
+
+           
+            <div className="col-md-4 mt-3">
+              <label htmlFor="narration" className="form-label">
+                Narration
+              </label>
+              <input
+                type="text"
+                id="narration"
+                name="narration"
+                className={`form-control ${formik.touched.narration && formik.errors.narration ? 'is-invalid' : ''
+                  }`}
+                value={formik.values.narration}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+              />
+              {formik.touched.narration && formik.errors.narration && (
+                <div className="invalid-feedback">{formik.errors.narration}</div>
+              )}
+            </div>
+
+            
+            <div className="col-md-4 mt-3">
+              <label htmlFor="supplierNTNNo" className="form-label">
+                Supplier NTN No
+              </label>
+              <input
+                type="text"
+                id="supplierNTNNo"
+                name="supplierNTNNo"
+                className={`form-control ${formik.touched.supplierNTNNo && formik.errors.supplierNTNNo ? 'is-invalid' : ''
+                  }`}
+                value={formik.values.supplierNTNNo}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+              />
+              {formik.touched.supplierNTNNo && formik.errors.supplierNTNNo && (
+                <div className="invalid-feedback">{formik.errors.supplierNTNNo}</div>
+              )}
+            </div>
+
+             
+            <div className="col-md-4 mt-3">
+              <label htmlFor="supplierSTRNo" className="form-label">
+                Supplier STR No
+              </label>
+              <input
+                type="text"
+                id="supplierSTRNo"
+                name="supplierSTRNo"
+                className={`form-control ${formik.touched.supplierSTRNo && formik.errors.supplierSTRNo ? 'is-invalid' : ''
+                  }`}
+                value={formik.values.supplierSTRNo}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+              />
+              {formik.touched.supplierSTRNo && formik.errors.supplierSTRNo && (
+                <div className="invalid-feedback">{formik.errors.supplierSTRNo}</div>
+              )}
+            </div>
+
+           
+            <div className="col-md-4 mt-3">
+              <label htmlFor="taxChargePlusAmount" className="form-label">
+                Tax Charge Plus Amount
+              </label>
+              <input
+                type="number"
+                id="taxChargePlusAmount"
+                name="taxChargePlusAmount"
+                className={`form-control ${formik.touched.taxChargePlusAmount && formik.errors.taxChargePlusAmount ? 'is-invalid' : ''
+                  }`}
+                value={formik.values.taxChargePlusAmount}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+              />
+              {formik.touched.taxChargePlusAmount && formik.errors.taxChargePlusAmount && (
+                <div className="invalid-feedback">{formik.errors.taxChargePlusAmount}</div>
+              )}
+            </div>
+
+
+            <div className="col-md-4 mt-3">
+              <label className="form-label">Filler Status</label>
+              <div className="form-check">
+                <input
+                  type="radio"
+                  id="fillerStatusTrue"
+                  name="fillerStatus"
+                  value={true}
+                  className="form-check-input"
+                  checked={formik.values.fillerStatus === true}
+                  onChange={() => formik.setFieldValue('fillerStatus', true)}
+                />
+                <label htmlFor="fillerStatusTrue" className="form-check-label">
+                  Filler
+                </label>
+              </div>
+              <div className="form-check">
+                <input
+                  type="radio"
+                  id="fillerStatusFalse"
+                  name="fillerStatus"
+                  value={false}
+                  className="form-check-input"
+                  checked={formik.values.fillerStatus === false}
+                  onChange={() => formik.setFieldValue('fillerStatus', false)}
+                />
+                <label htmlFor="fillerStatusFalse" className="form-check-label">
+                  Not Filler
+                </label>
+              </div>
+              {formik.touched.fillerStatus && formik.errors.fillerStatus && (
+                <div className="text-danger mt-1">{formik.errors.fillerStatus}</div>
+              )}
+            </div>
+
+            <div className="col-md-4 mt-3">
+              <label htmlFor="tax236Amount" className="form-label">
+                Tax 236 Amount
+              </label>
+              <input
+                type="number"
+                id="tax236Amount"
+                name="tax236Amount"
+                className={`form-control ${formik.touched.tax236Amount && formik.errors.tax236Amount ? 'is-invalid' : ''
+                  }`}
+                value={formik.values.tax236Amount}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+              />
+              {formik.touched.tax236Amount && formik.errors.tax236Amount && (
+                <div className="invalid-feedback">{formik.errors.tax236Amount}</div>
+              )}
+            </div>
+            <div className="col-md-4 mt-3">
+              <label htmlFor="tax236Rate" className="form-label">
+                Tax 236 Rate
+              </label>
+              <input
+                type="number"
+                id="tax236Rate"
+                name="tax236Rate"
+                className={`form-control ${formik.touched.tax236Rate && formik.errors.tax236Rate ? 'is-invalid' : ''
+                  }`}
+                value={formik.values.tax236Rate}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+              />
+              {formik.touched.tax236Rate && formik.errors.tax236Rate && (
+                <div className="invalid-feedback">{formik.errors.tax236Rate}</div>
+              )}
+            </div>
+
+            <div className="col-md-4 mt-3">
+              <label className="form-label">Tax 236 Status</label>
+              <div className="form-check">
+                <input
+                  type="radio"
+                  id="tax236StatusTrue"
+                  name="tax236Status"
+                  value={true}
+                  className="form-check-input"
+                  checked={formik.values.tax236Status === true}
+                  onChange={() => formik.setFieldValue('tax236Status', true)}
+                />
+                <label htmlFor="tax236StatusTrue" className="form-check-label">
+                  Active
+                </label>
+              </div>
+              <div className="form-check">
+                <input
+                  type="radio"
+                  id="tax236StatusFalse"
+                  name="tax236Status"
+                  value={false}
+                  className="form-check-input"
+                  checked={formik.values.tax236Status === false}
+                  onChange={() => formik.setFieldValue('tax236Status', false)}
+                />
+                <label htmlFor="tax236StatusFalse" className="form-check-label">
+                  Not Active
+                </label>
+              </div>
+              {formik.touched.tax236Status && formik.errors.tax236Status && (
+                <div className="text-danger mt-1">{formik.errors.tax236Status}</div>
+              )}
+            </div>
+
+            <div className=" col-md-4 d-flex">
+              <div className="col-10 mt-3 ">
+                <label htmlFor="supplierId" className="form-label">
+                  Supplier
+                </label>
+                <select
+                  id="supplierId"
+                  name="supplierId"
+                  className={`form-select ${formik.touched.supplierId && formik.errors.supplierId
+                    ? "is-invalid"
+                    : ""
+                    }`}
+                  value={formik.values.supplierId}
+                  onChange={(e) =>
+                    formik.setFieldValue(
+                      "supplierId",
+                      Number(e.target.value)
+                    )
+                  }
+                  onBlur={formik.handleBlur}
+                >
+                  <option value="">Select Supplier</option>
+                  {Array.isArray(suppliers) && suppliers.length > 0 ? (
+                    suppliers.map((supplier) => (
+                      <option key={supplier.id} value={supplier.id}>
+                        {supplier.name}
+                      </option>
+                    ))
+                  ) : (
+                    <option value="">
+                      No Suppliers Available
+                    </option>
+                  )}
+                </select>
+                {formik.touched.supplierId && formik.errors.supplierId && (
+                  <div className="invalid-feedback">
+                    {formik.errors.supplierId}
+                  </div>
+                )}
+              </div>
+              <div className='' style={{ display: "flex", alignItems: "center", marginTop: 35, marginLeft: 5 }} >
+
+                <button style={buttonStyle} type='button' onClick={() => createRef.current.click()}>+Supplier</button>
+              </div>
+            </div>
+            <div className="col-md-4 mt-3">
+              <label
+                htmlFor="grnMainId"
+                className="form-label"
+              >
+                GRN Main
+              </label>
+              <select
+                name="grnMainId"
+                className="form-control"
+                value={formik.values.grnMainId}
+                onChange={(e) => {
+                  formik.setFieldValue(
+                    "grnMainId",
+                    Number(e.target.value)
+                  );
+                }}
+                onBlur={formik.handleBlur}
+              >
+                <option value="">Select GRN Main</option>
+                {Array.isArray(GRNMain) &&
+                  GRNMain.length > 0 ? (
+                  GRNMain.map((grn) => (
+                    <option key={grn.id} value={grn.id}>
+                      {grn.name}
+                    </option>
+                  ))
+                ) : (
+                  <option value="">
+                    No GRN Main Id Available
+                  </option>
+                )}
+              </select>
+              {formik.touched.grnMainId &&
+                formik.errors.grnMainId ? (
+                <div className="text-danger">
+                  {formik.errors.grnMainId}
+                </div>
+              ) : null}
+            </div>
+
+            <div className="col-md-4 mt-3">
+              <label htmlFor="totalAmountWith236" className="form-label">
+                Total Amount with 236
+              </label>
+              <input
+                type="number"
+                id="totalAmountWith236"
+                name="totalAmountWith236"
+                className={`form-control ${formik.touched.totalAmountWith236 && formik.errors.totalAmountWith236 ? 'is-invalid' : ''
+                  }`}
+                value={formik.values.totalAmountWith236}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+              />
+              {formik.touched.totalAmountWith236 && formik.errors.totalAmountWith236 && (
+                <div className="invalid-feedback">{formik.errors.totalAmountWith236}</div>
+              )}
+            </div>  */}
+          </div>
+
+       
+        </form>
+ </div>
+
+
+
+        {/* --------------------Details------------ */}
+<div style={{ backgroundColor: 'white', padding: 10    }}>
+         
         <form onSubmit={PurchaseFormik.handleSubmit}>
-          <div className="row border p-2">
+          <div className="row border p-2 mt-2" style={{ boxShadow: "0 0 4px 4px rgba(206, 204, 204, 0.5)"}}>
+              <h5 className="mt-3 ">Add Purchase Details :</h5>
             <div className="col-md-4 mt-3">
               <label htmlFor="productDefinitionId" className="form-label">
                 Product Definition ID
@@ -288,9 +856,9 @@ function CreatePurchaseMain() {
                 <div className="invalid-feedback">{PurchaseFormik.errors.productDefinitionId}</div>
               )}
             </div>
-
+ 
             <div className="col-md-4 mt-3">
-              <label className="form-label">Product 3rd Schedule</label>
+              <label className="form-label">Product 3rd SchedulE</label>
               <div className="form-check">
                 <input
                   type="radio"
@@ -325,7 +893,7 @@ function CreatePurchaseMain() {
             </div>
 
 
-            <div className="col-md-4 mt-3">
+            {/* <div className="col-md-4 mt-3">
               <label htmlFor="itemCode" className="form-label">
                 Item Code
               </label>
@@ -831,7 +1399,7 @@ function CreatePurchaseMain() {
                   {PurchaseFormik.errors.grnMainId}
                 </div>
               ) : null}
-            </div>
+            </div> */}
 
 
 
@@ -894,576 +1462,16 @@ function CreatePurchaseMain() {
           )}
         </form>
 
-
-        {/* --------------------------------------- */}
-        <br />
-        <br />
-        <form onSubmit={formik.handleSubmit}>
-          <div className="row">
-
-            <div className="col-md-4">
-              <label htmlFor="purchaseMainInvoiceDate" className="form-label">
-                Invoice Date
-              </label>
-              <input
-                type="datetime-local"
-                id="purchaseMainInvoiceDate"
-                name="purchaseMainInvoiceDate"
-                className={`form-control ${formik.touched.purchaseMainInvoiceDate && formik.errors.purchaseMainInvoiceDate ? 'is-invalid' : ''
-                  }`}
-                value={formik.values.purchaseMainInvoiceDate}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-              />
-              {formik.touched.purchaseMainInvoiceDate && formik.errors.purchaseMainInvoiceDate && (
-                <div className="invalid-feedback">{formik.errors.purchaseMainInvoiceDate}</div>
-              )}
-            </div>
-
-            {/* Branch ID */}
-            <div className="col-md-4">
-              <label htmlFor="branchId" className="form-label">
-                Branch ID
-              </label>
-              <input
-                type="number"
-                id="branchId"
-                name="branchId"
-                className={`form-control ${formik.touched.branchId && formik.errors.branchId ? 'is-invalid' : ''
-                  }`}
-                value={formik.values.branchId}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-              />
-              {formik.touched.branchId && formik.errors.branchId && (
-                <div className="invalid-feedback">{formik.errors.branchId}</div>
-              )}
-            </div>
-
-            {/* Branch Name */}
-            <div className="col-md-4 mt-3">
-              <label htmlFor="branchName" className="form-label">
-                Branch Name
-              </label>
-              <input
-                type="text"
-                id="branchName"
-                name="branchName"
-                className={`form-control ${formik.touched.branchName && formik.errors.branchName ? 'is-invalid' : ''
-                  }`}
-                value={formik.values.branchName}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-              />
-              {formik.touched.branchName && formik.errors.branchName && (
-                <div className="invalid-feedback">{formik.errors.branchName}</div>
-              )}
-            </div>
-
-            {/* Purchase Main Document Number */}
-            <div className="col-md-4 mt-3">
-              <label htmlFor="purchaseMainDocNo" className="form-label">
-                Document Number
-              </label>
-              <input
-                type="text"
-                id="purchaseMainDocNo"
-                name="purchaseMainDocNo"
-                className={`form-control ${formik.touched.purchaseMainDocNo && formik.errors.purchaseMainDocNo ? 'is-invalid' : ''
-                  }`}
-                value={formik.values.purchaseMainDocNo}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-              />
-              {formik.touched.purchaseMainDocNo && formik.errors.purchaseMainDocNo && (
-                <div className="invalid-feedback">{formik.errors.purchaseMainDocNo}</div>
-              )}
-            </div>
-
-            {/* Total Purchase Main Vest */}
-            <div className="col-md-4 mt-3">
-              <label htmlFor="totalPurchaseMainVest" className="form-label">
-                Total Vest
-              </label>
-              <input
-                type="number"
-                id="totalPurchaseMainVest"
-                name="totalPurchaseMainVest"
-                className={`form-control ${formik.touched.totalPurchaseMainVest && formik.errors.totalPurchaseMainVest ? 'is-invalid' : ''
-                  }`}
-                value={formik.values.totalPurchaseMainVest}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-              />
-              {formik.touched.totalPurchaseMainVest && formik.errors.totalPurchaseMainVest && (
-                <div className="invalid-feedback">{formik.errors.totalPurchaseMainVest}</div>
-              )}
-            </div>
-
-            {/* Total Purchase Main Value */}
-            <div className="col-md-4 mt-3">
-              <label htmlFor="totalPurchaseMainValue" className="form-label">
-                Total Value
-              </label>
-              <input
-                type="number"
-                id="totalPurchaseMainValue"
-                name="totalPurchaseMainValue"
-                className={`form-control ${formik.touched.totalPurchaseMainValue && formik.errors.totalPurchaseMainValue ? 'is-invalid' : ''
-                  }`}
-                value={formik.values.totalPurchaseMainValue}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-              />
-              {formik.touched.totalPurchaseMainValue && formik.errors.totalPurchaseMainValue && (
-                <div className="invalid-feedback">{formik.errors.totalPurchaseMainValue}</div>
-              )}
-            </div>
-
-            {/* Tax Amount */}
-            <div className="col-md-4 mt-3">
-              <label htmlFor="taxAmount" className="form-label">
-                Tax Amount
-              </label>
-              <input
-                type="number"
-                id="taxAmount"
-                name="taxAmount"
-                className={`form-control ${formik.touched.taxAmount && formik.errors.taxAmount ? 'is-invalid' : ''
-                  }`}
-                value={formik.values.taxAmount}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-              />
-              {formik.touched.taxAmount && formik.errors.taxAmount && (
-                <div className="invalid-feedback">{formik.errors.taxAmount}</div>
-              )}
-            </div>
-
-            {/* Further Tax */}
-            <div className="col-md-4 mt-3">
-              <label htmlFor="furtherTax" className="form-label">
-                Further Tax
-              </label>
-              <input
-                type="number"
-                id="furtherTax"
-                name="furtherTax"
-                className={`form-control ${formik.touched.furtherTax && formik.errors.furtherTax ? 'is-invalid' : ''
-                  }`}
-                value={formik.values.furtherTax}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-              />
-              {formik.touched.furtherTax && formik.errors.furtherTax && (
-                <div className="invalid-feedback">{formik.errors.furtherTax}</div>
-              )}
-            </div>
-
-            {/* Total Tax Charged */}
-            <div className="col-md-4 mt-3">
-              <label htmlFor="totalTaxCharged" className="form-label">
-                Total Tax Charged
-              </label>
-              <input
-                type="number"
-                id="totalTaxCharged"
-                name="totalTaxCharged"
-                className={`form-control ${formik.touched.totalTaxCharged && formik.errors.totalTaxCharged ? 'is-invalid' : ''
-                  }`}
-                value={formik.values.totalTaxCharged}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-              />
-              {formik.touched.totalTaxCharged && formik.errors.totalTaxCharged && (
-                <div className="invalid-feedback">{formik.errors.totalTaxCharged}</div>
-              )}
-            </div>
-
-            {/* Discount */}
-            <div className="col-md-4 mt-3">
-              <label htmlFor="discount" className="form-label">
-                Discount
-              </label>
-              <input
-                type="number"
-                id="discount"
-                name="discount"
-                className={`form-control ${formik.touched.discount && formik.errors.discount ? 'is-invalid' : ''
-                  }`}
-                value={formik.values.discount}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-              />
-              {formik.touched.discount && formik.errors.discount && (
-                <div className="invalid-feedback">{formik.errors.discount}</div>
-              )}
-            </div>
-
-            {/* Total Purchase Main Amount */}
-            <div className="col-md-4 mt-3">
-              <label htmlFor="totalPurchaseMainAmount" className="form-label">
-                Total Amount
-              </label>
-              <input
-                type="number"
-                id="totalPurchaseMainAmount"
-                name="totalPurchaseMainAmount"
-                className={`form-control ${formik.touched.totalPurchaseMainAmount && formik.errors.totalPurchaseMainAmount ? 'is-invalid' : ''
-                  }`}
-                value={formik.values.totalPurchaseMainAmount}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-              />
-              {formik.touched.totalPurchaseMainAmount && formik.errors.totalPurchaseMainAmount && (
-                <div className="invalid-feedback">{formik.errors.totalPurchaseMainAmount}</div>
-              )}
-            </div>
-
-            {/* RV Main ID */}
-            <div className="col-md-4 mt-3">
-              <label htmlFor="rvMainId" className="form-label">
-                RV Main ID
-              </label>
-              <input
-                type="number"
-                id="rvMainId"
-                name="rvMainId"
-                className={`form-control ${formik.touched.rvMainId && formik.errors.rvMainId ? 'is-invalid' : ''
-                  }`}
-                value={formik.values.rvMainId}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-              />
-              {formik.touched.rvMainId && formik.errors.rvMainId && (
-                <div className="invalid-feedback">{formik.errors.rvMainId}</div>
-              )}
-            </div>
-
-            {/* Term */}
-            <div className="col-md-4 mt-3">
-              <label htmlFor="term" className="form-label">
-                Term
-              </label>
-              <input
-                type="text"
-                id="term"
-                name="term"
-                className={`form-control ${formik.touched.term && formik.errors.term ? 'is-invalid' : ''
-                  }`}
-                value={formik.values.term}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-              />
-              {formik.touched.term && formik.errors.term && (
-                <div className="invalid-feedback">{formik.errors.term}</div>
-              )}
-            </div>
-
-            {/* Narration */}
-            <div className="col-md-4 mt-3">
-              <label htmlFor="narration" className="form-label">
-                Narration
-              </label>
-              <input
-                type="text"
-                id="narration"
-                name="narration"
-                className={`form-control ${formik.touched.narration && formik.errors.narration ? 'is-invalid' : ''
-                  }`}
-                value={formik.values.narration}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-              />
-              {formik.touched.narration && formik.errors.narration && (
-                <div className="invalid-feedback">{formik.errors.narration}</div>
-              )}
-            </div>
-
-            {/* Supplier NTN No */}
-            <div className="col-md-4 mt-3">
-              <label htmlFor="supplierNTNNo" className="form-label">
-                Supplier NTN No
-              </label>
-              <input
-                type="text"
-                id="supplierNTNNo"
-                name="supplierNTNNo"
-                className={`form-control ${formik.touched.supplierNTNNo && formik.errors.supplierNTNNo ? 'is-invalid' : ''
-                  }`}
-                value={formik.values.supplierNTNNo}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-              />
-              {formik.touched.supplierNTNNo && formik.errors.supplierNTNNo && (
-                <div className="invalid-feedback">{formik.errors.supplierNTNNo}</div>
-              )}
-            </div>
-
-            {/* Supplier STR No */}
-            <div className="col-md-4 mt-3">
-              <label htmlFor="supplierSTRNo" className="form-label">
-                Supplier STR No
-              </label>
-              <input
-                type="text"
-                id="supplierSTRNo"
-                name="supplierSTRNo"
-                className={`form-control ${formik.touched.supplierSTRNo && formik.errors.supplierSTRNo ? 'is-invalid' : ''
-                  }`}
-                value={formik.values.supplierSTRNo}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-              />
-              {formik.touched.supplierSTRNo && formik.errors.supplierSTRNo && (
-                <div className="invalid-feedback">{formik.errors.supplierSTRNo}</div>
-              )}
-            </div>
-
-            {/* Tax Charge Plus Amount */}
-            <div className="col-md-4 mt-3">
-              <label htmlFor="taxChargePlusAmount" className="form-label">
-                Tax Charge Plus Amount
-              </label>
-              <input
-                type="number"
-                id="taxChargePlusAmount"
-                name="taxChargePlusAmount"
-                className={`form-control ${formik.touched.taxChargePlusAmount && formik.errors.taxChargePlusAmount ? 'is-invalid' : ''
-                  }`}
-                value={formik.values.taxChargePlusAmount}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-              />
-              {formik.touched.taxChargePlusAmount && formik.errors.taxChargePlusAmount && (
-                <div className="invalid-feedback">{formik.errors.taxChargePlusAmount}</div>
-              )}
-            </div>
-
-
-            <div className="col-md-4 mt-3">
-              <label className="form-label">Filler Status</label>
-              <div className="form-check">
-                <input
-                  type="radio"
-                  id="fillerStatusTrue"
-                  name="fillerStatus"
-                  value={true}
-                  className="form-check-input"
-                  checked={formik.values.fillerStatus === true}
-                  onChange={() => formik.setFieldValue('fillerStatus', true)}
-                />
-                <label htmlFor="fillerStatusTrue" className="form-check-label">
-                  Filler
-                </label>
-              </div>
-              <div className="form-check">
-                <input
-                  type="radio"
-                  id="fillerStatusFalse"
-                  name="fillerStatus"
-                  value={false}
-                  className="form-check-input"
-                  checked={formik.values.fillerStatus === false}
-                  onChange={() => formik.setFieldValue('fillerStatus', false)}
-                />
-                <label htmlFor="fillerStatusFalse" className="form-check-label">
-                  Not Filler
-                </label>
-              </div>
-              {formik.touched.fillerStatus && formik.errors.fillerStatus && (
-                <div className="text-danger mt-1">{formik.errors.fillerStatus}</div>
-              )}
-            </div>
-
-            <div className="col-md-4 mt-3">
-              <label htmlFor="tax236Amount" className="form-label">
-                Tax 236 Amount
-              </label>
-              <input
-                type="number"
-                id="tax236Amount"
-                name="tax236Amount"
-                className={`form-control ${formik.touched.tax236Amount && formik.errors.tax236Amount ? 'is-invalid' : ''
-                  }`}
-                value={formik.values.tax236Amount}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-              />
-              {formik.touched.tax236Amount && formik.errors.tax236Amount && (
-                <div className="invalid-feedback">{formik.errors.tax236Amount}</div>
-              )}
-            </div>
-            <div className="col-md-4 mt-3">
-              <label htmlFor="tax236Rate" className="form-label">
-                Tax 236 Rate
-              </label>
-              <input
-                type="number"
-                id="tax236Rate"
-                name="tax236Rate"
-                className={`form-control ${formik.touched.tax236Rate && formik.errors.tax236Rate ? 'is-invalid' : ''
-                  }`}
-                value={formik.values.tax236Rate}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-              />
-              {formik.touched.tax236Rate && formik.errors.tax236Rate && (
-                <div className="invalid-feedback">{formik.errors.tax236Rate}</div>
-              )}
-            </div>
-
-            <div className="col-md-4 mt-3">
-              <label className="form-label">Tax 236 Status</label>
-              <div className="form-check">
-                <input
-                  type="radio"
-                  id="tax236StatusTrue"
-                  name="tax236Status"
-                  value={true}
-                  className="form-check-input"
-                  checked={formik.values.tax236Status === true}
-                  onChange={() => formik.setFieldValue('tax236Status', true)}
-                />
-                <label htmlFor="tax236StatusTrue" className="form-check-label">
-                  Active
-                </label>
-              </div>
-              <div className="form-check">
-                <input
-                  type="radio"
-                  id="tax236StatusFalse"
-                  name="tax236Status"
-                  value={false}
-                  className="form-check-input"
-                  checked={formik.values.tax236Status === false}
-                  onChange={() => formik.setFieldValue('tax236Status', false)}
-                />
-                <label htmlFor="tax236StatusFalse" className="form-check-label">
-                  Not Active
-                </label>
-              </div>
-              {formik.touched.tax236Status && formik.errors.tax236Status && (
-                <div className="text-danger mt-1">{formik.errors.tax236Status}</div>
-              )}
-            </div>
-
-            <div className=" col-md-4 d-flex">
-              <div className="col-10 mt-3 ">
-                <label htmlFor="supplierId" className="form-label">
-                  Supplier
-                </label>
-                <select
-                  id="supplierId"
-                  name="supplierId"
-                  className={`form-select ${formik.touched.supplierId && formik.errors.supplierId
-                    ? "is-invalid"
-                    : ""
-                    }`}
-                  value={formik.values.supplierId}
-                  onChange={(e) =>
-                    formik.setFieldValue(
-                      "supplierId",
-                      Number(e.target.value)
-                    )
-                  }
-                  onBlur={formik.handleBlur}
-                >
-                  <option value="">Select Supplier</option>
-                  {Array.isArray(suppliers) && suppliers.length > 0 ? (
-                    suppliers.map((supplier) => (
-                      <option key={supplier.id} value={supplier.id}>
-                        {supplier.name}
-                      </option>
-                    ))
-                  ) : (
-                    <option value="">
-                      No Suppliers Available
-                    </option>
-                  )}
-                </select>
-                {formik.touched.supplierId && formik.errors.supplierId && (
-                  <div className="invalid-feedback">
-                    {formik.errors.supplierId}
-                  </div>
-                )}
-              </div>
-              <div className='' style={{ display: "flex", alignItems: "center", marginTop: 35, marginLeft: 5 }} >
-
-                <button style={buttonStyle} type='button' onClick={() => createRef.current.click()}>+Supplier</button>
-              </div>
-            </div>
-            <div className="col-md-4 mt-3">
-              <label
-                htmlFor="grnMainId"
-                className="form-label"
-              >
-                GRN Main
-              </label>
-              <select
-                name="grnMainId"
-                className="form-control"
-                value={formik.values.grnMainId}
-                onChange={(e) => {
-                  formik.setFieldValue(
-                    "grnMainId",
-                    Number(e.target.value)
-                  );
-                }}
-                onBlur={formik.handleBlur}
-              >
-                <option value="">Select GRN Main</option>
-                {Array.isArray(GRNMain) &&
-                  GRNMain.length > 0 ? (
-                  GRNMain.map((grn) => (
-                    <option key={grn.id} value={grn.id}>
-                      {grn.name}
-                    </option>
-                  ))
-                ) : (
-                  <option value="">
-                    No GRN Main Id Available
-                  </option>
-                )}
-              </select>
-              {formik.touched.grnMainId &&
-                formik.errors.grnMainId ? (
-                <div className="text-danger">
-                  {formik.errors.grnMainId}
-                </div>
-              ) : null}
-            </div>
-
-            <div className="col-md-4 mt-3">
-              <label htmlFor="totalAmountWith236" className="form-label">
-                Total Amount with 236
-              </label>
-              <input
-                type="number"
-                id="totalAmountWith236"
-                name="totalAmountWith236"
-                className={`form-control ${formik.touched.totalAmountWith236 && formik.errors.totalAmountWith236 ? 'is-invalid' : ''
-                  }`}
-                value={formik.values.totalAmountWith236}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-              />
-              {formik.touched.totalAmountWith236 && formik.errors.totalAmountWith236 && (
-                <div className="invalid-feedback">{formik.errors.totalAmountWith236}</div>
-              )}
-            </div>
-          </div>
-
-          <div className="d-flex justify-content-end modal-footer mt-3">
+           <div className="d-flex justify-content-end modal-footer mt-3">
             <button
               type="submit"
               className="btn"
               style={{ backgroundColor: '#ff9f33', color: 'white' }}
+               onClick={formik.handleSubmit}
             >
               Save changes
             </button>
           </div>
-        </form>
       </div>
 
       <Footer />
