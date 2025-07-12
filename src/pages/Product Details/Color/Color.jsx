@@ -135,7 +135,7 @@ function Color() {
     <div style={{ marginTop: 10 }}>
       <div className='d-flex justify-content-between row'>
         <div className='d-flex flex-column col-sm-7'>
-          <h3>Color List</h3>
+          <h3>Coloooor List</h3>
           <h5 style={{ fontWeight: 400 }}>Manage your Colors</h5>
         </div>
         <div className='col-sm-5' style={{ display: 'flex', gap: '10px', alignItems: 'center', justifyContent: 'flex-end' }}>
