@@ -29,6 +29,7 @@
     "lodash": "^4.17.21",
     "masonry-layout": "^4.2.2",
     "nanoid": "^5.0.7",
+    "number-to-words": "^1.2.4",
     "photoswipe": "^5.4.3",
     "react": "^18.2.0",
     "react-apexcharts": "^1.4.1",

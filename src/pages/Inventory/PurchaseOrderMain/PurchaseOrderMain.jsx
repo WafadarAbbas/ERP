@@ -77,7 +77,7 @@ const handleRadioChange = (event) => {
 
   const handleDelete = async (PurchaseOrderMainId) => {
     const result = await Swal.fire({
-      title: 'Are you sure?',
+      title: 'Are you sure? || Also delete detail First',
       text: 'This action cannot be undone!',
       icon: 'warning',
       showCancelButton: true,
@@ -104,6 +104,7 @@ const handleRadioChange = (event) => {
         Swal.fire('Error', 'An error occurred while deleting the Purchase Order Main', 'error');
       }
     }
+     
   };
 
  

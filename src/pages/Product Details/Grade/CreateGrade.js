@@ -10,7 +10,7 @@ const CreateGrade = (props) => {
   const validationSchema = Yup.object({
     productGradeName: Yup.string()
       .required('Product Grade Name is required')
-      .min(2, 'Grade name must be at least 3 characters'),
+      .min(1, 'Grade name must be at least 3 characters'),
   });
 
   const formik = useFormik({

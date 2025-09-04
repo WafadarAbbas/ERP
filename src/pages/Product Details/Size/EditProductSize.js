@@ -95,13 +95,6 @@ const EditProductSize = (props) => {
     },
   });
 
-  // Close modal handler
-  const handleModalClose = () => {
-    formik.resetForm();
-    if (typeof props.close === "function") {
-      props.close();
-    }
-  };
 
   return (
     <div>
@@ -133,7 +126,7 @@ const EditProductSize = (props) => {
                 type="button"
                 className="btn-close"
                 data-bs-dismiss="modal"
-                onClick={handleModalClose}
+                ref={props.close}
                 aria-label="Close"
               ></button>
             </div>
@@ -163,7 +156,7 @@ const EditProductSize = (props) => {
                     type="button"
                     className="btn btn-secondary"
                     data-bs-dismiss="modal"
-                    onClick={handleModalClose}
+                  
                   >
                     Close
                   </button>

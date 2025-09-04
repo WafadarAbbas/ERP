@@ -28,12 +28,12 @@
 		}
 	}
 	& .ps__thumb-y {
-		background-color: $gray-500;
+		background-color: rgb(255, 159, 67);
 		
 		&:focus,
 		&:hover,
 		&.ps--clicking {
-			background-color: $gray-500;
+			background-color:rgb(255, 159, 67);
 		}
 	}
 }

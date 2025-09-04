@@ -217,9 +217,9 @@ function GRNDetails() {
                         <button className="btn" onClick={() => handleDelete(GRNDetails.id)} style={{ border: '1px solid #ddd', padding: '6px 8px', borderRadius: '8px', display: 'flex', alignItems: 'center' }}>
                           <FaTrash size={16} title="Delete" color='red' />
                         </button>
-                        <button className="btn" onClick={() => handleEdit(GRNDetails.id)} style={{ border: '1px solid #ddd', padding: '6px 8px', borderRadius: '8px', display: 'flex', alignItems: 'center' }}>
+                        {/* <button className="btn" onClick={() => handleEdit(GRNDetails.id)} style={{ border: '1px solid #ddd', padding: '6px 8px', borderRadius: '8px', display: 'flex', alignItems: 'center' }}>
                           <FaEdit size={16} title="Edit" color='#ff9f43' />
-                        </button>
+                        </button> */}
                       </div>
                     </td>
                   </tr>

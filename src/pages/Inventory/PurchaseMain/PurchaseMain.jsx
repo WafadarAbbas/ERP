@@ -8,7 +8,7 @@ import EditPurchaseMain from './EditPurchaseMain';
 import Swal from 'sweetalert2';
 import Footer from '../../../Compo/Footer';
 import { useNavigate } from 'react-router-dom';
-import { GroundOverlay } from '@react-google-maps/api';
+
 
 function PurchaseMain() {
    const navigate = useNavigate(); 
@@ -25,7 +25,7 @@ function PurchaseMain() {
   const [fillerStatusFilter, setfillerStatusFilter] = useState(true);
   const [showFilterOptions, setShowFilterOptions] = useState(false);
 
-  
+   const [loading, setLoading] = useState(false);
 const toggleFilterOptions = () => {
   setShowFilterOptions(!showFilterOptions);
 }; 
@@ -42,6 +42,7 @@ const handleRadioChange = (event) => {
    
   const fetchPurchaseMain = async (query = '', fillerStatus = null) => {
     try {
+      setLoading(true);
       let url = `http://localhost:5022/api/v1/PurchaseMain/GetAllPurchaseMain?organizationId=1&companyId=1`;
     
       const response = await ApiCall({
@@ -56,6 +57,8 @@ const handleRadioChange = (event) => {
       }
     } catch (error) {
       setError(error.message || 'An error occurred while fetching data');
+    } finally {
+      setLoading(false);  
     }
   };
 
@@ -172,87 +175,80 @@ const handleRadioChange = (event) => {
  
         <hr />
 
-        {error ? (
-          <div className="alert alert-danger" role="alert">
-            {error}
+     <>
+      {loading ? (
+        <div className="d-flex justify-content-center align-items-center" style={{ height: "300px" }}>
+          <div className="spinner-border " role="status" style={{ width: "3rem", height: "3rem", color: "#ff9f43" }}  >
+            <span className="visually-hidden">Loading...</span>
           </div>
-        ) : (
-          <div className="table-responsive">
-            <table className="table table-hover">
-              <thead className="thead-dark">
-                <tr>
+        </div>
+      ) : error ? (
+        <div className="alert alert-danger" role="alert">
+          {error}
+        </div>
+      ) : (
+        <div className="table-responsive">
+          <table className="table table-hover">
+            <thead className="thead-dark">
+              <tr>
                 <th scope="col" style={{ fontSize: 16 }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: "5px" }}>
                     grnInvoiceNo
-                      <button onClick={() => handleSort('grnInvoiceNo')} className="btn p-0">
-                        {sortOrder === 'asc' && sortColumn === 'grnInvoiceNo' ? <FaArrowUp color="green" /> : <FaArrowDown color="red" />}
+                    <button onClick={() => setSortColumn("grnInvoiceNo")} className="btn p-0">
+                      {sortOrder === "asc" && sortColumn === "grnInvoiceNo" ? (
+                        <FaArrowUp color="green" />
+                      ) : (
+                        <FaArrowDown color="red" />
+                      )}
+                    </button>
+                  </div>
+                </th>
+                <th scope="col" style={{ fontSize: 16 }}>
+                  Tax Amount
+                </th>
+                <th scope="col" style={{ fontSize: 16 }}>
+                  purchaseMainInvoiceNo
+                </th>
+                <th scope="col" style={{ fontSize: 16 }}>
+                  fillerStatus
+                </th>
+                <th scope="col" style={{ fontSize: 16 }}>
+                  Supplier Name
+                </th>
+                <th scope="col" style={{ fontSize: 16, textAlign: "center" }}>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {paginatedPackage.map((PurchaseMain) => (
+                <tr key={PurchaseMain.id}>
+                  <td style={{ fontSize: 16 }}>{PurchaseMain.grnInvoiceNo}</td>
+                  <td style={{ fontSize: 16 }}>{PurchaseMain.taxAmount}</td>
+                  <td style={{ fontSize: 16 }}>{PurchaseMain.purchaseMainInvoiceNo}</td>
+                  <td style={{ fontSize: 16 }}>
+                    {PurchaseMain.fillerStatus ? (
+                      <FaCheckCircle style={{ color: "green" }} />
+                    ) : (
+                      <FaTimesCircle style={{ color: "red" }} />
+                    )}
+                  </td>
+                  <td style={{ fontSize: 16 }}>{PurchaseMain.suppliersSupplerName}</td>
+                  <td style={{ fontSize: 16, textAlign: "center" }}>
+                    <div className="d-flex gap-2 justify-content-center">
+                      <button className="btn" onClick={() => handleDelete(PurchaseMain.id)} style={{ border: "1px solid #ddd", padding: "6px 8px", borderRadius: "8px" }}>
+                        <FaTrash size={16} title="Delete" color="red"  />
+                      </button>
+                      <button className="btn"   style={{ border: "1px solid #ddd", padding: "6px 8px", borderRadius: "8px" }}>
+                        <FaEdit size={16} title="Edit" color="#ff9f43" />
                       </button>
                     </div>
-                  </th>
-
-                  <th scope="col" style={{ fontSize: 16 }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
-                    Tax Amount
-                      <button onClick={() => handleSort('taxAmount')} className="btn p-0">
-                        {sortOrder === 'asc' && sortColumn === 'taxAmount' ? <FaArrowUp color="green" /> : <FaArrowDown color="red" />}
-                      </button>
-                    </div>
-                  </th>
-                  <th scope="col" style={{ fontSize: 16 }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
-                    purchaseMainInvoiceNo
-                      <button onClick={() => handleSort('purchaseMainInvoiceNo')} className="btn p-0">
-                        {sortOrder === 'asc' && sortColumn === 'purchaseMainInvoiceNo' ? <FaArrowUp color="green" /> : <FaArrowDown color="red" />}
-                      </button>
-                    </div>
-                  </th>
-                  <th scope="col" style={{ fontSize: 16 }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
-                      fillerStatus
-                      <button onClick={() => handleSort('fillerStatus')} className="btn p-0">
-                        {sortOrder === 'asc' && sortColumn === 'fillerStatus' ? <FaArrowUp color="green" /> : <FaArrowDown color="red" />}
-                      </button>
-                    </div>
-                  </th>
-
-                  <th scope="col" style={{ fontSize: 16 }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
-                      Supplier Name
-                      <button onClick={() => handleSort('suppliersSupplerName')} className="btn p-0">
-                        {sortOrder === 'asc' && sortColumn === 'suppliersSupplerName' ? <FaArrowUp color="green" /> : <FaArrowDown color="red" />}
-                      </button>
-                    </div>
-                  </th>
-                  <th scope="col" style={{ fontSize: 16, textAlign: 'center' }}>Actions</th>
+                  </td>
                 </tr>
-              </thead>
-              <tbody>
-                {paginatedPackage.map((PurchaseMain) => (
-                  <tr key={PurchaseMain.id}>
-                    <td style={{ fontSize: 16 }}>{PurchaseMain.grnInvoiceNo}</td>
-                    <td style={{ fontSize: 16 }}>{PurchaseMain.taxAmount}</td>
-                    <td style={{ fontSize: 16 }}>{PurchaseMain.purchaseMainInvoiceNo}</td>
-                    <td style={{ fontSize: 16 }}>{PurchaseMain.fillerStatus ? (<FaCheckCircle style={{ color: 'green' }} />
-                    ) : (<FaTimesCircle style={{ color: 'red' }} />)}
-                    </td>
-                    <td style={{ fontSize: 16 }}>{PurchaseMain.suppliersSupplerName}</td>
-
-                    <td style={{ fontSize: 16, textAlign: 'center' }}>
-                      <div className="d-flex gap-2 justify-content-center">
-                        <button className="btn" onClick={() => handleDelete(PurchaseMain.id)} style={{ border: '1px solid #ddd', padding: '6px 8px', borderRadius: '8px', display: 'flex', alignItems: 'center' }}>
-                          <FaTrash size={16} title="Delete" color='red' />
-                        </button>
-                        <button className="btn" onClick={() => handleEdit(PurchaseMain.id)} style={{ border: '1px solid #ddd', padding: '6px 8px', borderRadius: '8px', display: 'flex', alignItems: 'center' }}>
-                          <FaEdit size={16} title="Edit" color='#ff9f43' />
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        )}
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
+    </>
 
         <div className="d-flex justify-content-center mt-3">
           <button

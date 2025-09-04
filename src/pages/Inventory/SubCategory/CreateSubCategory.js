@@ -95,7 +95,7 @@ const CreateSubCategory = (props) => {
       type="button"
       className="btn btn-primary d-none"
       data-bs-toggle="modal"
-      data-bs-target="#CreateSubCategory Modal"
+      data-bs-target="#CreateSubCategoryModal"
       ref={props.open}
     >
       Create SubCategory 
@@ -103,16 +103,16 @@ const CreateSubCategory = (props) => {
 
     <div
       className="modal fade"
-      id="CreateSubCategory Modal"
+      id="CreateSubCategoryModal"
       tabIndex="-1"
-      aria-labelledby="CreateSubCategory ModalLabel"
+      aria-labelledby="CreateSubCategoryModalLabel"
       data-bs-backdrop="static"
       aria-hidden="true"
     >
       <div className="modal-dialog modal-lg modal-dialog-centered">
         <div className="modal-content">
           <div className="modal-header">
-            <h5 className="modal-title" id="CreateSubCategory ModalLabel">
+            <h5 className="modal-title" id="CreateSubCategoryModalLabel">
               Create Sub Category 
             </h5>
             <button

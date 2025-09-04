@@ -27,7 +27,7 @@ const EditProductType = (props) => {
         companyId: 1,
         id: selectedProductTypeId,
       };
-
+ 
       try {
         const response = await ApiCall({
           url: "http://localhost:5022/api/v1/productType/UpdateproductType",

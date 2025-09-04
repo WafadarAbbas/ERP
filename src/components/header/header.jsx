@@ -28,7 +28,7 @@ function Header() {
 						)}
 
 
-						<Link to="/" className="navbar-brand " style={{ color: 'black', fontSize: '18px', fontWeight: 500, textDecoration: 'none', width: '200px' }} >
+						<Link to="/dashboard/v3" className="navbar-brand " style={{ color: 'black', fontSize: '18px', fontWeight: 500, textDecoration: 'none', width: '200px' }} >
 							<img
 								src={logo}
 								alt="ERP"

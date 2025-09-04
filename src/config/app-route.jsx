@@ -9,7 +9,7 @@ import DashboardV2 from './../pages/dashboard/dashboard-v2.js';
 import DashboardV3 from './../pages/dashboard/dashboard-v3.js';
  
 import LoginV3 from './../pages/user/login-v3.js';
-import HelperCSS from './../pages/helper/helper-css.js';
+// import HelperCSS from './../pages/helper/helper-css.js';
 import Users from '../pages/users/users.jsx';
 import Testing from '../pages/Testing/Testing.jsx';
 import Product from '../pages/Inventory/Product/Product.jsx';
@@ -74,12 +74,12 @@ const AppRoute = [
 		children: [
 			{
 				path: '',
-				element: <Navigate to='/dashboard/' />
+				element: <Navigate to='/dashboard/v3' />
 			},
 
 			{
 				path: 'dashboard/*',
-				element: <ProtectedRoute />,
+				element: <Outlet />,
 				children: [
 					{ path: 'v1', element: <DashboardV1 /> },
 					{ path: 'v2', element: <DashboardV2 /> },
@@ -90,7 +90,8 @@ const AppRoute = [
 
 			{
 				path: 'admin/*',
-				element: <ProtectedRoute />,
+				// element: <ProtectedRoute />,
+					element: <Outlet />,
 				children: [
 					{ path: 'user', element: <Users /> },
 				]
@@ -207,19 +208,20 @@ const AppRoute = [
 				children: [
 					{ path: 'PurchaseMain', element: < PurchaseMain/> },
 					{ path: 'EditPurchaseMain', element: <EditPurchaseMain/> },
-					{ path: 'CreatePurchaseMain', element: <CreatePurchaseMain/> },	 
+					{ path: 'CreatePurchaseMain', element: <CreatePurchaseMain/> },	
+					 { path: 'PurchaseDetail', element: <PurchaseDetail/> },	
 				]
 			},
 
-			{
-				path: 'PurchaseMain',
-				element: <Outlet />,
-				children: [
-					{ path: 'PurchaseMain', element: < PurchaseMain/> },
-					{ path: 'EditPurchaseMain', element: <EditPurchaseMain/> },
-					{ path: 'CreatePurchaseMain', element: <CreatePurchaseMain/> },	 
-				]
-			},
+			// {
+			// 	path: 'PurchaseMain',
+			// 	element: <Outlet />,
+			// 	children: [
+			// 		{ path: 'PurchaseMain', element: < PurchaseMain/> },
+			// 		{ path: 'EditPurchaseMain', element: <EditPurchaseMain/> },
+			// 		{ path: 'CreatePurchaseMain', element: <CreatePurchaseMain/> },	 
+			// 	]
+			// },
 
 			{
 				path: 'PurchaseReturnMain',
@@ -231,10 +233,10 @@ const AppRoute = [
 				]
 			},
 			
-			{
-				path: 'PurchaseDetail',
-				element: <PurchaseDetail/>,
-			},
+			// {
+			// 	path: 'PurchaseDetail',
+			// 	element: <PurchaseDetail/>,
+			// },
 			
 
 	
@@ -338,12 +340,16 @@ const AppRoute = [
 			// 	path: 'invoice',
 			// 	element: <Invoice />,
 			// },
+// {
+// 		path: 'user/login-v3',
+// 				element: <LoginV3 />,
+	
+// },
 
-
-			{
-				path: 'helper/css',
-				element: <HelperCSS />
-			},
+			// {
+			// 	path: 'helper/css',
+			// 	element: <HelperCSS />
+			// },
 			 
 		]
 	}

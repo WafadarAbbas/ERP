@@ -2,9 +2,9 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { FaFilter, FaEdit, FaTrash, FaArrowUp, FaArrowDown,FaSync } from 'react-icons/fa';
 import Buton from '../../../Compo/Buton';
-import CreatePurchaseDetail from './CreatePurchaseDetail';
+// import CreatePurchaseDetail from './CreatePurchaseDetail';
 import ApiCall from '../../../Apicall/ApiCall';
-import EditPurchaseDetail from './EditPurchaseDetail';
+
 import Swal from 'sweetalert2';
 import Footer from '../../../Compo/Footer';
 
@@ -38,7 +38,7 @@ function PurchaseDetail() {
       });
 
       if (response && response.data) {
-        setPurchaseDetail(response.data);
+        setPurchaseDetail(response.data );
       } else {
         throw new Error('Failed to load PurchaseDetail.');
       }
@@ -133,7 +133,7 @@ function PurchaseDetail() {
           <i className="fa fa-print text-primary fs-2 me-2 p-2 bg-white border border-grey rounded-3 cursor-pointer" onClick={() => alert('Print button clicked!')} ></i>
           <i className="fa-solid fa-file-pdf text-danger fs-2 me-2 p-2 bg-white border border-grey rounded-3 cursor-pointer " onClick={() => alert('PDF button clicked!')} ></i>
           <i className="fa fa-file-excel-o fs-2 me-2 p-2 bg-white border border-grey rounded-3 cursor-pointer" onClick={() => alert('Excel button clicked!')} style={{ color: 'green' }}></i>
-          <Buton onClick={() => createRef.current.click()}>Add PurchaseDetail</Buton>
+          {/* <Buton onClick={() => createRef.current.click()}>Add PurchaseDetail</Buton> */}
         </div>
       </div>
 
@@ -220,9 +220,9 @@ function PurchaseDetail() {
                         <button className="btn" onClick={() => handleDelete(PurchaseDetail.id)} style={{ border: '1px solid #ddd', padding: '6px 8px', borderRadius: '8px', display: 'flex', alignItems: 'center' }}>
                           <FaTrash size={16} title="Delete" color='red' />
                         </button>
-                        <button className="btn" onClick={() => handleEdit(PurchaseDetail.id)} style={{ border: '1px solid #ddd', padding: '6px 8px', borderRadius: '8px', display: 'flex', alignItems: 'center' }}>
+                        {/* <button className="btn" onClick={() => handleEdit(PurchaseDetail.id)} style={{ border: '1px solid #ddd', padding: '6px 8px', borderRadius: '8px', display: 'flex', alignItems: 'center' }}>
                           <FaEdit size={16} title="Edit" color='#ff9f43' />
-                        </button>
+                        </button> */}
                       </div>
                     </td>
                   </tr>
@@ -253,8 +253,8 @@ function PurchaseDetail() {
         </div>
       </div>
       <Footer/>
-      <CreatePurchaseDetail open={createRef} close={refClose} onclick={fetchPurchaseDetail} />
-      <EditPurchaseDetail open={createEditRef} close={refEditClose} selectedPurchaseDetailId={selectedPurchaseDetailId} onclick={fetchPurchaseDetail}onIdReset={handleIdReset}  />
+      {/* <CreatePurchaseDetail open={createRef} close={refClose} onclick={fetchPurchaseDetail} /> */}
+      {/* <EditPurchaseDetail open={createEditRef} close={refEditClose} selectedPurchaseDetailId={selectedPurchaseDetailId} onclick={fetchPurchaseDetail}onIdReset={handleIdReset}  /> */}
     </div>
   );
 }

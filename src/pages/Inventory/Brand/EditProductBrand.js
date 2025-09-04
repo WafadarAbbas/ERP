@@ -132,7 +132,7 @@ const EditProductBrand = (props) => {
                 type="button"
                 className="btn-close"
                 data-bs-dismiss="modal"
-              
+                ref={props.close}
                 aria-label="Close"
               ></button>
             </div>

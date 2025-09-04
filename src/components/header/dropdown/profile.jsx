@@ -26,11 +26,11 @@ function DropdownProfile() {
       </Dropdown.Toggle>
 
       <Dropdown.Menu align="end">
-        <Dropdown.Item href="#/" style={{ fontSize: '14px', fontWeight: 'bold' }}>
+        <Dropdown.Item href="#/" style={{ fontSize: '16px', fontWeight: 'bold' }}>
           <FaUserEdit /> Update Profile
         </Dropdown.Item>
         <Dropdown.Divider />
-        <Dropdown.Item onClick={handleLogout} style={{ fontSize: '14px', fontWeight: 'bold' }}>
+        <Dropdown.Item onClick={handleLogout} style={{ fontSize: '16px', fontWeight: 'bold' }}>
           <FaSignOutAlt /> Log Out
         </Dropdown.Item>
       </Dropdown.Menu>

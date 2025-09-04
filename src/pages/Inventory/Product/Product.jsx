@@ -169,6 +169,14 @@ function Product() {
                       </button>
                     </div>
                   </th>
+                    <th scope="col" style={{ fontSize: 16 }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
+                    Product Image
+                      <button onClick={() => handleSort('productBarCodeImage')} className="btn p-0">
+                        {sortOrder === 'asc' && sortColumn === 'productBarCodeImage' ? <FaArrowUp color="green" /> : <FaArrowDown color="red" />}
+                      </button>
+                    </div>
+                  </th>
                   
          
                   <th scope="col" style={{ fontSize: 16, textAlign: 'center' }}>Actions</th>
@@ -179,7 +187,7 @@ function Product() {
                   <tr key={Product.id}>
                     <td style={{ fontSize: 16 }}>{Product.productName}</td>
                     <td style={{ fontSize: 16 }}>{Product.productCategoryProductCategoryName}</td>
-                    <td style={{ fontSize: 16 }}>{Product.productCreationDate}</td>
+                    <td style={{ fontSize: 16 }}>{Product.productBarCodeImage}</td>
                     <td style={{ fontSize: 16, textAlign: 'center' }}>
                       <div className="d-flex gap-2 justify-content-center">
                         <button className="btn" onClick={() => handleDelete(Product.id)} style={{ border: '1px solid #ddd', padding: '6px 8px', borderRadius: '8px', display: 'flex', alignItems: 'center' }}>

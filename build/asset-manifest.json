@@ -1,0 +1,36 @@
+{
+  "files": {
+    "main.css": "/static/css/main.0445e072.css",
+    "main.js": "/static/js/main.0b105fa4.js",
+    "static/media/wafa.JPG": "/static/media/wafa.cd25248c5c4c8b2badb5.JPG",
+    "static/media/fontawesome-webfont.svg?v=4.7.0": "/static/media/fontawesome-webfont.c1e38fd9e0e74ba58f7a.svg",
+    "static/media/bg-login.png": "/static/media/bg-login.a5ad9be47bf9a0253018.png",
+    "static/media/bg-login-dark-mode.png": "/static/media/bg-login-dark-mode.b4a5c65890722647a955.png",
+    "static/media/fa-solid-900.ttf": "/static/media/fa-solid-900.07ed6d5fa32c1d54af0f.ttf",
+    "static/media/fa-brands-400.ttf": "/static/media/fa-brands-400.0ff70dcbf135d859ebf3.ttf",
+    "static/media/coming-soon.jpg": "/static/media/coming-soon.ac5dfb7dafb00038b656.jpg",
+    "static/media/fontawesome-webfont.eot": "/static/media/fontawesome-webfont.8b43027f47b20503057d.eot",
+    "static/media/fontawesome-webfont.ttf?v=4.7.0": "/static/media/fontawesome-webfont.1e59d2330b4c6deb84b3.ttf",
+    "static/media/fa-solid-900.woff2": "/static/media/fa-solid-900.93f719f4d62bfa3e748c.woff2",
+    "static/media/cover-sidebar.jpg": "/static/media/cover-sidebar.224612a848216851132c.jpg",
+    "static/media/fa-brands-400.woff2": "/static/media/fa-brands-400.bb8d5a145e22822103fb.woff2",
+    "static/media/fontawesome-webfont.woff?v=4.7.0": "/static/media/fontawesome-webfont.f691f37e57f04c152e23.woff",
+    "static/media/profile-cover.jpg": "/static/media/profile-cover.0dc996541d6102f95d8a.jpg",
+    "static/media/fontawesome-webfont.woff2?v=4.7.0": "/static/media/fontawesome-webfont.20fd1704ea223900efa9.woff2",
+    "static/media/fa-regular-400.ttf": "/static/media/fa-regular-400.17a6e1aebccdbaa39e78.ttf",
+    "static/media/cover-sidebar-user.jpg": "/static/media/cover-sidebar-user.7519141823faf5388031.jpg",
+    "static/media/error-page-pattern.png": "/static/media/error-page-pattern.2d15e616ccf00e761a77.png",
+    "static/media/fa-regular-400.woff2": "/static/media/fa-regular-400.bc3722686635b5f86132.woff2",
+    "static/media/LegalDiaryLogo.png": "/static/media/LegalDiaryLogo.2f8dc406ae0be76fec98.png",
+    "static/media/logo.png": "/static/media/logo.cd5c29d7ee4df1be2af1.png",
+    "static/media/fa-v4compatibility.ttf": "/static/media/fa-v4compatibility.0f6cb412603527bda691.ttf",
+    "static/media/fa-v4compatibility.woff2": "/static/media/fa-v4compatibility.6cfec8414be20e2c3426.woff2",
+    "index.html": "/index.html",
+    "main.0445e072.css.map": "/static/css/main.0445e072.css.map",
+    "main.0b105fa4.js.map": "/static/js/main.0b105fa4.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.0445e072.css",
+    "static/js/main.0b105fa4.js"
+  ]
+}

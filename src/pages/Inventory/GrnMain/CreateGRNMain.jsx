@@ -128,6 +128,7 @@ function CreateGRNMain() {
         grnDetails,
         
       };
+     console.log(finalData);
      
       try {
         const response = await ApiCall({
@@ -257,6 +258,7 @@ function CreateGRNMain() {
 
           if (Array.isArray(response.data)) {
              
+            console.log("check " ,response.data);
             
             setData(response.data);
           } else {

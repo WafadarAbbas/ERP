@@ -33,11 +33,14 @@ const Purchase = [
         { path: '/PurchaseMain/PurchaseMain', title: 'Purchase Main' },
         { path: '/PurchaseMain/CreatePurchaseMain', title: 'Create Purchase Main' },
         { path: '/PurchaseMain/EditPurchaseMain', title: 'Edit Purchase Main' },
+        { path: '/PurchaseMain/PurchaseDetail', title: 'Purchase Detail',
+    },
+
     
       ]
     },
-    { path: '/PurchaseDetail', icon: 'fa fa-cube', title: 'Purchase Detail',
-    },
+    // { path: '/PurchaseDetail', icon: 'fa fa-cube', title: 'Purchase Detail',
+    // },
 
     { path: '/PurchaseReturnMain', icon: 'fa fa-key', title: 'Purchase Return Main',
       children: [

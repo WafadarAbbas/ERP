@@ -95,11 +95,11 @@ const CreateProductPackagePolicy = (props) => {
         }
       } catch (error) {
         console.error("Error fetching product packages:", error);
-        Swal.fire({
-          title: "Error",
-          text: error.message || "Failed to load product packages.",
-          icon: "error",
-        });
+        // Swal.fire({
+        //   title: "Error",
+        //   text: error.message || "Failed to load product packages.",
+        //   icon: "error",
+        // });
       }
     };
 

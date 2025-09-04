@@ -17,6 +17,7 @@ function CreateProduct() {
       productMinimumQuantity: 0,
       isRawMaterial: false,  
       isSingleBranch: false,  
+      productBarCodeImage: '',
       productBrandId: 0,  
       productCategoryId: 0, 
       productColorId: 0,  
@@ -38,8 +39,36 @@ onSubmit: async (values) => {
     organizationId: 1,
     companyId: 1,
   };
-  console.log(formData);
-    },
+try {
+    const response = await ApiCall({
+      url: 'http://localhost:5022/api/v1/Product/SaveProduct',
+      method: 'POST',
+      data: formData,
+    });
+
+    console.log('Product saved successfully:', response.data);
+
+    Swal.fire({
+      title: 'Success!',
+      text: 'Product saved successfully.',
+      icon: 'success',
+      confirmButtonColor: '#3085d6',
+      confirmButtonText: 'OK',
+    });
+
+    formik.resetForm(); // optional: reset the form after success
+  } catch (error) {
+    console.error('Error saving product:', error);
+
+    Swal.fire({
+      title: 'Error!',
+      text: 'Failed to save product.',
+      icon: 'error',
+      confirmButtonColor: '#d33',
+      confirmButtonText: 'OK',
+    });
+  }
+}
   });
 
   const [brands, setBrands] = useState([]);  
@@ -353,57 +382,7 @@ onSubmit: async (values) => {
         ) : null}
       </div>
 
- 
-      {/* <div className="form-group mt-3">
-        <label>Category</label>
-        <select
-          name="productCategoryId"
-          className="form-control"
-          value={formik.values.productCategoryId}
-          onChange={(e) => formik.setFieldValue('productCategoryId', Number(e.target.value))}
-          onBlur={formik.handleBlur}
-        >
-          <option value="">Select Category</option>
-          {Array.isArray(categories) && categories.length > 0 ? (
-            categories.map((category) => (
-              <option key={category.id} value={category.id}>
-                {category.name}
-              </option>
-            ))
-          ) : (
-            <option disabled>Loading categories...</option>
-          )}
-        </select>
-        {formik.touched.productCategoryId && formik.errors.productCategoryId ? (
-          <div className="text-danger">{formik.errors.productCategoryId}</div>
-        ) : null}
-      </div>
-
-      <div className='form-group mt-3'>
-          <label>SubCategory</label>
-          <select
-            name='productSubCategoryId'
-            className='form-control'
-            value={formik.values.productSubCategoryId}
-            onChange={(e) => formik.setFieldValue('productSubCategoryId', Number(e.target.value))}  
-            onBlur={formik.handleBlur}
-          >
-            <option value=''>Select SubCategory</option>
-            {Array.isArray(subCategories) && subCategories.length > 0 ? (
-            subCategories.map((subCategory) => (
-              <option key={subCategory.id} value={subCategory.id}>
-                {subCategory.name}  
-              </option>
-            ))
-            ):(
-              <option disabled>Loading SubCategories...</option>
-              )
-          }
-          </select>
-          {formik.touched.productSubCategoryId && formik.errors.productSubCategoryId ? (
-            <div className='text-danger'>{formik.errors.productSubCategoryId}</div>
-          ) : null}
-        </div> */}
+  
 
 <div className="form-group mt-3">
           <label>Category</label>
@@ -585,6 +564,23 @@ onSubmit: async (values) => {
             <div className='text-danger'>{formik.errors.productTypeId}</div>
           ) : null}
         </div>
+
+   <div className='form-group mt-3'>
+  <label>Product Barcode Image</label>
+  <input
+    type='text'
+    name='productBarCodeImage'
+    className='form-control'
+    value={formik.values.productBarCodeImage}
+    onChange={formik.handleChange}   // ✅ now it will update
+    onBlur={formik.handleBlur}       // optional: for validation/touched
+  />
+  {formik.touched.productBarCodeImage && formik.errors.productBarCodeImage ? (
+    <div className='text-danger'>{formik.errors.productBarCodeImage}</div>
+  ) : null}
+</div>
+
+
 
 
   <button type='submit' className='btn btn-primary mt-3'>Create Product</button>

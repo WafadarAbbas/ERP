@@ -45,7 +45,7 @@ const EditProductOpening = (props) => {
           data: formData,
         });
 
-        if (response?.status === 200 || response?.status === 204) {
+        if (response?.status === 200  ) {
           Swal.fire({
             title: "Success!",
             text: "Product Opening saved successfully.",

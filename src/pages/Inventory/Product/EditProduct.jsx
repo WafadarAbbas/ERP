@@ -32,11 +32,12 @@ useEffect(() => {
           productVendorCode: product.productVendorCode || "",
           productTechnicalDetails: product.productTechnicalDetails || "",
           productCreationDate: product.productCreationDate || "",
-          productStatus: product.productStatus || "",
+          productStatus: product.productStatus || false,
           productMinimumQuantity: product.productMinimumQuantity || "",
-          isRawMaterial: product.isRawMaterial || "",
-          isSingleBranch: product.isSingleBranch || "",
+          isRawMaterial: product.isRawMaterial ||  false,
+          isSingleBranch: product.isSingleBranch || false,
           productBrandId: product.productBrandId || "",
+          productBarCodeImage: product.productBarCodeImage || '',
           productCategoryId: product.productCategoryId || "",
           productColorId: product.productColorId || "",
           productGanderId: product.productGanderId || "",
@@ -70,6 +71,7 @@ useEffect(() => {
       isRawMaterial: false,  
       isSingleBranch: false,  
       productBrandId: 0,  
+      productBarCodeImage: '',
       productCategoryId: 0, 
       productColorId: 0,  
       productGanderId: 0,
@@ -79,31 +81,67 @@ useEffect(() => {
       productTypeId:0,
     },
     
-    // Updated validationSchema
+    
     validationSchema: Yup.object({
-      // productName: Yup.string().required('Product name is required'),
-      // productCode: Yup.string().required('Product code is required'),
-      // productVendorCode: Yup.string().required('Vendor code is required'),
-      // productTechnicalDetails: Yup.string().required('Technical details are required'),
-      // productCreationDate: Yup.string().required('Creation date is required'),
-      // productStatus: Yup.boolean().required('Product status is required'),
-      // productMinimumQuantity: Yup.number()
-      //   .min(0, 'Minimum quantity cannot be negative')
-      //   .required('Minimum quantity is required'),
-      // isRawMaterial: Yup.boolean().required('Raw material status is required'),
-      // isSingleBranch: Yup.boolean().required('Branch status is required'), // New validation
+ 
     }),
 
 
  
 onSubmit: async (values) => {
-  const formData = {
+ const formData = {
     ...values,
+    id: productId,
     organizationId: 1,
     companyId: 1,
+ 
+    productBrandName: brands.find(b => b.id === values.productBrandId)?.name || "",
+    productCategoryName: categories.find(c => c.id === values.productCategoryId)?.name || "",
+    productColorName: colors.find(c => c.id === values.productColorId)?.name || "",
+    productGanderName: genders.find(g => g.id === values.productGanderId)?.name || "",
+    productGradeName: grades.find(gr => gr.id === values.productGradeId)?.name || "",
+    productSizeName: sizes.find(s => s.id === values.productSizeId)?.name || "",
+    productSubCategoryName: subCategories.find(sc => sc.id === values.productSubCategoryId)?.name || "",
+    productTypeName: productTypes.find(pt => pt.id === values.productTypeId)?.name || "",
   };
-  console.log(formData);
-    },
+console.log("Submitting data:", formData);
+try {
+    const response = await ApiCall({
+      url: "http://localhost:5022/api/v1/Product/UpdateProduct",
+      method: "PUT",
+      data: formData,
+    });
+
+    
+   if (response?.status === 200) {
+      Swal.fire({
+        title: "Success!",
+        text: "Product updated successfully.",
+        icon: "success",
+        confirmButtonColor: "#3085d6",
+        confirmButtonText: "OK",
+      });
+    } else {
+      Swal.fire({
+        title: "Error!",
+        text: "Unexpected response while updating product.",
+        icon: "warning",
+        confirmButtonColor: "#d33",
+        confirmButtonText: "OK",
+      });
+    }
+  } catch (error) {
+    console.error("Error updating product:", error);
+    Swal.fire({
+      title: "Error!",
+      text: "Failed to update product.",
+      icon: "error",
+      confirmButtonColor: "#d33",
+      confirmButtonText: "OK",
+    });
+  }
+   
+}
   });
 
   const [brands, setBrands] = useState([]);  
@@ -594,9 +632,25 @@ onSubmit: async (values) => {
             <div className='text-danger'>{formik.errors.productTypeId}</div>
           ) : null}
         </div>
+        
+  <div className='form-group mt-3'>
+  <label>Product Barcode Image</label>
+  <input
+    type='text'
+    name='productBarCodeImage'
+    className='form-control'
+    value={formik.values.productBarCodeImage}
+    onChange={formik.handleChange}   // ✅ now it will update
+    onBlur={formik.handleBlur}       // optional: for validation/touched
+  />
+  {formik.touched.productBarCodeImage && formik.errors.productBarCodeImage ? (
+    <div className='text-danger'>{formik.errors.productBarCodeImage}</div>
+  ) : null}
+</div>
 
 
-  <button type='submit' className='btn btn-primary mt-3'>Create Product</button>
+
+  <button type='submit' className='btn btn-primary mt-3'>Update Product</button>
 </form>
 
 

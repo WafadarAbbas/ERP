@@ -75,13 +75,13 @@ const EditProductPackagePolicy = (props) => {
         }
       } catch (error) {
         console.error("Error during Package Policy save:", error);
-        Swal.fire({
-          title: "Error",
-          text: error.message || "An error occurred while saving the Package Policy",
-          icon: "error",
-          confirmButtonColor: "#d33",
-          confirmButtonText: "Close",
-        });
+        // Swal.fire({
+        //   title: "Error",
+        //   text: error.message || "An error occurred while saving the Package Policy",
+        //   icon: "error",
+        //   confirmButtonColor: "#d33",
+        //   confirmButtonText: "Close",
+        // });
       }
     },
   });
@@ -140,11 +140,11 @@ const EditProductPackagePolicy = (props) => {
         }
       } catch (error) {
         console.error("Error fetching product packages:", error);
-        Swal.fire({
-          title: "Error",
-          text: error.message || "Failed to load product packages.",
-          icon: "error",
-        });
+        // Swal.fire({
+        //   title: "Error",
+        //   text: error.message || "Failed to load product packages.",
+        //   icon: "error",
+        // });
       }
     };
 

@@ -20,20 +20,21 @@ const EditSubCategory = (props) => {
 
     enableReinitialize: true,
     onSubmit: async (values) => {
+      const selectedCategory = categories.find(
+    (cat) => cat.id === Number(values.productCategoryId)
+  );
       const formData = {
         ...values,
         organizationId: 1,
         companyId: 1,
-        productCategoryName: null,
+        productCategoryName: selectedCategory?.name || null,
         id: selectedSubCategoryId,
       };
 
-      // Include the category name if it's set
-      if (selectedCategoryName) {
-        formData.productCategoryName = selectedCategoryName;
-      }
+      
+   
 
-      console.log(formData); // Now the form includes productCategoryName
+      console.log(formData);  
       try {
         const response = await ApiCall({
           url: "http://localhost:5022/api/v1/ProductSubCategory/UpdateProductSubCategory",
@@ -175,7 +176,7 @@ const EditSubCategory = (props) => {
                       );
                       formik.setFieldValue("productCategoryId", selectedCategory.id);
                       formik.setFieldValue("productCategoryName", selectedCategory.name);
-                      setSelectedCategoryName(selectedCategory.name); // Set category name in the state
+                      setSelectedCategoryName(selectedCategory.name); 
                     }}
                     onBlur={formik.handleBlur}
                     value={formik.values.productCategoryId}
@@ -241,37 +242,4 @@ export default EditSubCategory;
 
 
 
-
-// try {
-      //   // Make the API call to update the subcategory
-      //   const response = await ApiCall({
-      //     url: "http://localhost:5022/api/v1/ProductSubCategory/UpdateProductSubCategory",
-      //     method: "PUT", // Use PUT for update requests
-      //     data: formData, // Sending the form data to the API
-      //   });
-  
-      //   // Check for successful response (status 200 or 204)
-      //   if (response?.status === 200 || response?.status === 204) {
-      //     Swal.fire("Updated", "The subcategory has been updated successfully.", "success");
-  
-      //     // Reset the form after successful submission
-      //     formik.resetForm();
-  
-      //     // Call the onclick function passed through props (if available)
-      //     if (typeof props.onclick === "function") {
-      //       props.onclick();
-      //     }
-  
-      //     // Close the modal if close function is provided (using a reference to the close button)
-      //     if (props.close && props.close.current) {
-      //       props.close.current.click(); // Trigger the close button to close the modal
-      //     }
-      //   } else {
-      //     // Handle failed response from the API
-      //     Swal.fire("Error", "Failed to update the subcategory", "error");
-      //   }
-      // } catch (error) {
-      //   console.error("Error during update:", error);
-      //   // Handle network or other errors
-      //   Swal.fire("Error", "An error occurred while updating the subcategory", "error");
-      // }
+ 

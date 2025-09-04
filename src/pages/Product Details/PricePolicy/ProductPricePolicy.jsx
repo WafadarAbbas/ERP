@@ -175,6 +175,15 @@ function ProductPricePolicy() {
                     </div>
                   </th>
 
+                      <th scope="col" style={{ fontSize: 16 }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
+                    Product price
+                      <button onClick={() => handleSort('price')} className="btn p-0">
+                        {sortOrder === 'asc' && sortColumn === 'price' ? <FaArrowUp color="green" /> : <FaArrowDown color="red" />}
+                      </button>
+                    </div>
+                  </th>
+
 
            
 
@@ -186,6 +195,8 @@ function ProductPricePolicy() {
                 {paginatedPackage.map((ProductPricePolicy) => (
                   <tr key={ProductPricePolicy.id}>
                     <td style={{ fontSize: 16 }}>{ProductPricePolicy.productVariantMainsProductName}</td>
+                     <td style={{ fontSize: 16 }}>{ProductPricePolicy.price}</td>
+                    
                   
                     <td style={{ fontSize: 16, textAlign: 'center' }}>
                       <div className="d-flex gap-2 justify-content-center">

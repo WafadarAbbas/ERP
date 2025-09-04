@@ -109,7 +109,7 @@ const EditProductVariantMain = (props) => {
         companyId: 1,
         branchId:1,
        
-        product_Name: selectedproduct_Name?.name || null,
+        product_Name: selectedproduct_Name?.name || null, product_Name: selectedproduct_Name?.name || null,
         measuringUnitsName:selectedmeasuringUnitsName?.name || null,
         hsCodeName1: selectedHSCode?.name || null, 
         manfacturerName: selectedManufacturer?.name || null,  
